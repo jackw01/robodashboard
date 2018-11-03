@@ -1,0 +1,35 @@
+{
+  "name": "robodashboard",
+  "version": "1.0.0",
+  "description": "Web dashboard for displaying data from and controlling teleoperated robots",
+  "main": "src/main.js",
+  "preferGlobal": true,
+  "bin": {
+    "robodashboard": "src/main.js"
+  },
+  "scripts": {
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackw01/robodashboard.git"
+  },
+  "keywords": [
+    "robot"
+  ],
+  "author": "jackw01",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jackw01/robodashboard/issues"
+  },
+  "homepage": "https://github.com/jackw01/robodashboard#readme",
+  "dependencies": {
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
+}
