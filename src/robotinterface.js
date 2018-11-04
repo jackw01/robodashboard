@@ -6,6 +6,8 @@ const logger = require('./logger');
 
 const Port = 'COM3'; // '/dev/ttyAMA0';
 const BaudRate = 115200;
+const PacketMarker = '\\';
+const PacketSeparator = ' ';
 
 const DataTypeHumanReadable = 0;
 const DataTypeBatteryVoltage = 1;
@@ -26,9 +28,13 @@ class RobotInterface {
   constructor() {
     this.serialBuffer = '';
     this.packetBuffer = [];
-    this.serial = new SerialPort(Port, { BaudRate }, (err) => {
-      if (err) logger.error(err);
+    this.serial = new SerialPort(Port, { baudRate: BaudRate }, (err) => {
+      if (err) logger.error(err.message);
       else logger.info('Serial port opened.');
+    });
+
+    this.serial.on('error', (err) => {
+      logger.error(err.message);
     });
 
     this.serial.on('data', (data) => {
@@ -36,12 +42,12 @@ class RobotInterface {
       const newPackets = [];
       // Is the first char the start of a packet and is there a complete packet in the buffer?
       while (this.serialBuffer.length > 0 // Is there data?
-             && this.serialBuffer.charAt(0) === '\\' && this.serialBuffer.substr(1).indexOf('\\') > -1) {
+             && this.serialBuffer.charAt(0) === PacketMarker && this.serialBuffer.substr(1).indexOf('\\') > -1) {
         // Get string of next packet
         let packetStr = '';
         let char = '';
         let i = 1;
-        while (char !== '\\') {
+        while (char !== PacketMarker) {
           char = this.serialBuffer.charAt(i);
           packetStr += char;
           i++;
@@ -52,18 +58,28 @@ class RobotInterface {
         const type = parseInt(packetStr.substring(0, 3), 10);
         const rawData = packetStr.substring(4, packetStr.length - 1);
         let contents;
-        if (type !== DataTypeHumanReadable && rawData.indexOf(' ') > -1) {
-          const temp = rawData.split(' ');
+        if (type !== DataTypeHumanReadable && rawData.indexOf(PacketSeparator) > -1) {
+          const temp = rawData.split(PacketSeparator);
           contents = [];
-          for (i = 0; i < temp.length; i++) data.push(parseFloat(temp[i]));
+          for (i = 0; i < temp.length; i++) contents.push(parseFloat(temp[i]));
         } else {
           contents = rawData;
         }
 
         newPackets.push({ type, contents });
         this.packetBuffer.push({ type, contents });
+        logger.debug(`Recieved packets ${JSON.stringify(newPackets)}`);
       }
     });
+  }
+
+  writePacket(p) {
+    let out = `${PacketMarker}${p.key.padStart(3, 0)}`;
+    if (Array.isArray(p.value)) out += p.value.reduce((a, i) => `${a}${PacketSeparator}${Math.round(i, 3)}`);
+    else out += `${PacketSeparator}${p.value}`;
+    out += PacketMarker;
+    logger.debug(`Wrote data ${out}`);
+    this.serial.write(out);
   }
 }
 
