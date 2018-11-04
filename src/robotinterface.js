@@ -24,6 +24,11 @@ const CmdTypeSetDrivePIDTuning = 4;
 const CmdTypeSetAllStatusLEDs = 5;
 const CmdTypeCalibrateGyro = 6;
 
+function isFloat(value) {
+  if (/^(-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) return true;
+  return false;
+}
+
 class RobotInterface {
   constructor() {
     this.serialBuffer = '';
@@ -63,7 +68,7 @@ class RobotInterface {
           contents = [];
           for (i = 0; i < temp.length; i++) contents.push(parseFloat(temp[i]));
         } else {
-          contents = rawData;
+          contents = isFloat(rawData) ? [parseFloat(rawData)] : rawData;
         }
 
         newPackets.push({ type, contents });
