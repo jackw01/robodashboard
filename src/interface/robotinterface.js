@@ -1,8 +1,9 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
+const EventEmitter = require('events');
 const SerialPort = require('serialport');
-const logger = require('./logger');
+const logger = require('../logger');
 
 const Port = 'COM3'; // '/dev/ttyAMA0';
 const BaudRate = 115200;
@@ -29,8 +30,9 @@ function isFloat(value) {
   return false;
 }
 
-class RobotInterface {
+class RobotInterface extends EventEmitter {
   constructor() {
+    super();
     this.serialBuffer = '';
     this.packetBuffer = [];
     this.serial = new SerialPort(Port, { baudRate: BaudRate }, (err) => {
@@ -73,11 +75,13 @@ class RobotInterface {
 
         newPackets.push({ type, contents });
         this.packetBuffer.push({ type, contents });
-        logger.debug(`Recieved packets ${JSON.stringify(newPackets)}`);
       }
+      logger.debug(`Recieved packets ${JSON.stringify(newPackets)}`);
+      this.emit('data', newPackets);
     });
   }
 
+  // Write packet
   writePacket(p) {
     let out = `${PacketMarker}${p.key.padStart(3, 0)}`;
     if (Array.isArray(p.value)) out += p.value.reduce((a, i) => `${a}${PacketSeparator}${Math.round(i, 3)}`);
@@ -85,6 +89,20 @@ class RobotInterface {
     out += PacketMarker;
     logger.debug(`Wrote data ${out}`);
     this.serial.write(out);
+  }
+
+  // Write packet with raw contents
+  writeRaw(data) {
+    const out = `${PacketSeparator}${data}${PacketSeparator}`;
+    logger.debug(`Wrote data ${out}`);
+    this.serial.write(out);
+  }
+
+  // Read latest packets and clear buffer
+  readPackets() {
+    const ret = this.packetBuffer.slice(0);
+    this.packetBuffer = [];
+    return ret;
   }
 }
 
