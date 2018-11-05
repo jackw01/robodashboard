@@ -91,9 +91,23 @@ function Translation2DFromPolar(distance, rotation) {
   return new Translation2D(rotation.sin * distance, rotation.cos * distance);
 }
 
+class RigidTransform2D {
+  constructor(translation, rotation) {
+    this.translation = translation;
+    this.rotation = rotation;
+  }
+
+  transform(delta) {
+    return new RigidTransform2D(this.translation.translateBy(delta.translation.rotateBy(this.rotation)),
+      this.rotation.rotateBy(delta.rotation));
+  }
+}
+
+
 module.exports = {
   Rotation2D,
   Rotation2DFromRadians,
   Translation2D,
   Translation2DFromPolar,
+  RigidTransform2D,s
 };
