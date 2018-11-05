@@ -1,3 +1,6 @@
+// robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
+// Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
+
 const transform = require('./transform.js');
 
 class PositionTracker {
@@ -15,7 +18,7 @@ class PositionTracker {
     const deltaP = new transform.Translation2D(currentDistance - this.oldDistance, 0);
     const deltaR = transform.Rotation2DFromRadians(-deltaAngle);
     const halfR = transform.Rotation2DFromRadians(deltaR.getRadians() / 2.0);
-    this.transform = this.transform.transform(new transform.RigidTransform(deltaP.rotateBy(halfR), deltaR));
+    this.transform = this.transform.transform(new transform.RigidTransform2D(deltaP.rotateBy(halfR), deltaR));
     this.oldDistance = currentDistance;
     this.oldLeftDistance = leftDistance;
     this.oldRightDistance = rightDistance;
@@ -26,11 +29,12 @@ class PositionTracker {
   }
 
   resetOdometry() {
-    this.transform = new transform.RigidTransform(new transform.Translation2D(0, 0), new transform.Rotation2D(1, 0));
+    this.transform = new transform.RigidTransform2D(new transform.Translation2D(0, 0),
+      new transform.Rotation2D(1, 0));
     this.oldDistance = 0;
     this.oldLeftDistance = 0;
     this.oldRightDistance = 0;
   }
 }
 
-module.exports = PositionTracker;
+module.exports = new PositionTracker();

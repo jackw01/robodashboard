@@ -1,3 +1,6 @@
+// robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
+// Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
+
 // 2-dimensional rotation transformation represented by cos and sin of angle
 class Rotation2D {
   constructor(cos, sin) {
@@ -109,5 +112,5 @@ module.exports = {
   Rotation2DFromRadians,
   Translation2D,
   Translation2DFromPolar,
-  RigidTransform2D,s
+  RigidTransform2D,
 };
