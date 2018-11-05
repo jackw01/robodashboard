@@ -106,7 +106,6 @@ class RigidTransform2D {
   }
 }
 
-
 module.exports = {
   Rotation2D,
   Rotation2DFromRadians,
