@@ -4,6 +4,7 @@
 const transform = require('./transform');
 const util = require('../util');
 
+// Path segment represented by two points
 class PathSegment {
   constructor(start, end, data) {
     this.start = start;
@@ -41,6 +42,7 @@ function PathSegmentFromCoords(startX, startY, endX, endY) {
     new transform.Translation2D(endX, endY));
 }
 
+// Path represented by a series of segments with associated data objects
 class Path {
   constructor(start) {
     this.segments = [];
@@ -55,12 +57,27 @@ class Path {
   }
 
   addPointFromCoords(x, y, data) {
-    this.addPoint(transform.Translation2D(x, y), data);
+    this.addPoint(new transform.Translation2D(x, y), data);
   }
+
+  addPoints(points, dataArray) {
+    for (let i = 0; i < points.length; i++) this.addPoint(points[i], dataArray[i]);
+  }
+
+  getCurrentSegmentData() {
+    return this.segments[0].data;
+  }
+}
+
+function PathFromPoints(start, points, dataArray) {
+  const p = new module.exports.Path(start);
+  p.addPoints(points, dataArray);
+  return p;
 }
 
 module.exports = {
   PathSegment,
   PathSegmentFromCoords,
   Path,
+  PathFromPoints,
 };
