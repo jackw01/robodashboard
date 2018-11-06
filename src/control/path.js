@@ -5,10 +5,10 @@ const transform = require('./transform');
 const util = require('../util');
 
 class PathSegment {
-  constructor(start, end, speed) {
+  constructor(start, end, data) {
     this.start = start;
     this.end = end;
-    this.speed = speed;
+    this.data = data;
     this.delta = start.inverse().translateBy(end);
     this.deltaDistance = this.delta.getDistance();
   }
@@ -36,6 +36,31 @@ class PathSegment {
   }
 }
 
+function PathSegmentFromCoords(startX, startY, endX, endY) {
+  return new module.exports.PathSegment(new transform.Translation2D(startX, startY),
+    new transform.Translation2D(endX, endY));
+}
+
+class Path {
+  constructor(start) {
+    this.segments = [];
+    this.lastPoint = start;
+    this.empty = true;
+  }
+
+  addPoint(point, data) {
+    this.segments.push(new PathSegment(this.lastPoint, point, data));
+    this.lastPoint = point;
+    this.empty = false;
+  }
+
+  addPointFromCoords(x, y, data) {
+    this.addPoint(transform.Translation2D(x, y), data);
+  }
+}
+
 module.exports = {
   PathSegment,
+  PathSegmentFromCoords,
+  Path,
 };
