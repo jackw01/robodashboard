@@ -67,6 +67,55 @@ class Path {
   getCurrentSegmentData() {
     return this.segments[0].data;
   }
+
+  // Get point on path that is the specified distance ahead from the specified point
+  getPointByLookAheadDistance(point, distance) {
+    let closestPoint = this.segments[0].getClosestPoint(point);
+    let closestToPosition = closestPoint.inverse().translateBy(point);
+
+    while (this.segments.length > 1) {
+      const distanceToClosest = closestToPosition.getDistance();
+      const closestNextPoint = this.segments[1].getClosestPoint(point);
+      const closestNextToPosition = closestNextPoint.inverse().translateBy(point);
+      const distanceToNext = closestNextToPosition.getDistance();
+
+      if (distanceToClosest > distanceToNext) {
+        this.segments.shift();
+        closestPoint = closestNextPoint;
+        closestToPosition = closestNextToPosition;
+      } else {
+        break;
+      }
+    }
+
+    const segmentEnd = this.segments[0].end;
+    const closestToEnd = closestPoint.inverse().translateBy(segmentEnd);
+    const remainingSegmentDistance = closestToEnd.getDistance();
+
+    let lookAheadDistance = distance + closestToPosition.getDistance();
+    let lookAheadPoint;
+
+    if (lookAheadDistance > remainingSegmentDistance && this.segments.length > 1) {
+      lookAheadDistance -= remainingSegmentDistance;
+      for (let i = 1; i < this.segments.length; i++) {
+        if (lookAheadDistance > this.segments[i].deltaDistance && i !== this.segments.length - 1) {
+          lookAheadDistance -= this.segments[i].deltaDistance;
+        } else {
+          lookAheadPoint = this.segments[i].getPointByDistance(lookAheadDistance);
+          break;
+        }
+      }
+    } else {
+      const finalSegmentDistance = this.segments[0].deltaDistance - remainingSegmentDistance + lookAheadDistance;
+      if (this.segments.length === 1 && finalSegmentDistance > this.segments[0].deltaDistance) {
+        lookAheadPoint = this.segments[0].end;
+      } else {
+        lookAheadPoint = this.segments[0].getPointByDistance(finalSegmentDistance);
+      }
+    }
+
+    return lookAheadPoint;
+  }
 }
 
 function PathFromPoints(start, points, dataArray) {
