@@ -69,30 +69,40 @@ class Path {
   }
 
   // Get point on path that is the specified distance ahead from the specified point
-  getPointByLookAheadDistance(point, distance) {
-    let closestPoint = this.segments[0].getClosestPoint(point);
-    let closestToPosition = closestPoint.inverse().translateBy(point);
+  getPointByLookAheadDistance(startPoint, distance) {
+    // Get closest point to start point on path and translation between the two points
+    let closestSegment = this.segments[0];
+    let closestPoint = closestSegment.getClosestPoint(startPoint);
+    let closestToStart = closestPoint.inverse().translateBy(startPoint);
 
-    while (this.segments.length > 1) {
-      const distanceToClosest = closestToPosition.getDistance();
-      const closestNextPoint = this.segments[1].getClosestPoint(point);
-      const closestNextToPosition = closestNextPoint.inverse().translateBy(point);
-      const distanceToNext = closestNextToPosition.getDistance();
-
-      if (distanceToClosest > distanceToNext) {
-        this.segments.shift();
+    // Iterate through segments in case the closest point is on another segment
+    for (let i = 1; i < this.segments.length; i++) {
+      const closestNextSegment = this.segments[i];
+      const closestNextPoint = closestNextSegment.getClosestPoint(startPoint);
+      const closestNextToStart = closestNextPoint.inverse().translateBy(startPoint);
+      if (closestNextToStart.getDistance() < closestToStart.getDistance()) {
+        closestSegment = closestNextSegment;
         closestPoint = closestNextPoint;
-        closestToPosition = closestNextToPosition;
-      } else {
-        break;
-      }
+        closestToStart = closestNextToStart;
+      } else break;
     }
 
-    const segmentEnd = this.segments[0].end;
+    const segmentEnd = closestSegment.end;
     const closestToEnd = closestPoint.inverse().translateBy(segmentEnd);
     const remainingSegmentDistance = closestToEnd.getDistance();
 
-    let lookAheadDistance = distance + closestToPosition.getDistance();
+    // Perform actual look ahead calculation
+    let lookAheadDistance = distance + closestToStart.getDistance();
+    let lookAheadPoint;
+
+    if (lookAheadDistance > remainingSegmentDistance) {
+
+    } else {
+      lookAheadPoint = closestSegment.getPointByDistanceFromEnd(remainingSegmentDistance - lookAheadDistance);
+    }
+
+    /*
+    let lookAheadDistance = distance + closestToStart.getDistance();
     let lookAheadPoint;
 
     if (lookAheadDistance > remainingSegmentDistance && this.segments.length > 1) {
@@ -113,6 +123,7 @@ class Path {
         lookAheadPoint = this.segments[0].getPointByDistance(finalSegmentDistance);
       }
     }
+    */
 
     return lookAheadPoint;
   }
