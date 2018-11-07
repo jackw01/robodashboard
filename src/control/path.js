@@ -64,23 +64,25 @@ class Path {
     for (let i = 0; i < points.length; i++) this.addPoint(points[i], dataArray[i]);
   }
 
-  getCurrentSegmentData() {
-    return this.segments[0].data;
+  getSegmentData(index) {
+    return this.segments[index].data;
   }
 
   // Get point on path that is the specified distance ahead from the specified point
-  getPointByLookAheadDistance(startPoint, distance) {
+  getPointByLookAheadDistance(startPoint, startSegment, distance) {
     // Get closest point to start point on path and translation between the two points
-    let closestSegment = this.segments[0];
+    let closestSegmentIndex = startSegment;
+    let closestSegment = this.segments[startSegment];
     let closestPoint = closestSegment.getClosestPoint(startPoint);
     let closestToStart = closestPoint.inverse().translateBy(startPoint);
 
     // Iterate through segments in case the closest point is on another segment
-    for (let i = 1; i < this.segments.length; i++) {
+    for (let i = startSegment + 1; i < this.segments.length; i++) {
       const closestNextSegment = this.segments[i];
       const closestNextPoint = closestNextSegment.getClosestPoint(startPoint);
       const closestNextToStart = closestNextPoint.inverse().translateBy(startPoint);
       if (closestNextToStart.getDistance() < closestToStart.getDistance()) {
+        closestSegmentIndex = i;
         closestSegment = closestNextSegment;
         closestPoint = closestNextPoint;
         closestToStart = closestNextToStart;
@@ -96,35 +98,19 @@ class Path {
     let lookAheadPoint;
 
     if (lookAheadDistance > remainingSegmentDistance) {
-
+      // If the look ahead point is beyond the current segment, iterate through segments to find it
+      lookAheadDistance -= remainingSegmentDistance;
+      let i = closestSegmentIndex + 1;
+      while (lookAheadDistance > this.segments[i].deltaDistance && i < this.segments.length - 1) {
+        lookAheadDistance -= this.segments[i].deltaDistance;
+        i++;
+      }
+      // When we are on the last segment or look ahead point is within current segment, get point
+      lookAheadPoint = this.segments[i].getPointByDistance(lookAheadDistance);
     } else {
+      // If look ahead point is already in current segment, get point
       lookAheadPoint = closestSegment.getPointByDistanceFromEnd(remainingSegmentDistance - lookAheadDistance);
     }
-
-    /*
-    let lookAheadDistance = distance + closestToStart.getDistance();
-    let lookAheadPoint;
-
-    if (lookAheadDistance > remainingSegmentDistance && this.segments.length > 1) {
-      lookAheadDistance -= remainingSegmentDistance;
-      for (let i = 1; i < this.segments.length; i++) {
-        if (lookAheadDistance > this.segments[i].deltaDistance && i !== this.segments.length - 1) {
-          lookAheadDistance -= this.segments[i].deltaDistance;
-        } else {
-          lookAheadPoint = this.segments[i].getPointByDistance(lookAheadDistance);
-          break;
-        }
-      }
-    } else {
-      const finalSegmentDistance = this.segments[0].deltaDistance - remainingSegmentDistance + lookAheadDistance;
-      if (this.segments.length === 1 && finalSegmentDistance > this.segments[0].deltaDistance) {
-        lookAheadPoint = this.segments[0].end;
-      } else {
-        lookAheadPoint = this.segments[0].getPointByDistance(finalSegmentDistance);
-      }
-    }
-    */
-
     return lookAheadPoint;
   }
 }
