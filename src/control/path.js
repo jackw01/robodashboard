@@ -74,14 +74,14 @@ class Path {
     let closestSegmentIndex = startSegment;
     let closestSegment = this.segments[startSegment];
     let closestPoint = closestSegment.getClosestPoint(startPoint);
-    let closestToStart = closestPoint.inverse().translateBy(startPoint);
+    let closestToStart = closestPoint.getDistanceTo(startPoint);
 
     // Iterate through segments in case the closest point is on another segment
     for (let i = startSegment + 1; i < this.segments.length; i++) {
       const closestNextSegment = this.segments[i];
       const closestNextPoint = closestNextSegment.getClosestPoint(startPoint);
-      const closestNextToStart = closestNextPoint.inverse().translateBy(startPoint);
-      if (closestNextToStart.getDistance() < closestToStart.getDistance()) {
+      const closestNextToStart = closestNextPoint.getDistanceTo(startPoint);
+      if (closestNextToStart < closestToStart) {
         closestSegmentIndex = i;
         closestSegment = closestNextSegment;
         closestPoint = closestNextPoint;
@@ -89,12 +89,11 @@ class Path {
       } else break;
     }
 
-    const segmentEnd = closestSegment.end;
-    const closestToEnd = closestPoint.inverse().translateBy(segmentEnd);
-    const remainingSegmentDistance = closestToEnd.getDistance();
+    // Distance remaining from closest point to end of segment
+    const remainingSegmentDistance = closestPoint.getDistanceTo(closestSegment.end);
 
     // Perform actual look ahead calculation
-    let lookAheadDistance = distance + closestToStart.getDistance();
+    let lookAheadDistance = distance;
     let lookAheadPoint;
 
     if (lookAheadDistance > remainingSegmentDistance) {
