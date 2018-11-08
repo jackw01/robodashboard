@@ -1,5 +1,6 @@
 import test from 'ava';
 
+const transform = require('./src/control/transform');
 const path = require('./src/control/path');
 
 function round(num, prec) {
@@ -7,13 +8,52 @@ function round(num, prec) {
   return Math.round(num * precision + 1e-14) / precision;
 }
 
-test('PathSegment.getPercentageOnSegment', (t) => {
-  const seg = path.PathSegmentFromCoords(0, 0, 4, 4);
-  t.is(round(seg.getPercentageOnSegment({ x: 1, y: 1 }), 3), 0.25);
-  t.is(round(seg.getPercentageOnSegment({ x: 2, y: 2 }), 3), 0.5);
-  t.is(round(seg.getPercentageOnSegment({ x: 4, y: 4 }), 3), 1.0);
-  t.is(round(seg.getPercentageOnSegment({ x: 1, y: 3 }), 3), 0.5);
-  t.is(round(seg.getPercentageOnSegment({ x: 3, y: 1 }), 3), 0.5);
-  t.is(round(seg.getPercentageOnSegment({ x: 1, y: 4 }), 3), 0.625);
-  t.is(round(seg.getPercentageOnSegment({ x: 4, y: 1 }), 3), 0.625);
+function roundPt(pt, prec) {
+  return { x: round(pt.x, prec), y: round(pt.y, prec) };
+}
+
+const testSeg = path.PathSegmentFromCoords(0, 0, 4, 4);
+
+const testPath = path.PathFromPoints(new transform.Translation2D(0, 0), [
+  new transform.Translation2D(10, 0),
+  new transform.Translation2D(10, 5),
+  new transform.Translation2D(0, 5),
+  new transform.Translation2D(0, 10),
+  new transform.Translation2D(10, 10),
+], [0, 0, 0, 0, 0, 0]);
+
+test('PathtestSegment.getPercentageOntestSegment', (t) => {
+  t.is(round(testSeg.getPercentageOnSegment({ x: 1, y: 1 }), 3), 0.25);
+  t.is(round(testSeg.getPercentageOnSegment({ x: 2, y: 2 }), 3), 0.5);
+  t.is(round(testSeg.getPercentageOnSegment({ x: 4, y: 4 }), 3), 1.0);
+  t.is(round(testSeg.getPercentageOnSegment({ x: 1, y: 3 }), 3), 0.5);
+  t.is(round(testSeg.getPercentageOnSegment({ x: 3, y: 1 }), 3), 0.5);
+  t.is(round(testSeg.getPercentageOnSegment({ x: 1, y: 4 }), 3), 0.625);
+  t.is(round(testSeg.getPercentageOnSegment({ x: 4, y: 1 }), 3), 0.625);
+});
+
+test('PathtestSegment.getClosestPoint', (t) => {
+  t.deepEqual(roundPt(testSeg.getClosestPoint({ x: 1, y: 1 }), 3), { x: 1, y: 1 });
+  t.deepEqual(roundPt(testSeg.getClosestPoint({ x: 2, y: 2 }), 3), { x: 2, y: 2 });
+  t.deepEqual(roundPt(testSeg.getClosestPoint({ x: 4, y: 4 }), 3), { x: 4, y: 4 });
+  t.deepEqual(roundPt(testSeg.getClosestPoint({ x: 1, y: 3 }), 3), { x: 2, y: 2 });
+  t.deepEqual(roundPt(testSeg.getClosestPoint({ x: 3, y: 1 }), 3), { x: 2, y: 2 });
+  t.deepEqual(roundPt(testSeg.getClosestPoint({ x: 1, y: 4 }), 3), { x: 2.5, y: 2.5 });
+  t.deepEqual(roundPt(testSeg.getClosestPoint({ x: 4, y: 1 }), 3), { x: 2.5, y: 2.5 });
+});
+
+test('PathtestSegment.getPointByDistance', (t) => {
+  t.deepEqual(roundPt(testSeg.getPointByDistance(0), 3), { x: 0, y: 0 });
+  t.deepEqual(roundPt(testSeg.getPointByDistance(Math.sqrt(2)), 3), { x: 1, y: 1 });
+  t.deepEqual(roundPt(testSeg.getPointByDistance(Math.sqrt(32)), 3), { x: 4, y: 4 });
+});
+
+test('PathtestSegment.getPointByDistanceFromEnd', (t) => {
+  t.deepEqual(roundPt(testSeg.getPointByDistanceFromEnd(0), 3), { x: 4, y: 4 });
+  t.deepEqual(roundPt(testSeg.getPointByDistanceFromEnd(Math.sqrt(2)), 3), { x: 3, y: 3 });
+  t.deepEqual(roundPt(testSeg.getPointByDistanceFromEnd(Math.sqrt(32)), 3), { x: 0, y: 0 });
+});
+
+test('Path.getPointByLookAheadDistance', (t) => {
+  t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 0, 0), 3), { x: 0, y: 0 });
 });

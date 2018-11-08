@@ -37,9 +37,9 @@ class PathSegment {
   }
 }
 
-function PathSegmentFromCoords(startX, startY, endX, endY) {
+function PathSegmentFromCoords(startX, startY, endX, endY, data) {
   return new module.exports.PathSegment(new transform.Translation2D(startX, startY),
-    new transform.Translation2D(endX, endY));
+    new transform.Translation2D(endX, endY), data);
 }
 
 // Path represented by a series of segments with associated data objects
