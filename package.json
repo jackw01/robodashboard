@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node .",
-    "test": "ava"
+    "test": "ava -v"
   },
   "engines": {
     "node": ">=8.0.0"
