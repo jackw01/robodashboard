@@ -3,6 +3,7 @@
 
 const util = require('../util');
 
+// Limits acceleration and jerk of a changing value
 class RateLimiter {
   constructor(accelLimit, jerkLimit) {
     this.accelLimit = accelLimit;
@@ -10,6 +11,7 @@ class RateLimiter {
     this.reset();
   }
 
+  // Calculate new target velocity based on input target velocity and dT
   calculate(input, dT) {
     const dInput = input - this.lastInput;
     const area = (this.currentAccel ** 2) / this.jerkLimit;
@@ -18,6 +20,10 @@ class RateLimiter {
     else this.currentAccel -= dAccel;
     this.currentAccel = util.clamp(this.currentAccel, -this.accelLimit, this.accelLimit);
     this.lastInput += this.currentAccel * dT;
+    if (Math.sign(input - this.lastInput) !== Math.sign(dInput)) {
+      this.lastInput = input;
+      this.currentAccel = 0;
+    }
     return this.lastInput;
   }
 

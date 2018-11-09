@@ -79,5 +79,33 @@ test('RateLimiter.calculate with accel', (t) => {
   t.is(limiter.calculate(10, 1), 1);
   t.is(limiter.calculate(10, 2), 3);
   t.is(limiter.calculate(10, 7), 10);
+  t.is(limiter.calculate(10, 10), 10);
   t.is(limiter.calculate(0, 1), 9);
+  t.is(limiter.calculate(0, 2), 7);
+  t.is(limiter.calculate(0, 7), 0);
+  t.is(limiter.calculate(0, 10), 0);
+});
+
+test('RateLimiter.calculate with accel and jerk', (t) => {
+  const limiter = new RateLimiter(4, 1);
+  t.is(limiter.calculate(10, 1), 1);
+  t.is(limiter.calculate(10, 1), 3);
+  t.is(limiter.calculate(10, 1), 6);
+  t.is(limiter.calculate(10, 1), 8);
+  t.is(limiter.calculate(10, 1), 9);
+  t.is(limiter.calculate(10, 1), 10);
+  t.is(limiter.calculate(10, 1), 10);
+  t.is(limiter.calculate(40, 1), 11);
+  t.is(limiter.calculate(40, 1), 13);
+  t.is(limiter.calculate(40, 1), 16);
+  t.is(limiter.calculate(40, 1), 20);
+  t.is(limiter.calculate(40, 1), 24);
+  t.is(limiter.calculate(40, 1), 28);
+  t.is(limiter.calculate(40, 1), 31);
+  t.is(limiter.calculate(40, 1), 35);
+  t.is(limiter.calculate(40, 1), 38);
+  t.is(limiter.calculate(40, 1), 40);
+  t.is(limiter.calculate(40, 1), 40);
+  t.is(limiter.calculate(0, 1), 39);
+  t.is(limiter.calculate(0, 1), 37);
 });
