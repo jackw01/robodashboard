@@ -2,6 +2,7 @@ import test from 'ava';
 
 const transform = require('./src/control/transform');
 const path = require('./src/control/path');
+const RateLimiter = require('./src/control/ratelimiter');
 
 function round(num, prec) {
   const precision = [1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10][prec];
@@ -54,14 +55,29 @@ test('PathtestSegment.getPointByDistanceFromEnd', (t) => {
   t.deepEqual(roundPt(testSeg.getPointByDistanceFromEnd(Math.sqrt(32)), 3), { x: 0, y: 0 });
 });
 
-test('Path.getPointByLookAheadDistance', (t) => {
+test('Path.getPointByLookAheadDistance from start', (t) => {
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 0, 0), 3), { x: 0, y: 0 });
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 0, 12), 3), { x: 10, y: 2 });
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 0, 24), 3), { x: 1, y: 5 });
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 0, 40), 3), { x: 10, y: 10 });
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 0, 45), 3), { x: 15, y: 10 });
+});
+
+test('Path.getPointByLookAheadDistance from another segment', (t) => {
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 1, 0), 3), { x: 0, y: 5 });
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 0, y: 0 }, 1, 7), 3), { x: 2, y: 10 });
+});
+
+test('Path.getPointByLookAheadDistance from point off path', (t) => {
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 9, y: 6 }, 2, 3), 3), { x: 6, y: 5 });
   t.deepEqual(roundPt(testPath.getPointByLookAheadDistance({ x: 5, y: 7.5 }, 3, 0), 4), { x: 5, y: 10 });
+});
+
+test('RateLimiter.calculate with accel', (t) => {
+  const limiter = new RateLimiter(1, Number.MAX_VALUE);
+  t.is(limiter.calculate(0, 1), 0);
+  t.is(limiter.calculate(10, 1), 1);
+  t.is(limiter.calculate(10, 2), 3);
+  t.is(limiter.calculate(10, 7), 10);
+  t.is(limiter.calculate(0, 1), 9);
 });
