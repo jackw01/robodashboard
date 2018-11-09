@@ -5,7 +5,22 @@ const transform = require('./transform');
 
 class PurePursuitController {
   constructor() {
-    
+  }
+
+  setPath(newPath) {
+    this.path = newPath;
+  }
+
+  setMaxSpeed(speed) {
+    this.maxSpeed = speed;
+  }
+
+  setDynamicLookAheadDistance(minDistance, maxDistance, minSpeed, maxSpeed) {
+    this.minLookAheadDistance = minDistance;
+    this.maxLookAheadDistance = maxDistance;
+    this.minLookAheadDistanceSpeed = minSpeed;
+    this.maxLookAheadDistanceSpeed = maxSpeed;
+    this.lookAheadDistance = minDistance;
   }
 }
 
