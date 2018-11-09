@@ -13,14 +13,23 @@ class RateLimiter {
 
   // Calculate new target velocity based on input target velocity and dT
   calculate(input, dT) {
-    const dInput = input - this.lastInput;
+    const dInput = input - this.lastInput; // Expected deltaVelocity
+    // Area under triangle at end of trapezoidal motion profile
+    // Represents velocity change in the time it takes to reach full acceleration under current accel and jerk values
+    // dV = a*t // Change in velocity = accel * time
+    // j = a/t // Jerk is rate in change in acceleration over time
+    // t = a/j // Time to reach acceleration a with jerk j
+    // dV = a^2 / j
     const area = (this.currentAccel ** 2) / this.jerkLimit;
+
+    // If expected change in velocity is greater than achieveable with current acceleration, increase acceleration
     const dAccel = Math.sign(dInput) * this.jerkLimit * dT;
     if (Math.abs(dInput) >= area || Math.sign(dInput) !== Math.sign(this.currentAccel)) this.currentAccel += dAccel;
     else this.currentAccel -= dAccel;
-    this.currentAccel = util.clamp(this.currentAccel, -this.accelLimit, this.accelLimit);
-    this.lastInput += this.currentAccel * dT;
-    if (Math.sign(input - this.lastInput) !== Math.sign(dInput)) {
+
+    this.currentAccel = util.clamp(this.currentAccel, -this.accelLimit, this.accelLimit); // Limit acceleration
+    this.lastInput += this.currentAccel * dT; // Integrate acceleration into velocity
+    if (Math.sign(input - this.lastInput) !== Math.sign(dInput)) { // Cap velocity at the target value
       this.lastInput = input;
       this.currentAccel = 0;
     }
