@@ -3,17 +3,17 @@
 
 const util = require('../util');
 const constants = require('./constants');
-const transform = require('./transform');
 const RateLimiter = require('./ratelimiter');
 
 class PurePursuitController {
   constructor() {
-    this.velocityProfiler = new RateLimiter(constants.DriveAccel, constants.DriveJerk);
+    this.speedProfiler = new RateLimiter(constants.DriveAccel, constants.DriveJerk);
     this.resetPath();
   }
 
   resetPath() {
-    this.currentSegment = 0;
+    this.segment = 0;
+    this.velocity = 0;
   }
 
   setPath(newPath) {
@@ -31,14 +31,22 @@ class PurePursuitController {
     this.maxLookAheadDistanceSpeed = maxSpeed;
   }
 
-  calculate(robotTransform) {
-    const lookAheadDistance = util.map(this.velocity, this.minLookAheadDistanceSpeed, this.maxLookAheadDistanceSpeed,
-      this.minLookAheadDistance, this.maxLookAheadDistance);
-    const point = this.path.getPointByDistance(robotTransform.translation, this.currentSegment, lookAheadDistance);
+  calculate(positionTransform) {
+    // Get dynamic look ahead distance based on last iteration's speed
+    const lookAheadDistance = util.clampAndMap(this.speed, this.minLookAheadDistanceSpeed,
+      this.maxLookAheadDistanceSpeed, this.minLookAheadDistance, this.maxLookAheadDistance);
+    // Get look ahead point and data on closest segment to current point
+    const lookAhead = this.path.getPointByDistance(positionTransform.translation, this.segment, lookAheadDistance);
+    this.segment = lookAhead.closestSegmentIndex;
 
-    this.velocity = this.velocityProfiler.calculate(this.path.getSegmentData(this.currentSegment).speed, 1);
+    // Calculate speed with motion profile - target speed is the one on the closest path segment
+    this.speed = this.speedProfiler.calculate(lookAhead.closestSegmentData.speed, 1);
 
-
+    // Transform from look ahead point to position
+    const lookAheadTransform = positionTransform.translation
+      .inverse()
+      .translateBy(lookAhead.point)
+      .rotateBy(positionTransform.rotation.inverse());
   }
 }
 

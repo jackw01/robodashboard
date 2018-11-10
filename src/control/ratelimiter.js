@@ -3,7 +3,7 @@
 
 const util = require('../util');
 
-// Limits acceleration and jerk of a changing value
+// Limits acceleration and jerk of a changing velocity value
 class RateLimiter {
   constructor(accelLimit, jerkLimit) {
     this.accelLimit = accelLimit;

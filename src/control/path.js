@@ -42,6 +42,14 @@ function PathSegmentFromCoords(startX, startY, endX, endY, data) {
     new transform.Translation2D(endX, endY), data);
 }
 
+class LookAheadData {
+  constructor(point, closestSegmentIndex, closestSegmentData) {
+    this.point = point;
+    this.closestSegmentIndex = closestSegmentIndex;
+    this.closestSegmentData = closestSegmentData;
+  }
+}
+
 // Path represented by a series of segments with associated data objects
 class Path {
   constructor(start) {
@@ -110,7 +118,7 @@ class Path {
       // If look ahead point is already in current segment, get point
       lookAheadPoint = closestSegment.getPointByDistanceFromEnd(remainingSegmentDistance - lookAheadDistance);
     }
-    return lookAheadPoint;
+    return new LookAheadData(lookAheadPoint, closestSegmentIndex, this.getSegmentData(closestSegmentIndex));
   }
 }
 
@@ -123,6 +131,7 @@ function PathFromPoints(start, points, dataArray) {
 module.exports = {
   PathSegment,
   PathSegmentFromCoords,
+  LookAheadData,
   Path,
   PathFromPoints,
 };

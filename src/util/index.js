@@ -9,7 +9,12 @@ function clamp(x, min, max) {
   return Math.max(min, Math.min(x, max));
 }
 
+function clampAndMap(x, inMin, inMax, outMin, outMax) {
+  return clamp(map(x, inMin, inMax, outMin, outMax), outMin, outMax);
+}
+
 module.exports = {
   map,
   clamp,
+  clampAndMap,
 };
