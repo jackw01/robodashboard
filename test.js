@@ -108,4 +108,22 @@ test('RateLimiter.calculate with accel and jerk', (t) => {
   t.is(limiter.calculate(40, 1), 40);
   t.is(limiter.calculate(0, 1), 39);
   t.is(limiter.calculate(0, 1), 37);
+  t.is(limiter.calculate(0, 1), 34);
+});
+
+test('RateLimiter.calculate with accel and infinite jerk', (t) => {
+  const limiter = new RateLimiter(4, Number.MAX_VALUE);
+  t.is(limiter.calculate(10, 1), 4);
+  t.is(limiter.calculate(10, 1), 8);
+  t.is(limiter.calculate(10, 1), 10);
+  t.is(limiter.calculate(10, 1), 10);
+  t.is(limiter.calculate(40, 1), 14);
+  t.is(limiter.calculate(40, 1), 18);
+  t.is(limiter.calculate(40, 1), 22);
+  t.is(limiter.calculate(40, 1), 26);
+  t.is(limiter.calculate(40, 1), 30);
+  t.is(limiter.calculate(40, 1), 34);
+  t.is(limiter.calculate(40, 1), 38);
+  t.is(limiter.calculate(40, 1), 40);
+  t.is(limiter.calculate(40, 1), 40);
 });

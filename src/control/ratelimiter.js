@@ -15,7 +15,7 @@ class RateLimiter {
   calculate(input, dT) {
     const dInput = input - this.lastInput; // Expected deltaVelocity
     // Area under triangle at end of trapezoidal motion profile
-    // Represents velocity change in the time it takes to reach full acceleration under current accel and jerk values
+    // Represents velocity change in the time it takes to reach zero acceleration under current accel and jerk values
     // dV = a*t // Change in velocity = accel * time
     // j = a/t // Jerk is rate in change in acceleration over time
     // t = a/j // Time to reach acceleration a with jerk j
@@ -23,6 +23,7 @@ class RateLimiter {
     const area = (this.currentAccel ** 2) / this.jerkLimit;
 
     // If expected change in velocity is greater than achieveable with current acceleration, increase acceleration
+    // If the expected change in velocity cannot be achieved in time, decrease acceleration
     const dAccel = Math.sign(dInput) * this.jerkLimit * dT;
     if (Math.abs(dInput) >= area || Math.sign(dInput) !== Math.sign(this.currentAccel)) this.currentAccel += dAccel;
     else this.currentAccel -= dAccel;
