@@ -69,7 +69,7 @@ class Path {
   }
 
   // Get point on path that is the specified distance ahead from the specified point
-  getPointByLookAheadDistance(startPoint, startSegment, distance) {
+  getPointByDistance(startPoint, startSegment, distance) {
     // Get closest point to start point on path and translation between the two points
     let closestSegmentIndex = startSegment;
     let closestSegment = this.segments[startSegment];
