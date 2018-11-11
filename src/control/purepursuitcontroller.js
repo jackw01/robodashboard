@@ -3,6 +3,7 @@
 
 const util = require('../util');
 const constants = require('./constants');
+const DriveState = require('./drivestate');
 const RateLimiter = require('./ratelimiter');
 
 class PurePursuitController {
@@ -47,8 +48,25 @@ class PurePursuitController {
       .inverse()
       .translateBy(lookAhead.point)
       .rotateBy(positionTransform.rotation.inverse());
-    // Get radius
-    const radius = (lookAheadTransform.getDistance() ** 2) / (2 * lookAheadTransform.x);
+
+    // Calculate curvature of path
+    // radius = distanceToLookAheadPoint^2 / 2x
+    // curvature = 1 / radius
+    // angularSpeed = trackRadius * curvature * speed
+    // If trackRadius = pathRadius, trackRadius * curvature = 1 and only one motor will move making turn radius
+    //   equal to the track radius
+    // If pathRadius = trackRadius*2, trackRadius * curvature = 0.5 and wheel speeds will be (0.5*speed, 1.5*speed)
+    // Inner track will be 1/3 the diameter of the outer track. Since we know the tracks are 2*trackRadius apart,
+    // solving the system of equations shows that the inner/outer track radii will be trackRadius and 3*trackRadius
+    // Finding the center of the tracks shows that 2*trackRadius is the turning radius
+    const curvature = (2 * lookAheadTransform.x) / (lookAheadTransform.getDistance() ** 2);
+    const angularSpeed = (constants.TrackDiameter / 2) * curvature * this.speed;
+
+    // Keep speed under limit
+    const highestSpeed = Math.abs(this.speed) + Math.abs(angularSpeed);
+    let newSpeed = this.speed;
+    if (highestSpeed > this.maxSpeed) newSpeed -= (highestSpeed - this.maxSpeed) * Math.sign(this.speed);
+    return new DriveState(newSpeed - angularSpeed, newSpeed + angularSpeed, false);
   }
 }
 
