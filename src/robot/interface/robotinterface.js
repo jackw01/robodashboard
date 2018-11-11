@@ -3,27 +3,14 @@
 
 const EventEmitter = require('events');
 const SerialPort = require('serialport');
-const logger = require('../logger');
+const logger = require('../../logger');
+const Packet = require('./packet');
+const types = require('./types');
 
 const Port = 'COM3'; // '/dev/ttyAMA0';
 const BaudRate = 115200;
 const PacketMarker = '\\';
 const PacketSeparator = ' ';
-
-const DataTypeHumanReadable = 0;
-const DataTypeBatteryVoltage = 1;
-const DataTypeGyro = 2;
-const DataTypeDriveDistance = 3;
-const DataTypeDriveControlData = 4;
-const DataTypeFreeRAM = 5;
-
-const CmdTypeSetDriveOpenLoop = 0;
-const CmdTypeSetDriveClosedLoop = 1;
-const CmdTypeEnableDriveClosedLoop = 2;
-const CmdTypeDisableDriveClosedLoop = 3;
-const CmdTypeSetDrivePIDTuning = 4;
-const CmdTypeSetAllStatusLEDs = 5;
-const CmdTypeCalibrateGyro = 6;
 
 function isFloat(value) {
   if (/^(-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) return true;
@@ -65,7 +52,7 @@ class RobotInterface extends EventEmitter {
         const type = parseInt(packetStr.substring(0, 3), 10);
         const rawData = packetStr.substring(4, packetStr.length - 1);
         let contents;
-        if (type !== DataTypeHumanReadable && rawData.indexOf(PacketSeparator) > -1) {
+        if (type !== types.DataTypeHumanReadable && rawData.indexOf(PacketSeparator) > -1) {
           const temp = rawData.split(PacketSeparator);
           contents = [];
           for (i = 0; i < temp.length; i++) contents.push(parseFloat(temp[i]));
@@ -73,8 +60,8 @@ class RobotInterface extends EventEmitter {
           contents = isFloat(rawData) ? [parseFloat(rawData)] : rawData;
         }
 
-        newPackets.push({ type, contents });
-        this.packetBuffer.push({ type, contents });
+        newPackets.push(new Packet(type, contents));
+        this.packetBuffer.push(new Packet(type, contents));
       }
       logger.debug(`Recieved packets ${JSON.stringify(newPackets)}`);
       this.emit('data', newPackets);

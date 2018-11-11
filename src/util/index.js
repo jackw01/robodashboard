@@ -13,8 +13,14 @@ function clampAndMap(x, inMin, inMax, outMin, outMax) {
   return clamp(map(x, inMin, inMax, outMin, outMax), outMin, outMax);
 }
 
+function squareAndKeepSign(n) {
+  if (n !== 0) return Math.sign(n) * (n ** 2);
+  return n;
+}
+
 module.exports = {
   map,
   clamp,
   clampAndMap,
+  squareAndKeepSign,
 };
