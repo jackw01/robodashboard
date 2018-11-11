@@ -43,10 +43,11 @@ function PathSegmentFromCoords(startX, startY, endX, endY, data) {
 }
 
 class LookAheadData {
-  constructor(point, closestSegmentIndex, closestSegmentData) {
+  constructor(point, closestSegmentIndex, closestSegmentData, remainingSegmentDistance) {
     this.point = point;
     this.closestSegmentIndex = closestSegmentIndex;
     this.closestSegmentData = closestSegmentData;
+    this.remainingSegmentDistance = remainingSegmentDistance;
   }
 }
 
@@ -118,7 +119,8 @@ class Path {
       // If look ahead point is already in current segment, get point
       lookAheadPoint = closestSegment.getPointByDistanceFromEnd(remainingSegmentDistance - lookAheadDistance);
     }
-    return new LookAheadData(lookAheadPoint, closestSegmentIndex, this.getSegmentData(closestSegmentIndex));
+    return new LookAheadData(lookAheadPoint, closestSegmentIndex, this.getSegmentData(closestSegmentIndex),
+      remainingSegmentDistance);
   }
 }
 

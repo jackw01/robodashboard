@@ -15,6 +15,7 @@ class PurePursuitController {
   resetPath() {
     this.segment = 0;
     this.velocity = 0;
+    this.speedProfiler.reset();
   }
 
   setPath(newPath) {
@@ -39,6 +40,8 @@ class PurePursuitController {
     // Get look ahead point and data on closest segment to current point
     const lookAhead = this.path.getPointByDistance(positionTransform.translation, this.segment, lookAheadDistance);
     this.segment = lookAhead.closestSegmentIndex;
+    // Are we done?
+    if (lookAhead.remainingSegmentDistance === 0.0) return new DriveState(0, 0, true);
 
     // Calculate speed with motion profile - target speed is the one on the closest path segment
     this.speed = this.speedProfiler.calculate(lookAhead.closestSegmentData.speed, 1);
