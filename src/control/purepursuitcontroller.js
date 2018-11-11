@@ -47,6 +47,8 @@ class PurePursuitController {
       .inverse()
       .translateBy(lookAhead.point)
       .rotateBy(positionTransform.rotation.inverse());
+    // Get radius
+    const radius = (lookAheadTransform.getDistance() ** 2) / (2 * lookAheadTransform.x);
   }
 }
 
