@@ -56,21 +56,21 @@ test('PathtestSegment.getPointByDistanceFromEnd', (t) => {
 });
 
 test('Path.getPointByLookAheadDistance from start', (t) => {
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 0), 3), { x: 0, y: 0 });
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 12), 3), { x: 10, y: 2 });
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 24), 3), { x: 1, y: 5 });
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 40), 3), { x: 10, y: 10 });
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 45), 3), { x: 15, y: 10 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 0).point, 3), { x: 0, y: 0 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 12).point, 3), { x: 10, y: 2 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 24).point, 3), { x: 1, y: 5 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 40).point, 3), { x: 10, y: 10 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 0, 45).point, 3), { x: 15, y: 10 });
 });
 
 test('Path.getPointByLookAheadDistance from another segment', (t) => {
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 1, 0), 3), { x: 0, y: 5 });
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 1, 7), 3), { x: 2, y: 10 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 1, 0).point, 3), { x: 0, y: 5 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 0, y: 0 }, 1, 7).point, 3), { x: 2, y: 10 });
 });
 
 test('Path.getPointByLookAheadDistance from point off path', (t) => {
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 9, y: 6 }, 2, 3), 3), { x: 6, y: 5 });
-  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 5, y: 7.5 }, 3, 0), 4), { x: 5, y: 10 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 9, y: 6 }, 2, 3).point, 3), { x: 6, y: 5 });
+  t.deepEqual(roundPt(testPath.getPointByDistance({ x: 5, y: 7.5 }, 3, 0).point, 4), { x: 5, y: 10 });
 });
 
 test('RateLimiter.calculate with accel', (t) => {

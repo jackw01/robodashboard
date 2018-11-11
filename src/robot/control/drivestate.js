@@ -2,10 +2,10 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 class DriveState {
-  constructor(leftVelocity, rightVelocity, isDone) {
+  constructor(leftVelocity, rightVelocity, finished) {
     this.leftVelocity = leftVelocity;
     this.rightVelocity = rightVelocity;
-    this.isDone = isDone;
+    this.finished = finished;
   }
 }
 
