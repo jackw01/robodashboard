@@ -29,7 +29,8 @@
   "homepage": "https://github.com/jackw01/robodashboard#readme",
   "dependencies": {
     "serialport": "^7.0.2",
-    "winston": "^3.1.0"
+    "winston": "^3.1.0",
+    "ws": "^6.1.0"
   },
   "devDependencies": {
     "ava": "1.0.0-rc.1",

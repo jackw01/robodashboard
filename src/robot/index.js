@@ -26,4 +26,4 @@ class Robot {
   }
 }
 
-module.exports = new Robot();
+module.exports = Robot;
