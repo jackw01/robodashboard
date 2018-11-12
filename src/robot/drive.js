@@ -3,22 +3,33 @@
 
 const util = require('../util');
 const constants = require('./constants');
-const positionTracker = require('./positiontracker');
-const RobotInterface = require('./interface/robotinterface');
-const Packet = require('./interface/packet');
 const types = require('./interface/types');
+const Packet = require('./interface/packet');
+const robotInterface = require('./interface/robotinterface');
+const positionTracker = require('./positiontracker');
 const DriveState = require('./control/drivestate');
 const PurePursuitController = require('./control/purepursuitcontroller');
 
 function sendDriveVelocity(left, right) {
-  RobotInterface.writePacket(new Packet(types.CmdTypeSetDriveClosedLoop, [left, right]));
+  robotInterface.writePacket(new Packet(types.CmdTypeSetDriveClosedLoop, [left, right]));
 }
 
 // Differential drivebase
 class Drive {
   constructor() {
-    this.pathFollower = new PurePursuitController();
+    this.pathFollower = new PurePursuitController(constants.DriveAccel, constants.DriveJerk, constants.TrackDiameter);
     this.autonomousMode = false;
+    this.enabled = false;
+  }
+
+  enable() {
+    this.enabled = true;
+    robotInterface.writePacket(new Packet(types.CmdTypeEnableDriveClosedLoop, 0));
+  }
+
+  disable() {
+    this.enabled = false;
+    robotInterface.writePacket(new Packet(types.CmdTypeDisableDriveClosedLoop, 0));
   }
 
   arcadeDrive(throttle, turn) {
@@ -28,14 +39,12 @@ class Drive {
   }
 
   update() {
-    if (this.autonomousMode) {
-      this.driveState = this.pathFollower.calculate(positionTracker.getCurrentOdometry());
-    }
-    if (this.driveState.finished) {
-      this.autonomousMode = false;
-      sendDriveVelocity(0, 0);
-    } else {
-      sendDriveVelocity(this.driveState.leftVelocity, this.driveState.rightVelocity);
+    if (this.autonomousMode) this.driveState = this.pathFollower.calculate(positionTracker.getCurrentOdometry());
+    if (this.enabled) {
+      if (this.driveState.finished) {
+        this.autonomousMode = false;
+        sendDriveVelocity(0, 0);
+      } else sendDriveVelocity(this.driveState.leftVelocity, this.driveState.rightVelocity);
     }
   }
 }

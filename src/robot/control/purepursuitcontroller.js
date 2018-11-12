@@ -2,19 +2,20 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 const util = require('../../util');
-const constants = require('../constants');
 const DriveState = require('./drivestate');
 const RateLimiter = require('./ratelimiter');
 
 class PurePursuitController {
-  constructor() {
-    this.speedProfiler = new RateLimiter(constants.DriveAccel, constants.DriveJerk);
+  constructor(maxAccel, maxJerk, trackDiameter) {
+    this.trackDiameter = trackDiameter;
+    this.speedProfiler = new RateLimiter(maxAccel, maxJerk);
     this.resetPath();
   }
 
   resetPath() {
     this.segment = 0;
     this.velocity = 0;
+    this.lastTime = 0;
     this.speedProfiler.reset();
   }
 
@@ -43,8 +44,12 @@ class PurePursuitController {
     // Are we done?
     if (lookAhead.remainingSegmentDistance === 0.0) return new DriveState(0, 0, true);
 
+    // Calculate deltaT
+    const now = new Date();
+    const deltaT = (now - this.lastTime) / 1000; // In seconds
+    this.lastTime = now;
     // Calculate speed with motion profile - target speed is the one on the closest path segment
-    this.speed = this.speedProfiler.calculate(lookAhead.closestSegmentData.speed, 1);
+    this.speed = this.speedProfiler.calculate(lookAhead.closestSegmentData.speed, deltaT);
 
     // Transform from look ahead point to position
     const lookAheadTransform = positionTransform.translation
@@ -63,7 +68,7 @@ class PurePursuitController {
     // solving the system of equations shows that the inner/outer track radii will be trackRadius and 3*trackRadius
     // Finding the center of the tracks shows that 2*trackRadius is the turning radius
     const curvature = (2 * lookAheadTransform.x) / (lookAheadTransform.getDistance() ** 2);
-    const angularSpeed = (constants.TrackDiameter / 2) * curvature * this.speed;
+    const angularSpeed = (this.trackDiameter / 2) * curvature * this.speed;
 
     // Keep speed under limit
     const highestSpeed = Math.abs(this.speed) + Math.abs(angularSpeed);
