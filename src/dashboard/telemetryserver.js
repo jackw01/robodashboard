@@ -47,15 +47,17 @@ class TelemetryServer {
   }
 
   update() {
-    const now = new Date();
-    const newData = {};
-    Object.entries(this.data).forEach(([key, dataPoint]) => {
-      if (now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
-        this.data[key].lastUpdated = now;
-        newData[key] = dataPoint.value;
-      }
-    });
-    if (this.active) this.ws.send(JSON.stringify(newData), () => {});
+    if (this.data) {
+      const now = new Date();
+      const newData = {};
+      Object.entries(this.data).forEach(([key, dataPoint]) => {
+        if (now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
+          this.data[key].lastUpdated = now;
+          newData[key] = dataPoint.value;
+        }
+      });
+      if (this.active) this.ws.send(JSON.stringify(newData), () => {});
+    }
   }
 }
 

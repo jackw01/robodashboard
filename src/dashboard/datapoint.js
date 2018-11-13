@@ -11,3 +11,5 @@ class DataPoint {
     this.lastUpdated = 0;
   }
 }
+
+module.exports = DataPoint;
