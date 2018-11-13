@@ -41,6 +41,8 @@ class TelemetryServer {
   }
 
   setValueForDataPoint(key, value) {
+    // If the value is not meant to be sampled at a regular interval, send it now
+    if (this.active && !this.data[key].isSampled) this.ws.send(JSON.stringify({ key: value }), () => {});
     this.data[key].value = value;
   }
 

@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 const transform = require('./transform');
-const util = require('../../util');
+const util = require('../util');
 
 // Path segment represented by two points
 class PathSegment {

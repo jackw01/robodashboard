@@ -4,13 +4,9 @@
 const EventEmitter = require('events');
 const SerialPort = require('serialport');
 const logger = require('../../logger');
+const constants = require('../constants');
 const Packet = require('./packet');
 const types = require('./types');
-
-const Port = 'COM3'; // '/dev/ttyAMA0';
-const BaudRate = 115200;
-const PacketMarker = '\\';
-const PacketSeparator = ' ';
 
 function isFloat(value) {
   if (/^(-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) return true;
@@ -22,7 +18,7 @@ class RobotInterface extends EventEmitter {
     super();
     this.serialBuffer = '';
     this.packetBuffer = [];
-    this.serial = new SerialPort(Port, { baudRate: BaudRate }, (err) => {
+    this.serial = new SerialPort(constants.Port, { baudRate: constants.BaudRate }, (err) => {
       if (err) logger.error(err.message);
       else logger.info('Serial port opened.');
     });
@@ -36,12 +32,13 @@ class RobotInterface extends EventEmitter {
       const newPackets = [];
       // Is the first char the start of a packet and is there a complete packet in the buffer?
       while (this.serialBuffer.length > 0 // Is there data?
-             && this.serialBuffer.charAt(0) === PacketMarker && this.serialBuffer.substr(1).indexOf('\\') > -1) {
+             && this.serialBuffer.charAt(0) === constants.PacketMarker
+             && this.serialBuffer.substr(1).indexOf('\\') > -1) {
         // Get string of next packet
         let packetStr = '';
         let char = '';
         let i = 1;
-        while (char !== PacketMarker) {
+        while (char !== constants.PacketMarker) {
           char = this.serialBuffer.charAt(i);
           packetStr += char;
           i++;
@@ -52,8 +49,8 @@ class RobotInterface extends EventEmitter {
         const type = parseInt(packetStr.substring(0, 3), 10);
         const rawData = packetStr.substring(4, packetStr.length - 1);
         let contents;
-        if (type !== types.DataTypeHumanReadable && rawData.indexOf(PacketSeparator) > -1) {
-          const temp = rawData.split(PacketSeparator);
+        if (type !== types.DataTypeHumanReadable && rawData.indexOf(constants.PacketSeparator) > -1) {
+          const temp = rawData.split(constants.PacketSeparator);
           contents = [];
           for (i = 0; i < temp.length; i++) contents.push(parseFloat(temp[i]));
         } else {
@@ -70,17 +67,17 @@ class RobotInterface extends EventEmitter {
 
   // Write packet
   writePacket(p) {
-    let out = `${PacketMarker}${p.key.padStart(3, 0)}`;
-    if (Array.isArray(p.value)) out += p.value.reduce((a, i) => `${a}${PacketSeparator}${Math.round(i, 3)}`);
-    else out += `${PacketSeparator}${p.value}`;
-    out += PacketMarker;
+    let out = `${constants.PacketMarker}${p.key.padStart(3, 0)}`;
+    if (Array.isArray(p.value)) out += p.value.reduce((a, i) => `${a}${constants.PacketSeparator}${Math.round(i, 3)}`);
+    else out += `${constants.PacketSeparator}${p.value}`;
+    out += constants.PacketMarker;
     logger.debug(`Wrote data ${out}`);
     this.serial.write(out);
   }
 
   // Write packet with raw contents
   writeRaw(data) {
-    const out = `${PacketSeparator}${data}${PacketSeparator}`;
+    const out = `${constants.PacketSeparator}${data}${constants.PacketSeparator}`;
     logger.debug(`Wrote data ${out}`);
     this.serial.write(out);
   }

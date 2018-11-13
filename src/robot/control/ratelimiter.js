@@ -1,7 +1,7 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
-const util = require('../../util');
+const util = require('../util');
 
 // Limits acceleration and jerk of a changing velocity value
 class RateLimiter {

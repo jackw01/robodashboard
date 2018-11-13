@@ -1,7 +1,7 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
-const util = require('../util');
+const util = require('./util');
 const constants = require('./constants');
 const types = require('./interface/types');
 const Packet = require('./interface/packet');
@@ -49,4 +49,4 @@ class Drive {
   }
 }
 
-module.exports = new Drive();
+module.exports = Drive;
