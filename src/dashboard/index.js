@@ -3,9 +3,11 @@
 
 const pkg = require('../../package.json');
 const logger = require('../logger');
+const WebDashServer = require('./webdashserver');
 const TelemetryServer = require('./telemetryserver');
 
 const defaults = Object.freeze({
+  webDashServerPort: 80,
   telemetryServerPort: 8080,
 });
 
@@ -14,6 +16,7 @@ class Dashboard {
   constructor(options) {
     logger.info(`RoboDashboard v${pkg.version}`);
     this.options = Object.assign({}, defaults, options);
+    this.webDashServer = new WebDashServer(this.options.webDashServerPort);
     this.telemetryServer = new TelemetryServer(this.options.telemetryServerPort);
   }
 }
