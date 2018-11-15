@@ -7,7 +7,7 @@ const logger = require('../logger');
 // Collects telemetry data for logging and displaying
 class TelemetryServer {
   constructor(port) {
-    this.data = {};
+    this.dataPoints = {};
     this.active = false;
 
     // Server
@@ -35,28 +35,32 @@ class TelemetryServer {
   }
 
   registerDataPoints(dataPoints) {
-    dataPoints.forEach((p) => { this.data[p.key] = p; });
+    dataPoints.forEach((p) => { this.dataPoints[p.key] = p; });
     const interval = Math.min(...(dataPoints.map(p => p.updateIntervalMs)));
-    this.updateInterval = setInterval(this.update, interval);
+    this.updateInterval = setInterval(this.update.bind(this), interval);
   }
 
   setValueForDataPoint(key, value) {
     // If the value is not meant to be sampled at a regular interval, send it now
-    if (this.active && !this.data[key].isSampled) this.ws.send(JSON.stringify({ key: value }), () => {});
-    this.data[key].value = value;
+    if (this.active && !this.dataPoints[key].isSampled) this.ws.send(JSON.stringify({ key: value }), () => {});
+    this.dataPoints[key].value = value;
   }
 
   update() {
-    if (this.data) {
+    if (this.dataPoints) {
       const now = new Date();
       const newData = {};
-      Object.entries(this.data).forEach(([key, dataPoint]) => {
+      Object.entries(this.dataPoints).forEach(([key, dataPoint]) => {
         if (now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
-          this.data[key].lastUpdated = now;
+          this.dataPoints[key].lastUpdated = now;
           newData[key] = dataPoint.value;
         }
       });
-      if (this.active) this.ws.send(JSON.stringify(newData), () => {});
+      if (Object.entries(newData).length > 0) {
+        const str = JSON.stringify(newData);
+        logger.debug(str);
+        if (this.active) this.ws.send(str, () => {});
+      }
     }
   }
 }

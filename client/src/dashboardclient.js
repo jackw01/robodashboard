@@ -7,16 +7,24 @@ class DashboardClient {
     this.ws = new WebSocket(`ws://${host}:8080`);
 
     this.ws.addEventListener('open', (e) => {
-      console.log(`Telemetry server socket opened: ${e}`);
+      console.log(`Telemetry server socket opened:`);
+      console.table(e);
     });
 
+    this.ws.addEventListener('message', this.handleIncomingData);
+
     this.ws.addEventListener('error', (err) => {
-      console.log(`Telemetry server socket error: ${err}`);
+      console.log(`Telemetry server socket error: ${err.message}`);
     });
 
     this.ws.addEventListener('close', (e) => {
-      console.log(`Telemetry server socket closed: ${e}`);
+      console.log(`Telemetry server socket closed:`);
+      console.table(e);
     });
+  }
+
+  handleIncomingData(data) {
+    console.table(data);
   }
 }
 
