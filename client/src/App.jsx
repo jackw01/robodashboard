@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import dashboardClient from './dashboardclient';
+import telemetryClient from './model/telemetryclient';
 import './App.css';
 
 class App extends Component {

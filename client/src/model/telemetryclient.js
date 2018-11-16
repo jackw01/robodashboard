@@ -1,8 +1,11 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
-class DashboardClient {
+class TelemetryClient {
   constructor() {
+    this.dataPoints = {};
+    this.dataPointsInitialized = false;
+
     const host = window.document.location.host.replace(/:.*/, '');
     this.ws = new WebSocket(`ws://${host}:8080`);
 
@@ -24,8 +27,15 @@ class DashboardClient {
   }
 
   handleIncomingData(data) {
-    console.table(data);
+    if (this.dataPointsInitialized) {
+      Object.entries(data).forEach(([key, value]) => {
+        this.dataPoints[key].value = value;
+      });
+    } else {
+      // Receiving packet to set up data point metadata
+      console.table(data);
+    }
   }
 }
 
-export default new DashboardClient();
+export default new TelemetryClient();

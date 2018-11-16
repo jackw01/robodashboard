@@ -8,15 +8,17 @@ const logger = require('../logger');
 class TelemetryServer {
   constructor(port) {
     this.dataPoints = {};
-    this.active = false;
 
     // Server
     logger.info('Starting telemetry server...');
     this.wss = new WebSocket.Server({ port });
     this.wss.on('connection', (ws) => {
       logger.info('Telemetry server connected to client.');
-      this.active = true;
       this.ws = ws;
+
+      // Send metadata about data points to let the client know what it will recieve
+      if (this.dataPoints) this.sendMetadata();
+      else logger.warn('Data points not registered yet, not sending to client.');
 
       // Event handlers
       ws.on('error', (err) => {
@@ -25,7 +27,6 @@ class TelemetryServer {
 
       ws.on('close', (code, reason) => {
         logger.info(`Telemetry server socket closed: ${reason}`);
-        this.active = false;
       });
     });
 
@@ -34,15 +35,22 @@ class TelemetryServer {
     });
   }
 
+  sendMetadata() {
+    this.ws.send(JSON.stringify(this.dataPoints), () => {
+      logger.info('Telemetry data points registered with client.');
+    });
+  }
+
   registerDataPoints(dataPoints) {
     dataPoints.forEach((p) => { this.dataPoints[p.key] = p; });
+    if (this.ws) this.sendMetadata(); // Send metadata if web socket exists already (it shouldn't)
     const interval = Math.min(...(dataPoints.map(p => p.updateIntervalMs)));
-    this.updateInterval = setInterval(this.update.bind(this), interval);
+    this.updateInterval = setInterval(this.update.bind(this), interval); // Set interval to send data
   }
 
   setValueForDataPoint(key, value) {
     // If the value is not meant to be sampled at a regular interval, send it now
-    if (this.active && !this.dataPoints[key].isSampled) this.ws.send(JSON.stringify({ key: value }), () => {});
+    if (this.ws && !this.dataPoints[key].isSampled) this.ws.send(JSON.stringify({ key: value }), () => {});
     this.dataPoints[key].value = value;
   }
 
@@ -56,7 +64,7 @@ class TelemetryServer {
           newData[key] = dataPoint.value;
         }
       });
-      if (Object.entries(newData).length > 0) if (this.active) this.ws.send(JSON.stringify(newData), () => {});
+      if (Object.entries(newData).length > 0) if (this.ws) this.ws.send(JSON.stringify(newData), () => {});
     }
   }
 }

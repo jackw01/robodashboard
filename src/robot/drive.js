@@ -25,12 +25,12 @@ class Drive {
 
   enable() {
     this.enabled = true;
-    robotInterface.writePacket(new Packet(types.CmdTypeEnableDriveClosedLoop, 0));
+    robotInterface.writePacket(new Packet(types.CmdTypeEnableDriveClosedLoop, 1));
   }
 
   disable() {
     this.enabled = false;
-    robotInterface.writePacket(new Packet(types.CmdTypeDisableDriveClosedLoop, 0));
+    robotInterface.writePacket(new Packet(types.CmdTypeDisableDriveClosedLoop, 1));
   }
 
   arcadeDrive(throttle, turn) {
