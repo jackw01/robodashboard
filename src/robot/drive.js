@@ -20,7 +20,7 @@ class Drive {
     this.pathFollower = new PurePursuitController(constants.DriveAccel, constants.DriveJerk, constants.TrackDiameter);
     this.autonomousMode = false;
     this.enabled = false;
-    this.enable();
+    // this.enable();
   }
 
   enable() {

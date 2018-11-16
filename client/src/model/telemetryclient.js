@@ -14,7 +14,7 @@ class TelemetryClient {
       console.table(e);
     });
 
-    this.ws.addEventListener('message', this.handleIncomingData);
+    this.ws.addEventListener('message', this.handleIncomingData.bind(this));
 
     this.ws.addEventListener('error', (err) => {
       console.log(`Telemetry server socket error: ${err.message}`);
@@ -26,14 +26,18 @@ class TelemetryClient {
     });
   }
 
-  handleIncomingData(data) {
-    if (this.dataPointsInitialized) {
-      Object.entries(data).forEach(([key, value]) => {
+  handleIncomingData(message) {
+    const obj = JSON.parse(message.data);
+    if (this.dataPointsInitialized) { // Recieving a data packet
+      Object.entries(obj).forEach(([key, value]) => {
         this.dataPoints[key].value = value;
       });
-    } else {
-      // Receiving packet to set up data point metadata
-      console.table(data);
+    } else { // Receiving first packet with metadata on data points
+      console.table(obj);
+      Object.entries(obj).forEach(([key, value]) => { // Only store the props we need
+        this.dataPoints[key] = { isSampled: value.isSampled, updateIntervalMs: value.updateIntervalMs, value: 0 };
+      });
+      this.dataPointsInitialized = true;
     }
   }
 }
