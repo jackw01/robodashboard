@@ -56,11 +56,7 @@ class TelemetryServer {
           newData[key] = dataPoint.value;
         }
       });
-      if (Object.entries(newData).length > 0) {
-        const str = JSON.stringify(newData);
-        logger.debug(str);
-        if (this.active) this.ws.send(str, () => {});
-      }
+      if (Object.entries(newData).length > 0) if (this.active) this.ws.send(JSON.stringify(newData), () => {});
     }
   }
 }

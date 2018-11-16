@@ -19,4 +19,4 @@ dashboard.telemetryServer.registerDataPoints([
   new DataPoint('avrFreeRAM', false),
 ]);
 
-robot.on('telemetry', dashboard.telemetryServer.setValueForDataPoint);
+robot.on('telemetry', dashboard.telemetryServer.setValueForDataPoint.bind(dashboard.telemetryServer));
