@@ -33,8 +33,9 @@ class TelemetryClient extends EventEmitter {
     const obj = JSON.parse(message.data);
     if (this.dataPointsInitialized) { // Recieving a data packet
       Object.entries(obj).forEach(([key, value]) => {
-        this.dataPoints[key].value = value;
+        //this.dataPoints[key].value = value;
         this.emit('data', key, value);
+        if (key === 'batteryVoltage') console.log(key);
       });
     } else { // Receiving first packet with metadata on data points
       console.table(obj);

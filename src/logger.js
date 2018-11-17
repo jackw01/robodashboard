@@ -18,7 +18,7 @@ module.exports = winston.createLogger({
     winston.format.timestamp(),
     winston.format.printf(info => `${info.timestamp} ${info.level}:${info.message}`),
   ),
-  level: 'info',
+  level: 'debug',
 });
 
 winston.addColors({
