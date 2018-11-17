@@ -5,23 +5,29 @@ import telemetryClient from './model/telemetryclient';
 class TelemetryGraph extends Component {
   constructor(props) {
     super(props);
-    this.data = [];
-    for (let x = 0; x < this.props.historyLength; x++) this.data.push({ x: x, y: 0 })
+    const data = [];
+    for (let x = 0; x < this.props.historyLength; x++) data.push({ x: x, y: 0 });
+    this.state = { data: data };
     telemetryClient.on('data', this.handleIncomingData.bind(this));
   }
 
   handleIncomingData(key, value) {
     if (key === this.props.telemetryKey) {
-      this.data.shift();
-      this.data.push({ x: this.props.historyLength - 1, y: value });
+      this.setState((state) => {
+        const data = state.data;
+        for (let x = 0; x < this.props.historyLength - 1; x++) data[x].y = data[x + 1].y;
+        data[this.props.historyLength - 1].y = value;
+        return { data: data };
+      });
     }
   }
 
   render() {
+    console.log('render');
     return (
-      <XYPlot height={200} width={200}>
+      <XYPlot height={200} width={200} animation={{damping: 9, stiffness: 300}}>
         <HorizontalGridLines />
-        <LineSeries data={this.data} />
+        <LineSeries data={this.state.data}/>
         <XAxis />
         <YAxis />
       </XYPlot>

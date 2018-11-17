@@ -18,7 +18,8 @@ class Robot extends EventEmitter {
     robotInterface.on('data', (packets) => {
       packets.forEach((p) => {
         if (p.type === types.DataTypeBatteryVoltage) { // Send
-          this.emit('telemetry', 'batteryVoltage', p.contents);
+          this.emit('telemetry', 'batteryVoltage', p.contents[0]);
+          console.log('bv');
         } else if (p.type === types.DataTypeDriveDistance) { // Save drive distance packet to buffer
           this.lastDistance = p.contents;
           this.emit('telemetry', 'driveEncoderDistance', { left: p.contents[0], right: p.contents[1] });
