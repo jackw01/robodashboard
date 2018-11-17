@@ -1,8 +1,11 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
-class TelemetryClient {
+import EventEmitter from 'events';
+
+class TelemetryClient extends EventEmitter {
   constructor() {
+    super();
     this.dataPoints = {};
     this.dataPointsInitialized = false;
 
@@ -31,6 +34,7 @@ class TelemetryClient {
     if (this.dataPointsInitialized) { // Recieving a data packet
       Object.entries(obj).forEach(([key, value]) => {
         this.dataPoints[key].value = value;
+        this.emit('data', key, value);
       });
     } else { // Receiving first packet with metadata on data points
       console.table(obj);
