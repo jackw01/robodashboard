@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries} from 'react-vis';
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries } from 'react-vis';
 import telemetryClient from './model/telemetryclient';
 
 class TelemetryGraph extends Component {
@@ -23,9 +23,8 @@ class TelemetryGraph extends Component {
   }
 
   render() {
-    console.log('render');
     return (
-      <XYPlot height={200} width={200} animation={{damping: 9, stiffness: 300}}>
+      <XYPlot height={this.props.height} width={this.props.width} animation={true}>
         <HorizontalGridLines />
         <LineSeries data={this.state.data}/>
         <XAxis />

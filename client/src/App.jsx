@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import telemetryClient from './model/telemetryclient';
-import TelemetryGraph from './TelemetryGraph';
+import TelemetryContainer from './TelemetryContainer';
 import './App.css';
 
 class App extends Component {
@@ -9,11 +8,8 @@ class App extends Component {
     return (
       <div className="App">
         <Container>
-          <Row>
-            <TelemetryGraph telemetryKey='batteryVoltage' historyLength='60' />
-            <Col>Test Column</Col>
-            <Col>Test Column</Col>
-          </Row>
+          <Row><TelemetryContainer telemetryKey='batteryVoltage' historyLength='60' /></Row>
+          <Row><TelemetryContainer telemetryKey='batteryVoltage' historyLength='60' /></Row>
         </Container>
       </div>
     );

@@ -3,11 +3,22 @@
 
 const WebSocket = require('ws');
 const logger = require('../logger');
+const DataPoint = require('./datapoint');
+const SystemMonitor = require('./systemmonitor');
 
 // Collects telemetry data for logging and displaying
 class TelemetryServer {
   constructor(port) {
     this.dataPoints = {};
+    this.systemMonitor = new SystemMonitor(1000);
+
+    // Set up data points for system monitor
+    [
+      new DataPoint('serverFreeRAM', 'Server Free RAM (MB)', false),
+      new DataPoint('serverCPUUsage', 'Server CPU Usage (%)', false),
+    ].forEach((p) => { this.dataPoints[p.key] = p; });
+
+    this.systemMonitor.on('telemetry', this.setValueForDataPoint.bind(this));
 
     // Server
     logger.info('Starting telemetry server...');
