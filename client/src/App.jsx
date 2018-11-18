@@ -10,6 +10,7 @@ class App extends Component {
         <Container>
           <Row><TelemetryContainer telemetryKey='batteryVoltage' historyLength='60' /></Row>
           <Row><TelemetryContainer telemetryKey='avrFreeRAM' historyLength='60' /></Row>
+          <Row><TelemetryContainer telemetryKey='gyroAngle' historyLength='60' /></Row>
         </Container>
       </div>
     );
