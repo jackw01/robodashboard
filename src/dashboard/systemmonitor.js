@@ -9,7 +9,7 @@ class SystemMonitor extends EventEmitter {
   constructor(updateInterval) {
     super();
     if (updateInterval) {
-      this.interval = setInterval(this.update, updateInterval);
+      this.interval = setInterval(this.update.bind(this), updateInterval);
     }
   }
 

@@ -11,11 +11,9 @@ const robot = new Robot();
 dashboard.telemetryServer.registerDataPoints([
   new DataPoint('batteryVoltage', 'Battery Voltage (V)', false),
   new DataPoint('gyroAngle', 'Gyro Relative Angle', true, 100),
-  new DataPoint('driveEncoderDistance', true, 100),
-  new DataPoint('driveErrorLeft', true, 100),
-  new DataPoint('driveErrorRight', true, 100),
-  new DataPoint('driveOutputLeft', true, 100),
-  new DataPoint('driveOutputRight', true, 100),
+  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', true, 100),
+  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', true, 100),
+  new DataPoint('driveOutput', 'Drive Output Power (%)', true, 100),
   new DataPoint('avrFreeRAM', 'AVR Free RAM (B)', false),
 ]);
 

@@ -6,10 +6,10 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         <Container>
           <Row><TelemetryContainer telemetryKey='batteryVoltage' historyLength='60' /></Row>
-          <Row><TelemetryContainer telemetryKey='batteryVoltage' historyLength='60' /></Row>
+          <Row><TelemetryContainer telemetryKey='avrFreeRAM' historyLength='60' /></Row>
         </Container>
       </div>
     );
