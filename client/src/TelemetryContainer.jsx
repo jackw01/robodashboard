@@ -11,10 +11,11 @@ class TelemetryContainer extends Component {
   render() {
     return (
       <div className='telemetry-container'>
-        <span className='telemetry-container-title'></span>
+        <span className='telemetry-container-description'>{this.props.description}</span><br/>
+        <span className='telemetry-container-title'>{this.props.dataKey}</span>
         <TelemetryGraph
           height={100} width={300}
-          telemetryKey={this.props.telemetryKey} historyLength={this.props.historyLength}
+          dataKey={this.props.dataKey} historyLength={this.props.historyLength}
         />
       </div>
     );

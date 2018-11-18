@@ -11,7 +11,7 @@ class TelemetryGraph extends Component {
   }
 
   handleIncomingData(key, value) {
-    if (key === this.props.telemetryKey) {
+    if (key === this.props.dataKey) {
       this.setState((state) => {
         const data = state.data;
         if (typeof value === 'object') {
@@ -25,13 +25,13 @@ class TelemetryGraph extends Component {
           });
         } else {
           if (!state.ready) {
-            data[this.props.telemetryKey] = [];
-            for (let x = 0; x < this.props.historyLength; x++) data[this.props.telemetryKey].push({ x: x, y: 0 });
+            data[this.props.dataKey] = [];
+            for (let x = 0; x < this.props.historyLength; x++) data[this.props.dataKey].push({ x: x, y: 0 });
           }
           for (let x = 0; x < this.props.historyLength - 1; x++) {
-            data[this.props.telemetryKey][x].y = data[this.props.telemetryKey][x + 1].y;
+            data[this.props.dataKey][x].y = data[this.props.dataKey][x + 1].y;
           }
-          data[this.props.telemetryKey][this.props.historyLength - 1].y = value;
+          data[this.props.dataKey][this.props.historyLength - 1].y = value;
         }
         return { data: data, ready: true };
       });

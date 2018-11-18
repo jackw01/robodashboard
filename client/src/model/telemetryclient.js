@@ -13,6 +13,7 @@ class TelemetryClient extends EventEmitter {
     this.ws = new WebSocket(`ws://${host}:8080`);
 
     this.ws.addEventListener('open', (e) => {
+      this.emit('connect');
       console.log(`Telemetry server socket opened:`);
       console.table(e);
     });
@@ -24,6 +25,7 @@ class TelemetryClient extends EventEmitter {
     });
 
     this.ws.addEventListener('close', (e) => {
+      this.emit('disconnect');
       console.log(`Telemetry server socket closed:`);
       console.table(e);
     });
@@ -33,15 +35,16 @@ class TelemetryClient extends EventEmitter {
     const obj = JSON.parse(message.data);
     if (this.dataPointsInitialized) { // Recieving a data packet
       Object.entries(obj).forEach(([key, value]) => {
-        //this.dataPoints[key].value = value;
         this.emit('data', key, value);
-        if (key === 'batteryVoltage') console.log(key);
       });
     } else { // Receiving first packet with metadata on data points
-      console.table(obj);
       Object.entries(obj).forEach(([key, value]) => { // Only store the props we need
-        this.dataPoints[key] = { isSampled: value.isSampled, updateIntervalMs: value.updateIntervalMs, value: 0 };
+        this.dataPoints[key] = {
+          description: value.description,
+          isSampled: value.isSampled, updateIntervalMs: value.updateIntervalMs,
+        };
       });
+      this.emit('ready');
       this.dataPointsInitialized = true;
     }
   }

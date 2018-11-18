@@ -8,14 +8,12 @@ const si = require('systeminformation');
 class SystemMonitor extends EventEmitter {
   constructor(updateInterval) {
     super();
-    if (updateInterval) {
-      this.interval = setInterval(this.update.bind(this), updateInterval);
-    }
+    if (updateInterval) this.interval = setInterval(this.update.bind(this), updateInterval);
   }
 
   update() {
     si.currentLoad((data) => {
-      this.emit('telemetry', 'serverCPUUsage', data.currentLoad);
+      this.emit('telemetry', 'serverCPUUsage', data.currentload);
     });
     si.mem((data) => {
       this.emit('telemetry', 'serverFreeRAM', data.free);
