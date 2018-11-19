@@ -3,11 +3,12 @@
 
 // Represents a telemetry data point
 class DataPoint {
-  constructor(key, description, isSampled, updateIntervalMs) {
+  constructor(key, description, updateIntervalMs, historyLengthS, options) {
     this.key = key;
     this.description = description;
-    this.isSampled = isSampled;
-    if (isSampled) this.updateIntervalMs = updateIntervalMs;
+    this.updateIntervalMs = updateIntervalMs;
+    this.historyLengthS = historyLengthS;
+    Object.assign(this, { isSampled: false }, options);
     this.value = 0;
     this.lastUpdated = 0;
   }

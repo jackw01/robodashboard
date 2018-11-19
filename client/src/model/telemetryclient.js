@@ -38,12 +38,7 @@ class TelemetryClient extends EventEmitter {
         this.emit('data', key, value);
       });
     } else { // Receiving first packet with metadata on data points
-      Object.entries(obj).forEach(([key, value]) => { // Only store the props we need
-        this.dataPoints[key] = {
-          description: value.description,
-          isSampled: value.isSampled, updateIntervalMs: value.updateIntervalMs,
-        };
-      });
+      Object.entries(obj).forEach(([key, value]) => { this.dataPoints[key] = value; });
       this.emit('ready');
       this.dataPointsInitialized = true;
     }

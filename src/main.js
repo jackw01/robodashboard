@@ -9,12 +9,24 @@ const dashboard = new Dashboard();
 const robot = new Robot();
 
 dashboard.telemetryServer.registerDataPoints([
-  new DataPoint('batteryVoltage', 'Battery Voltage (V)', false),
-  new DataPoint('gyroAngle', 'Gyro Relative Angle', true, 100),
-  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', true, 100),
-  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', true, 100),
-  new DataPoint('driveOutput', 'Drive Output Power (%)', true, 100),
-  new DataPoint('avrFreeRAM', 'AVR Free RAM (B)', false),
+  new DataPoint('batteryVoltage', 'Battery Voltage (V)', 1000, 60, {
+    range: [3, 7.2],
+  }),
+  new DataPoint('gyroAngle', 'Gyro Relative Angle', 100, 1, {
+    isSampled: true,
+  }),
+  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', 100, 1, {
+    isSampled: true,
+  }),
+  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', 100, 1, {
+    isSampled: true,
+  }),
+  new DataPoint('driveOutput', 'Drive Output Power (%)', 100, 1, {
+    range: [0, 1],
+    isSampled: true,
+  }),
+  new DataPoint('avrFreeRAM', 'AVR Free RAM (B)', 1000, 60, {
+  }),
 ]);
 
 robot.on('telemetry', dashboard.telemetryServer.setValueForDataPoint.bind(dashboard.telemetryServer));

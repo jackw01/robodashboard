@@ -14,8 +14,10 @@ class TelemetryServer {
 
     // Set up data points for system monitor
     [
-      new DataPoint('serverFreeRAM', 'Server Free RAM (MB)', false),
-      new DataPoint('serverCPUUsage', 'Server CPU Usage (%)', false),
+      new DataPoint('serverFreeRAM', 'Server Free RAM (MB)', 1000, 60, {}),
+      new DataPoint('serverCPUUsage', 'Server CPU Usage (%)', 1000, 60, {
+        range: [0, 100],
+      }),
     ].forEach((p) => { this.dataPoints[p.key] = p; });
 
     this.systemMonitor.on('telemetry', this.setValueForDataPoint.bind(this));
@@ -74,7 +76,7 @@ class TelemetryServer {
       const now = new Date();
       const newData = {};
       Object.entries(this.dataPoints).forEach(([key, dataPoint]) => {
-        if (now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
+        if (this.dataPoints[key].isSampled && now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
           this.dataPoints[key].lastUpdated = now;
           newData[key] = dataPoint.value;
         }

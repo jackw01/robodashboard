@@ -16,14 +16,18 @@ class App extends Component {
     })
   }
   render() {
-    const rows = this.state.keys.map((key) => (
-      <Row>
-        <TelemetryContainer
-          dataKey={key}
-          description={this.state.dataPoints[key].description}
-          historyLength='60' />
-      </Row>
-    ));
+    const rows = this.state.keys.map((key) => {
+      const dp = this.state.dataPoints[key];
+      return (
+        <Row>
+          <TelemetryContainer
+            dataKey={key}
+            description={dp.description}
+            range={dp.range}
+            historyLength={dp.historyLengthS * 1000 / dp.updateIntervalMs} />
+        </Row>
+      )
+    });
 
     return (
       <div className='App'>

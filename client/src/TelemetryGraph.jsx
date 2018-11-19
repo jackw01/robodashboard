@@ -44,7 +44,7 @@ class TelemetryGraph extends Component {
       series.push(<LineSeries data={this.state.data[key]}/>);
     });
     return (
-      <XYPlot height={this.props.height} width={this.props.width} animation={true}>
+      <XYPlot height={this.props.height} width={this.props.width} animation={true} yDomain={this.props.range}>
         <HorizontalGridLines />
         {series}
         <XAxis />

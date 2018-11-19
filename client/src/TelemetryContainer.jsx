@@ -16,6 +16,7 @@ class TelemetryContainer extends Component {
         <TelemetryGraph
           height={100} width={300}
           dataKey={this.props.dataKey} historyLength={this.props.historyLength}
+          range={this.props.range}
         />
       </div>
     );
