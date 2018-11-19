@@ -16,7 +16,7 @@ class SystemMonitor extends EventEmitter {
       this.emit('telemetry', 'serverCPUUsage', data.currentload);
     });
     si.mem((data) => {
-      this.emit('telemetry', 'serverFreeRAM', data.free);
+      this.emit('telemetry', 'serverFreeRAM', data.free / 1048576.0);
     });
   }
 }
