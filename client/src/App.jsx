@@ -27,7 +27,8 @@ class App extends Component {
             dataKey={key}
             description={dp.description}
             range={dp.range}
-            historyLength={dp.historyLengthS * 1000 / dp.updateIntervalMs}
+            historyLength={dp.historyLengthS}
+            historyLengthMultiplier={1000 / dp.updateIntervalMs}
             subKeys={dp.subKeys}/>
         </Row>
       )

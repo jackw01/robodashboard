@@ -10,17 +10,19 @@ class TelemetryGraph extends Component {
   constructor(props) {
     super(props);
     const data = {};
-    this.state = { data: data, ready: false };
+    this.state = { data: data, ready: false, lastHistoryLength: 0 };
     telemetryClient.on('data', this.handleIncomingData.bind(this));
   }
 
   handleIncomingData(key, value) {
     if (key === this.props.dataKey) {
       this.setState((state) => {
+        let ready = state.ready;
+        if (state.lastHistoryLength != this.props.historyLength) ready = false;
         const data = state.data;
         if (typeof value === 'object') {
           Object.entries(value).forEach(([key, value]) => {
-            if (!state.ready) {
+            if (!ready) {
               data[key] = [];
               for (let x = 0; x < this.props.historyLength; x++) data[key].push({ x: x, y: 0 });
             }
@@ -28,7 +30,7 @@ class TelemetryGraph extends Component {
             data[key][this.props.historyLength - 1].y = value;
           });
         } else {
-          if (!state.ready) {
+          if (!ready) {
             data[this.props.dataKey] = [];
             for (let x = 0; x < this.props.historyLength; x++) data[this.props.dataKey].push({ x: x, y: 0 });
           }
@@ -37,20 +39,18 @@ class TelemetryGraph extends Component {
           }
           data[this.props.dataKey][this.props.historyLength - 1].y = value;
         }
-        return { data: data, ready: true };
+        return { data: data, ready: true, lastHistoryLength: this.props.historyLength };
       });
     }
   }
 
   render() {
-    const series = [];
-    Object.keys(this.state.data).map((k, i) => {
-      series.push(<LineSeries data={this.state.data[k]} color={colors.array[i]}/>);
-    });
     return (
       <XYPlot height={this.props.height} width={this.props.width} animation={true} yDomain={this.props.range}>
         <HorizontalGridLines />
-        {series}
+        {Object.keys(this.state.data).map((k, i) => (
+          <LineSeries data={this.state.data[k]} color={colors.array[i]}/>
+        ))}
         <XAxis />
         <YAxis />
       </XYPlot>
