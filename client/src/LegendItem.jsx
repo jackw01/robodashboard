@@ -2,8 +2,14 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class LegendItem extends Component {
+  static propTypes = {
+    color: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }
+
   render() {
     return (
       <span>

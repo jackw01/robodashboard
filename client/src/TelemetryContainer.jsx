@@ -3,11 +3,21 @@
 
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, ButtonGroup, Input } from 'reactstrap';
+import PropTypes from 'prop-types';
 import TelemetryGraph from './TelemetryGraph';
 import LegendItem from './LegendItem';
 import colors from './model/colors';
 
 class TelemetryContainer extends Component {
+  static propTypes = {
+    dataKey: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    range: PropTypes.array,
+    historyLength: PropTypes.number.isRequired,
+    historyLengthMultiplier: PropTypes.number.isRequired,
+    subKeys: PropTypes.array,
+  }
+
   constructor(props) {
     super(props);
     this.state = { graph: false, historyLength: this.props.historyLength };

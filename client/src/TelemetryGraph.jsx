@@ -3,10 +3,19 @@
 
 import React, { Component } from 'react';
 import { XYPlot, XAxis, YAxis, Hint, HorizontalGridLines, LineSeries } from 'react-vis';
+import PropTypes from 'prop-types';
 import telemetryClient from './model/telemetryclient';
 import colors from './model/colors';
 
 class TelemetryGraph extends Component {
+  static propTypes = {
+    dataKey: PropTypes.string.isRequired,
+    height: PropTypes.number,
+    width: PropTypes.number,
+    range: PropTypes.array,
+    historyLength: PropTypes.number.isRequired,
+  }
+
   constructor(props) {
     super(props);
     const data = {};
@@ -18,7 +27,7 @@ class TelemetryGraph extends Component {
     if (key === this.props.dataKey) {
       this.setState((state) => {
         let ready = state.ready;
-        if (state.lastHistoryLength != this.props.historyLength) ready = false;
+        if (state.lastHistoryLength !== this.props.historyLength) ready = false;
         const data = state.data;
         if (typeof value === 'object') {
           Object.entries(value).forEach(([key, value]) => {
