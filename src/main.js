@@ -14,16 +14,20 @@ dashboard.telemetryServer.registerDataPoints([
   }),
   new DataPoint('gyroAngle', 'Gyro Relative Angle', 100, 1, {
     isSampled: true,
+    subKeys: ['roll', 'pitch', 'heading'],
   }),
   new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', 100, 1, {
     isSampled: true,
+    subKeys: ['left', 'right'],
   }),
   new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', 100, 1, {
     isSampled: true,
+    subKeys: ['left', 'right'],
   }),
   new DataPoint('driveOutput', 'Drive Output Power (%)', 100, 1, {
     range: [0, 1],
     isSampled: true,
+    subKeys: ['left', 'right'],
   }),
   new DataPoint('avrFreeRAM', 'AVR Free RAM (B)', 1000, 60, {
   }),

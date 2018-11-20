@@ -8,7 +8,7 @@ class DataPoint {
     this.description = description;
     this.updateIntervalMs = updateIntervalMs;
     this.historyLengthS = historyLengthS;
-    Object.assign(this, { isSampled: false }, options);
+    Object.assign(this, { isSampled: false, subKeys: [] }, options);
     this.value = 0;
     this.lastUpdated = 0;
   }

@@ -16,8 +16,14 @@ class TelemetryContainer extends Component {
     return (
       <div className='telemetry-container'>
         <span className='telemetry-container-description'>{this.props.description}</span>
-        <LegendItem color={'#fd9d15'} title={'x'}/>
-        <LegendItem color={'#fd9d15'} title={'y'}/><br/>
+        {this.props.subKeys.length &&
+          <span className='telemetry-container-legend'>
+            {this.props.subKeys.map((subKey) => (
+              <LegendItem color={'#fd9d15'} title={subKey}/>
+            ))}
+          </span>
+        }
+        <br/>
         <TelemetryGraph
           height={100} width={300}
           dataKey={this.props.dataKey} historyLength={this.props.historyLength}

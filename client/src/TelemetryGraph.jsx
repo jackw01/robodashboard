@@ -21,7 +21,7 @@ class TelemetryGraph extends Component {
           Object.entries(value).forEach(([key, value]) => {
             if (!state.ready) {
               data[key] = [];
-              for (let x = 0; x < this.props.historyLength; x++) data[key].push({ x: x, y: value });
+              for (let x = 0; x < this.props.historyLength; x++) data[key].push({ x: x, y: 0 });
             }
             for (let x = 0; x < this.props.historyLength - 1; x++) data[key][x].y = data[key][x + 1].y;
             data[key][this.props.historyLength - 1].y = value;
@@ -29,7 +29,7 @@ class TelemetryGraph extends Component {
         } else {
           if (!state.ready) {
             data[this.props.dataKey] = [];
-            for (let x = 0; x < this.props.historyLength; x++) data[this.props.dataKey].push({ x: x, y: value });
+            for (let x = 0; x < this.props.historyLength; x++) data[this.props.dataKey].push({ x: x, y: 0 });
           }
           for (let x = 0; x < this.props.historyLength - 1; x++) {
             data[this.props.dataKey][x].y = data[this.props.dataKey][x + 1].y;
