@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import TelemetryGraph from './TelemetryGraph';
 import LegendItem from './LegendItem';
+import colors from './model/colors';
 
 class TelemetryContainer extends Component {
   constructor(props) {
@@ -16,10 +17,11 @@ class TelemetryContainer extends Component {
     return (
       <div className='telemetry-container'>
         <span className='telemetry-container-description'>{this.props.description}</span>
-        {this.props.subKeys.length &&
+        {this.props.subKeys.length > 0 &&
           <span className='telemetry-container-legend'>
-            {this.props.subKeys.map((subKey) => (
-              <LegendItem color={'#fd9d15'} title={subKey}/>
+            &nbsp;
+            {this.props.subKeys.map((subKey, i) => (
+              <LegendItem color={colors.array[i]} title={subKey}/>
             ))}
           </span>
         }

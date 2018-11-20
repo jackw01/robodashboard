@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { XYPlot, XAxis, YAxis, Hint, HorizontalGridLines, LineSeries } from 'react-vis';
 import telemetryClient from './model/telemetryclient';
+import colors from './model/colors';
 
 class TelemetryGraph extends Component {
   constructor(props) {
@@ -43,8 +44,8 @@ class TelemetryGraph extends Component {
 
   render() {
     const series = [];
-    Object.entries(this.state.data).forEach(([key, value]) => {
-      series.push(<LineSeries data={this.state.data[key]}/>);
+    Object.keys(this.state.data).map((k, i) => {
+      series.push(<LineSeries data={this.state.data[k]} color={colors.array[i]}/>);
     });
     return (
       <XYPlot height={this.props.height} width={this.props.width} animation={true} yDomain={this.props.range}>
