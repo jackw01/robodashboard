@@ -32,8 +32,12 @@ code {
   display: inline;
 }
 
-.telemetry-container button {
+.telemetry-data-list button, .telemetry-container button {
   padding: 0 3px;
   height: 20px;
   font-size: 12px;
+}
+
+.telemetry-data-list-title {
+  font-size: 2rem;
 }

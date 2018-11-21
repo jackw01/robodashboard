@@ -16,15 +16,16 @@ class TelemetryContainer extends Component {
     historyLength: PropTypes.number.isRequired,
     historyLengthMultiplier: PropTypes.number.isRequired,
     subKeys: PropTypes.array,
+    visible: PropTypes.bool,
   }
 
   constructor(props) {
     super(props);
-    this.state = { graph: false, historyLength: this.props.historyLength };
+    this.state = { visible: this.props.visible, historyLength: this.props.historyLength };
   }
 
-  toggleGraph(select) {
-    this.setState({ graph: !this.state.graph });
+  toggleVisible(select) {
+    this.setState({ visible: !this.state.visible });
   }
 
   setHistoryLength(event) {
@@ -34,17 +35,17 @@ class TelemetryContainer extends Component {
   render() {
     return (
       <div className='telemetry-container'>
-        <span className='telemetry-container-description'>{this.props.description}</span>
+        <span className='telemetry-container-description'>{this.props.description}</span>&nbsp;
         <ButtonGroup>
-          <Button color="primary" onClick={this.toggleGraph.bind(this)}
-            active={this.state.graph}>Graph</Button>
+          <Button color="primary" onClick={this.toggleVisible.bind(this)}
+            active={this.state.visible}>Graph</Button>
         </ButtonGroup>
         <br/>
-        {this.state.graph &&
+        {this.state.visible &&
           <Input className='telemetry-container-input' type="number" step="1"
             placeholder="Duration" defaultValue={this.props.historyLength} onChange={this.setHistoryLength.bind(this)}/>
         }
-        {(this.state.graph && this.props.subKeys.length) > 0 &&
+        {(this.state.visible && this.props.subKeys.length) > 0 &&
           <span className='telemetry-container-legend'>
             &nbsp;
             {this.props.subKeys.map((subKey, i) => (
@@ -52,7 +53,7 @@ class TelemetryContainer extends Component {
             ))}
           </span>
         }
-        {this.state.graph &&
+        {this.state.visible &&
           <TelemetryGraph
             height={100} width={300}
             dataKey={this.props.dataKey} historyLength={this.state.historyLength * this.props.historyLengthMultiplier}
