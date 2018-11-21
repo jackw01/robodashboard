@@ -3,13 +3,38 @@
 
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import TelemetryContainer from './TelemetryContainer';
 import telemetryClient from './model/telemetryclient';
+
+const SortableTelemetryItem = SortableElement(TelemetryContainer);
+
+const SortableList = SortableContainer(({ items, dataPoints, visible }) => {
+  return (
+    <div>
+      {items.map((k, i) => {
+        const dp = dataPoints[k];
+        return (
+          <SortableTelemetryItem
+            key={k}
+            index={i}
+            dataKey={k}
+            description={dp.description}
+            range={dp.range}
+            historyLength={dp.historyLengthS}
+            historyLengthMultiplier={1000 / dp.updateIntervalMs}
+            subKeys={dp.subKeys}
+            visible={visible}/>
+        );
+      })}
+    </div>
+  );
+});
 
 class TelemetryDataList extends Component {
   constructor(props) {
     super(props);
-    this.state = { graph: false, items: [] };
+    this.state = { visible: false, items: [] };
     telemetryClient.on('ready', () => {
       this.setState({
         items: Object.keys(telemetryClient.dataPoints),
@@ -19,8 +44,12 @@ class TelemetryDataList extends Component {
   }
 
   toggleGraphs() {
-    this.setState({ items: this.state.items, graph: !this.state.graph });
+    this.setState({ items: this.state.items, visible: !this.state.visible });
   }
+
+  onSortEnd = ({oldIndex, newIndex}) => {
+    this.setState({ items: arrayMove(this.state.items, oldIndex, newIndex) });
+  };
 
   render() {
     return (
@@ -30,29 +59,13 @@ class TelemetryDataList extends Component {
             <span className='telemetry-data-list-title'>Telemetry</span>
             <br/>
             <Button color="primary" onClick={this.toggleGraphs.bind(this)}
-              active={this.state.graph}>Graph All</Button>
+              active={this.state.visible}>Graph All</Button>
           </Col>
         </Row>
         <hr/>
-        {this.state.items.map((k, i) => {
-          const dp = this.state.dataPoints[k];
-          const graph = this.state.graph;
-          return (
-            <Row>
-              <Col>
-                <TelemetryContainer
-                  dataKey={k}
-                  description={dp.description}
-                  range={dp.range}
-                  historyLength={dp.historyLengthS}
-                  historyLengthMultiplier={1000 / dp.updateIntervalMs}
-                  subKeys={dp.subKeys}
-                  visible={graph}
-                  key={graph}/>
-              </Col>
-            </Row>
-          )
-        })}
+        <SortableList items={this.state.items} dataPoints={this.state.dataPoints}
+          visible={this.state.visible} key={this.state.visible} onSortEnd={this.onSortEnd}
+          pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
       </Container>
     );
   }
