@@ -8,6 +8,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 code {
@@ -25,4 +30,10 @@ code {
   padding: 3px;
   height: 18px;
   display: inline;
+}
+
+.telemetry-container button {
+  padding: 0 3px;
+  height: 20px;
+  font-size: 12px;
 }
