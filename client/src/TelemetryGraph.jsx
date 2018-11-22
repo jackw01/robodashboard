@@ -37,20 +37,18 @@ class TelemetryGraph extends Component {
         Object.entries(value).forEach(([key, value]) => {
           if (!ready) {
             data[key] = [];
-            for (let x = 0; x < this.props.historyLength; x++) data[key].push([x, 0]);
+            for (let x = -this.props.historyLength; x < 0; x++) data[key].push([x, 0]);
           }
-          for (let x = 0; x < this.props.historyLength - 1; x++) data[key][x][1] = data[key][x + 1][1];
-          data[key][this.props.historyLength - 1][1] = value;
+          data[key].shift();
+          data[key].push([data[key][data[key].length - 1][0] + 1, value]);
         });
       } else {
         if (!ready) {
           data[this.props.dataKey] = [];
-          for (let x = 0; x < this.props.historyLength; x++) data[this.props.dataKey].push([x, 0]);
+          for (let x = -this.props.historyLength; x < 0; x++) data[this.props.dataKey].push([x, 0]);
         }
-        for (let x = 0; x < this.props.historyLength - 1; x++) {
-          data[this.props.dataKey][x][1] = data[this.props.dataKey][x + 1][1];
-        }
-        data[this.props.dataKey][this.props.historyLength - 1][1] = value;
+        data[this.props.dataKey].shift();
+        data[this.props.dataKey].push([data[this.props.dataKey][data[this.props.dataKey].length - 1][0] + 1, value]);
       }
       return { data: data, ready: true, lastHistoryLength: this.props.historyLength };
     });
@@ -58,7 +56,7 @@ class TelemetryGraph extends Component {
 
   render() {
     return (
-      <XYPlot height={this.props.height} width={this.props.width} animation={true} yDomain={this.props.range}
+      <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
         getX={(d) => d[0]} getY={(d) => d[1]}>
         <HorizontalGridLines />
         {Object.keys(this.state.data).map((k, i) => (
