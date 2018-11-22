@@ -20,45 +20,49 @@ class TelemetryGraph extends Component {
     super(props);
     const data = {};
     this.state = { data: data, ready: false, lastHistoryLength: 0 };
-    telemetryClient.on('data', this.handleIncomingData.bind(this));
+    this.eventHandler = this.handleIncomingData.bind(this);
+    telemetryClient.on(`data-${this.props.dataKey}`, this.eventHandler);
   }
 
-  handleIncomingData(key, value) {
-    if (key === this.props.dataKey) {
-      this.setState((state) => {
-        let ready = state.ready;
-        if (state.lastHistoryLength !== this.props.historyLength) ready = false;
-        const data = state.data;
-        if (typeof value === 'object') {
-          Object.entries(value).forEach(([key, value]) => {
-            if (!ready) {
-              data[key] = [];
-              for (let x = 0; x < this.props.historyLength; x++) data[key].push({ x: x, y: 0 });
-            }
-            for (let x = 0; x < this.props.historyLength - 1; x++) data[key][x].y = data[key][x + 1].y;
-            data[key][this.props.historyLength - 1].y = value;
-          });
-        } else {
+  componentWillUnmount() {
+    telemetryClient.removeListener(`data-${this.props.dataKey}`, this.eventHandler);
+  }
+
+  handleIncomingData(value) {
+    this.setState((state) => {
+      let ready = state.ready;
+      if (state.lastHistoryLength !== this.props.historyLength) ready = false;
+      const data = state.data;
+      if (typeof value === 'object') {
+        Object.entries(value).forEach(([key, value]) => {
           if (!ready) {
-            data[this.props.dataKey] = [];
-            for (let x = 0; x < this.props.historyLength; x++) data[this.props.dataKey].push({ x: x, y: 0 });
+            data[key] = [];
+            for (let x = 0; x < this.props.historyLength; x++) data[key].push([x, 0]);
           }
-          for (let x = 0; x < this.props.historyLength - 1; x++) {
-            data[this.props.dataKey][x].y = data[this.props.dataKey][x + 1].y;
-          }
-          data[this.props.dataKey][this.props.historyLength - 1].y = value;
+          for (let x = 0; x < this.props.historyLength - 1; x++) data[key][x][1] = data[key][x + 1][1];
+          data[key][this.props.historyLength - 1][1] = value;
+        });
+      } else {
+        if (!ready) {
+          data[this.props.dataKey] = [];
+          for (let x = 0; x < this.props.historyLength; x++) data[this.props.dataKey].push([x, 0]);
         }
-        return { data: data, ready: true, lastHistoryLength: this.props.historyLength };
-      });
-    }
+        for (let x = 0; x < this.props.historyLength - 1; x++) {
+          data[this.props.dataKey][x][1] = data[this.props.dataKey][x + 1][1];
+        }
+        data[this.props.dataKey][this.props.historyLength - 1][1] = value;
+      }
+      return { data: data, ready: true, lastHistoryLength: this.props.historyLength };
+    });
   }
 
   render() {
     return (
-      <XYPlot height={this.props.height} width={this.props.width} animation={true} yDomain={this.props.range}>
+      <XYPlot height={this.props.height} width={this.props.width} animation={true} yDomain={this.props.range}
+        getX={(d) => d[0]} getY={(d) => d[1]}>
         <HorizontalGridLines />
         {Object.keys(this.state.data).map((k, i) => (
-          <LineSeries data={this.state.data[k]} color={colors.array[i]}/>
+          <LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>
         ))}
         <XAxis />
         <YAxis />

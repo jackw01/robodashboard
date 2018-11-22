@@ -42,14 +42,18 @@ class TelemetryContainer extends Component {
         </ButtonGroup>
         <br/>
         {this.state.visible &&
-          <Input className='telemetry-container-input' type="number" step="1"
-            placeholder="Duration" defaultValue={this.props.historyLength} onChange={this.setHistoryLength.bind(this)}/>
+          <span>
+            Duration:&nbsp;
+            <Input className='telemetry-container-input' type="number" step="1"
+              placeholder="Duration" defaultValue={this.props.historyLength}
+              onChange={this.setHistoryLength.bind(this)}/>
+          </span>
         }
         {(this.state.visible && this.props.subKeys.length) > 0 &&
           <span className='telemetry-container-legend'>
             &nbsp;
             {this.props.subKeys.map((subKey, i) => (
-              <LegendItem color={colors.array[i]} title={subKey}/>
+              <LegendItem key={subKey} color={colors.array[i]} title={subKey}/>
             ))}
           </span>
         }

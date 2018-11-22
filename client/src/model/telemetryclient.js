@@ -35,7 +35,7 @@ class TelemetryClient extends EventEmitter {
     const obj = JSON.parse(message.data);
     if (this.dataPointsInitialized) { // Recieving a data packet
       Object.entries(obj).forEach(([key, value]) => {
-        this.emit('data', key, value);
+        this.emit(`data-${key}`, value);
       });
     } else { // Receiving first packet with metadata on data points
       Object.entries(obj).forEach(([key, value]) => { this.dataPoints[key] = value; });
