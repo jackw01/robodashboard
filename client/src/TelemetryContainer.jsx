@@ -46,7 +46,7 @@ class TelemetryContainer extends Component {
             Duration:&nbsp;
             <Input className='telemetry-container-input' type="number" step="1"
               placeholder="Duration" defaultValue={this.props.historyLength}
-              onChange={this.setHistoryLength.bind(this)}/>
+              onChange={this.setHistoryLength.bind(this)}/>s
           </span>
         }
         {(this.state.visible && this.props.subKeys.length) > 0 &&

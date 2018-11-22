@@ -34,21 +34,25 @@ const SortableList = SortableContainer(({ items, dataPoints, visible }) => {
 class TelemetryDataList extends Component {
   constructor(props) {
     super(props);
-    this.state = { visible: false, items: [] };
+    this.state = { visible: JSON.parse(localStorage.getItem('telemetryDataListShowAll')) || false, items: [] };
     telemetryClient.on('ready', () => {
       this.setState({
-        items: Object.keys(telemetryClient.dataPoints),
+        items: JSON.parse(localStorage.getItem('telemetryDataListOrder')) || Object.keys(telemetryClient.dataPoints),
         dataPoints: telemetryClient.dataPoints,
       });
     })
   }
 
   toggleGraphs() {
-    this.setState({ items: this.state.items, visible: !this.state.visible });
-  }
+    this.setState({ items: this.state.items, visible: !this.state.visible }, () => {
+      localStorage.setItem('telemetryDataListShowAll', JSON.stringify(this.state.visible));
+    });
+  };
 
   onSortEnd = ({oldIndex, newIndex}) => {
-    this.setState({ items: arrayMove(this.state.items, oldIndex, newIndex) });
+    this.setState({ items: arrayMove(this.state.items, oldIndex, newIndex) }, () => {
+      localStorage.setItem('telemetryDataListOrder', JSON.stringify(this.state.items));
+    });
   };
 
   render() {

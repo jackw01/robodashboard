@@ -12,19 +12,19 @@ dashboard.telemetryServer.registerDataPoints([
   new DataPoint('batteryVoltage', 'Battery Voltage (V)', 1000, 60, {
     range: [3, 7.2],
   }),
-  new DataPoint('gyroAngle', 'Gyro Relative Angle', 100, 1, {
+  new DataPoint('gyroAngle', 'Gyro Relative Angle', 100, 5, {
     isSampled: true,
     subKeys: ['roll', 'pitch', 'heading'],
   }),
-  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', 100, 1, {
+  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', 100, 5, {
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', 100, 1, {
+  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', 100, 5, {
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('driveOutput', 'Drive Output Power (%)', 100, 1, {
+  new DataPoint('driveOutput', 'Drive Output Power (%)', 100, 5, {
     range: [0, 1],
     isSampled: true,
     subKeys: ['left', 'right'],
