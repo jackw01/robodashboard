@@ -17,6 +17,7 @@ class TelemetryContainer extends Component {
     historyLengthMultiplier: PropTypes.number.isRequired,
     subKeys: PropTypes.array,
     visible: PropTypes.bool,
+    onVisibilityChange: PropTypes.func,
   }
 
   constructor(props) {
@@ -24,8 +25,10 @@ class TelemetryContainer extends Component {
     this.state = { visible: this.props.visible, historyLength: this.props.historyLength };
   }
 
-  toggleVisible(select) {
-    this.setState({ visible: !this.state.visible });
+  toggleVisible() {
+    this.setState({ visible: !this.state.visible }, () => {
+      this.props.onVisibilityChange(this.props.dataKey, this.state.visible);
+    });
   }
 
   setHistoryLength(event) {
@@ -42,27 +45,27 @@ class TelemetryContainer extends Component {
         </ButtonGroup>
         <br/>
         {this.state.visible &&
-          <span>
-            Duration:&nbsp;
-            <Input className='telemetry-container-input' type="number" step="1"
-              placeholder="Duration" defaultValue={this.props.historyLength}
-              onChange={this.setHistoryLength.bind(this)}/>s
-          </span>
-        }
-        {(this.state.visible && this.props.subKeys.length) > 0 &&
-          <span className='telemetry-container-legend'>
-            &nbsp;
-            {this.props.subKeys.map((subKey, i) => (
-              <LegendItem key={subKey} color={colors.array[i]} title={subKey}/>
-            ))}
-          </span>
-        }
-        {this.state.visible &&
-          <TelemetryGraph
-            height={100} width={300}
-            dataKey={this.props.dataKey} historyLength={this.state.historyLength * this.props.historyLengthMultiplier}
-            range={this.props.range}
-          />
+          <div>
+            <span>
+              Duration:&nbsp;
+              <Input className='telemetry-container-input' type="number" step="1"
+                placeholder="Duration" defaultValue={this.props.historyLength}
+                onChange={this.setHistoryLength.bind(this)}/>s
+            </span>
+            {this.props.subKeys.length > 0 &&
+              <span className='telemetry-container-legend'>
+                &nbsp;
+                {this.props.subKeys.map((subKey, i) => (
+                  <LegendItem key={subKey} color={colors.array[i]} title={subKey}/>
+                ))}
+              </span>
+            }
+            <TelemetryGraph
+              height={100} width={300}
+              dataKey={this.props.dataKey} historyLength={this.state.historyLength * this.props.historyLengthMultiplier}
+              range={this.props.range}
+            />
+          </div>
         }
       </div>
     );

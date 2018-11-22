@@ -9,7 +9,7 @@ import telemetryClient from './model/telemetryclient';
 
 const SortableTelemetryItem = SortableElement(TelemetryContainer);
 
-const SortableList = SortableContainer(({ items, dataPoints, visible }) => {
+const SortableList = SortableContainer(({ items, dataPoints, visibility, onVisibilityChange }) => {
   return (
     <div>
       {items.map((k, i) => {
@@ -24,7 +24,8 @@ const SortableList = SortableContainer(({ items, dataPoints, visible }) => {
             historyLength={dp.historyLengthS}
             historyLengthMultiplier={1000 / dp.updateIntervalMs}
             subKeys={dp.subKeys}
-            visible={visible}/>
+            visible={visibility[k]}
+            onVisibilityChange={onVisibilityChange}/>
         );
       })}
     </div>
@@ -34,29 +35,41 @@ const SortableList = SortableContainer(({ items, dataPoints, visible }) => {
 class TelemetryDataList extends Component {
   constructor(props) {
     super(props);
-    this.state = { visible: JSON.parse(localStorage.getItem('telemetryDataListShowAll')) || false, items: [], visibility: JSON.parse(localStorage.getItem('telemetryDataListVisibility')) || {}, visibilityToggle: JSON.parse(localStorage.getItem('telemetryDataListVisibilityToggle')) || false };
+    this.state = {
+      items: [],
+      visibilityToggle: JSON.parse(localStorage.getItem('telemetryDataListVisibilityToggle')) || false
+    };
+
     telemetryClient.on('ready', () => {
+      const visibility = {};
+      Object.keys(telemetryClient.dataPoints).forEach((k) => { visibility[k] = false; });
       this.setState({
         items: JSON.parse(localStorage.getItem('telemetryDataListOrder')) || Object.keys(telemetryClient.dataPoints),
+        visibility: JSON.parse(localStorage.getItem('telemetryDataListVisibility')) || visibility,
         dataPoints: telemetryClient.dataPoints,
       });
     })
   }
-
-  toggleGraphs() {
-    this.setState({ items: this.state.items, visible: !this.state.visible }, () => {
-      localStorage.setItem('telemetryDataListShowAll', JSON.stringify(this.state.visible));
-    });
-  };
 
   toggleAllGraphs() {
     this.setState((state) => {
       const newToggleState = !state.visibilityToggle;
       const newVisibility = state.visibility;
       Object.keys(newVisibility).forEach((k) => { newVisibility[k] = newToggleState; });
+      localStorage.setItem('telemetryDataListVisibilityToggle', JSON.stringify(newToggleState));
+      localStorage.setItem('telemetryDataListVisibility', JSON.stringify(newVisibility));
       return { visibility: newVisibility, visibilityToggle: newToggleState };
     });
   };
+
+  onGraphVisibilityChange(key, newState) {
+    this.setState((state) => {
+      const newVisibility = state.visibility;
+      newVisibility[key] = newState;
+      localStorage.setItem('telemetryDataListVisibility', JSON.stringify(newVisibility));
+      return { visibility: newVisibility };
+    })
+  }
 
   onSortEnd = ({oldIndex, newIndex}) => {
     this.setState({ items: arrayMove(this.state.items, oldIndex, newIndex) }, () => {
@@ -65,23 +78,6 @@ class TelemetryDataList extends Component {
   };
 
   render() {
-    /*
-    return (
-      <Container className='telemetry-data-list'>
-        <Row>
-          <Col>
-            <span className='telemetry-data-list-title'>Telemetry</span>
-            <br/>
-            <Button color="primary" onClick={this.toggleGraphs.bind(this)}
-              active={this.state.visible}>Graph All</Button>
-          </Col>
-        </Row>
-        <hr/>
-        <SortableList items={this.state.items} dataPoints={this.state.dataPoints}
-          visible={this.state.visible} key={this.state.visible} onSortEnd={this.onSortEnd}
-          pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
-      </Container>
-    );*/
     return (
       <Container className='telemetry-data-list'>
         <Row>
@@ -94,7 +90,8 @@ class TelemetryDataList extends Component {
         </Row>
         <hr/>
         <SortableList items={this.state.items} dataPoints={this.state.dataPoints}
-          visible={this.state.visible} key={this.state.visible} onSortEnd={this.onSortEnd}
+          visibility={this.state.visibility} onVisibilityChange={this.onGraphVisibilityChange.bind(this)}
+          key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
           pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
       </Container>
     );
