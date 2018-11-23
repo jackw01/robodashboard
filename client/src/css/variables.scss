@@ -1,0 +1,41 @@
+// robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
+// Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
+
+// Custom
+$large-breakpoint: 1024px;
+$medium-breakpoint: 640px;
+
+$background-1: #1f2124;
+$foreground-lighter: #e2e8f5;
+$foreground-1: #c4c9d6;
+
+$border-color: #525762;
+
+$color-accent: #06a2ab;
+$color-accent-lighter: lighten($color-accent, 7%);
+$color-accent-darker: darken($color-accent, 7%);
+
+$color-accent-alt: #e2326f;
+$color-accent-alt-lighter: lighten($color-accent-alt, 7%);
+$color-accent-alt-darker: darken($color-accent-alt, 7%);
+
+$shade-1: lighten($background-1, 2%);
+$shade-2: lighten($background-1, 7%);
+$shade-3: lighten($background-1, 20%);
+
+$color-success: #00ab9a;
+$color-warning: #d08447;
+$color-danger: #f06c6f;
+
+// Bootstrap
+$body-bg: $background-1;
+$body-color: $foreground-1;
+
+$theme-colors: (
+  "primary": $color-accent,
+  "secondary": $shade-3,
+  "success": $color-success,
+  "danger": $color-danger,
+  "warning": $color-warning,
+  "info": $color-accent
+);

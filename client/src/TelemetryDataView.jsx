@@ -85,7 +85,7 @@ class TelemetryDataView extends Component {
           <Col>
             <span className='data-view-title'>Telemetry</span>
             <br/>
-            <Button color="primary" onClick={this.toggleAllGraphs.bind(this)}
+            <Button color="secondary" onClick={this.toggleAllGraphs.bind(this)}
               active={this.state.visibilityToggle}>Toggle All</Button>
           </Col>
         </Row>

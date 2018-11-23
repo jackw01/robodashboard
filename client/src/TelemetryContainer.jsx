@@ -40,7 +40,7 @@ class TelemetryContainer extends Component {
       <div className='telemetry-container'>
         <span className='telemetry-container-description'>{this.props.description}</span>&nbsp;
         <ButtonGroup>
-          <Button color="primary" onClick={this.toggleVisible.bind(this)}
+          <Button color="secondary" onClick={this.toggleVisible.bind(this)}
             active={this.state.visible}>Graph</Button>
         </ButtonGroup>
         <br/>
