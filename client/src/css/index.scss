@@ -4,7 +4,6 @@
 @import "variables";
 @import "~bootstrap/scss/bootstrap";
 @import "~react-vis/dist/style";
-//@import "mods";
 
 body {
   margin: 0;
@@ -34,7 +33,7 @@ code {
 }
 
 .telemetry-data-view button, .telemetry-container button {
-  padding: 0 2px;
+  padding: 0 5px;
   height: 20px;
   font-size: 0.7rem;
 }
