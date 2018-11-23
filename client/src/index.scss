@@ -32,12 +32,18 @@ code {
   display: inline;
 }
 
-.telemetry-data-list button, .telemetry-container button {
+.telemetry-data-view button, .telemetry-container button {
   padding: 0 2px;
   height: 20px;
   font-size: 0.7rem;
 }
 
-.telemetry-data-list-title {
+.data-view-header {
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  background-color: #eeeeee;
+}
+
+.data-view-title {
   font-size: 2rem;
 }

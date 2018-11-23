@@ -3,7 +3,8 @@
 
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import TelemetryDataList from './TelemetryDataList';
+import TelemetryDataView from './TelemetryDataView';
+import LocationDataView from './LocationDataView';
 
 class App extends Component {
   constructor(props) {
@@ -12,9 +13,12 @@ class App extends Component {
 
   render() {
     return (
-      <div className='app'>
-        <TelemetryDataList/>
-      </div>
+      <Container className='app'>
+        <Row>
+          <Col><TelemetryDataView/></Col>
+          <Col><LocationDataView/></Col>
+        </Row>
+      </Container>
     );
   }
 }

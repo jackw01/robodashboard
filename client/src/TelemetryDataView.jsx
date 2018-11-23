@@ -33,7 +33,7 @@ const SortableList = SortableContainer(({ items, dataPoints, visibility, onVisib
   );
 });
 
-class TelemetryDataList extends Component {
+class TelemetryDataView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +49,7 @@ class TelemetryDataList extends Component {
         visibility: storage.read('telemetryDataListVisibility', visibility),
         dataPoints: telemetryClient.dataPoints,
       });
-    })
+    });
   }
 
   toggleAllGraphs() {
@@ -69,7 +69,7 @@ class TelemetryDataList extends Component {
       newVisibility[key] = newState;
       storage.write('telemetryDataListVisibility', newVisibility);
       return { visibility: newVisibility };
-    })
+    });
   }
 
   onSortEnd = ({oldIndex, newIndex}) => {
@@ -80,16 +80,15 @@ class TelemetryDataList extends Component {
 
   render() {
     return (
-      <Container className='telemetry-data-list'>
-        <Row>
+      <Container className='telemetry-data-view'>
+        <Row className='data-view-header'>
           <Col>
-            <span className='telemetry-data-list-title'>Telemetry</span>
+            <span className='data-view-title'>Telemetry</span>
             <br/>
             <Button color="primary" onClick={this.toggleAllGraphs.bind(this)}
               active={this.state.visibilityToggle}>Toggle All</Button>
           </Col>
         </Row>
-        <hr/>
         <SortableList items={this.state.items} dataPoints={this.state.dataPoints}
           visibility={this.state.visibility} onVisibilityChange={this.onGraphVisibilityChange.bind(this)}
           key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
@@ -99,4 +98,4 @@ class TelemetryDataList extends Component {
   }
 }
 
-export default TelemetryDataList;
+export default TelemetryDataView;
