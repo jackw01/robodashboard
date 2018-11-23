@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import TelemetryContainer from './TelemetryContainer';
+import storage from './model/storage';
 import telemetryClient from './model/telemetryclient';
 
 const SortableTelemetryItem = SortableElement(TelemetryContainer);
@@ -37,15 +38,15 @@ class TelemetryDataList extends Component {
     super(props);
     this.state = {
       items: [],
-      visibilityToggle: JSON.parse(localStorage.getItem('telemetryDataListVisibilityToggle')) || false
+      visibilityToggle: storage.read('telemetryDataListVisibilityToggle', false),
     };
 
     telemetryClient.on('ready', () => {
       const visibility = {};
       Object.keys(telemetryClient.dataPoints).forEach((k) => { visibility[k] = false; });
       this.setState({
-        items: JSON.parse(localStorage.getItem('telemetryDataListOrder')) || Object.keys(telemetryClient.dataPoints),
-        visibility: JSON.parse(localStorage.getItem('telemetryDataListVisibility')) || visibility,
+        items: storage.read('telemetryDataListOrder', Object.keys(telemetryClient.dataPoints)),
+        visibility: storage.read('telemetryDataListVisibility', visibility),
         dataPoints: telemetryClient.dataPoints,
       });
     })
@@ -56,8 +57,8 @@ class TelemetryDataList extends Component {
       const newToggleState = !state.visibilityToggle;
       const newVisibility = state.visibility;
       Object.keys(newVisibility).forEach((k) => { newVisibility[k] = newToggleState; });
-      localStorage.setItem('telemetryDataListVisibilityToggle', JSON.stringify(newToggleState));
-      localStorage.setItem('telemetryDataListVisibility', JSON.stringify(newVisibility));
+      storage.write('telemetryDataListVisibilityToggle', newToggleState);
+      storage.write('telemetryDataListVisibility', newVisibility);
       return { visibility: newVisibility, visibilityToggle: newToggleState };
     });
   };
@@ -66,14 +67,14 @@ class TelemetryDataList extends Component {
     this.setState((state) => {
       const newVisibility = state.visibility;
       newVisibility[key] = newState;
-      localStorage.setItem('telemetryDataListVisibility', JSON.stringify(newVisibility));
+      storage.write('telemetryDataListVisibility', newVisibility);
       return { visibility: newVisibility };
     })
   }
 
   onSortEnd = ({oldIndex, newIndex}) => {
     this.setState({ items: arrayMove(this.state.items, oldIndex, newIndex) }, () => {
-      localStorage.setItem('telemetryDataListOrder', JSON.stringify(this.state.items));
+      storage.write('telemetryDataListOrder', this.state.items);
     });
   };
 
