@@ -6,6 +6,7 @@ import { XYPlot, XAxis, YAxis, Hint, HorizontalGridLines, LineSeries } from 'rea
 import PropTypes from 'prop-types';
 import telemetryClient from './model/telemetryclient';
 import colors from './model/colors';
+import styles from './model/styles';
 
 class TelemetryGraph extends Component {
   static propTypes = {
@@ -58,12 +59,12 @@ class TelemetryGraph extends Component {
     return (
       <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
         getX={(d) => d[0]} getY={(d) => d[1]}>
-        <HorizontalGridLines />
+        <HorizontalGridLines style={styles.gridLines}/>
         {Object.keys(this.state.data).map((k, i) => (
           <LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>
         ))}
-        <XAxis />
-        <YAxis />
+        <XAxis style={styles.axes}/>
+        <YAxis style={styles.axes}/>
       </XYPlot>
     );
   }
