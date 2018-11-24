@@ -46,7 +46,7 @@ class TelemetryContainer extends Component {
         <br/>
         {this.state.visible &&
           <div>
-            <span>
+            <span className='telemetry-container-body'>
               Duration:&nbsp;
               <Input className='telemetry-container-input' type="number" step="1"
                 placeholder="Duration" defaultValue={this.props.historyLength}

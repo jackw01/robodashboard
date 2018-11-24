@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
+import { Card, CardBody, CardTitle, Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import TelemetryContainer from './TelemetryContainer';
 import storage from './model/storage';
@@ -80,20 +80,19 @@ class TelemetryDataView extends Component {
 
   render() {
     return (
-      <Container className='telemetry-data-view'>
-        <Row className='data-view-header'>
-          <Col>
-            <span className='data-view-title'>Telemetry</span>
-            <br/>
-            <Button color="secondary" onClick={this.toggleAllGraphs.bind(this)}
-              active={this.state.visibilityToggle}>Toggle All</Button>
-          </Col>
-        </Row>
-        <SortableList items={this.state.items} dataPoints={this.state.dataPoints}
-          visibility={this.state.visibility} onVisibilityChange={this.onGraphVisibilityChange.bind(this)}
-          key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
-          pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
-      </Container>
+      <Card className='data-view telemetry-data-view'>
+        <CardBody>
+          <CardTitle>Telemetry</CardTitle>
+          <br/>
+          <Button color="secondary" onClick={this.toggleAllGraphs.bind(this)}
+            active={this.state.visibilityToggle}>Toggle All</Button>
+          <br/><br/>
+          <SortableList items={this.state.items} dataPoints={this.state.dataPoints}
+            visibility={this.state.visibility} onVisibilityChange={this.onGraphVisibilityChange.bind(this)}
+            key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
+            pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
+        </CardBody>
+      </Card>
     );
   }
 }

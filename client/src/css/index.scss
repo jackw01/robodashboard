@@ -24,10 +24,14 @@ code {
   font-size: 0.7rem;
 }
 
+.telemetry-container-body {
+  font-size: 0.7rem;
+}
+
 .telemetry-container-input {
   width: 2.5rem;
-  font-size: 12px;
-  padding: 3px;
+  font-size: 0.7rem;
+  padding: 2px;
   height: 18px;
   display: inline;
 }
@@ -38,12 +42,14 @@ code {
   font-size: 0.7rem;
 }
 
-.data-view-header {
-  padding: 0.5rem 0;
-  margin-bottom: 0.5rem;
-  background-color: $shade-1;
+.data-view .card-title {
+  font-size: 1.5rem;
 }
 
-.data-view-title {
-  font-size: 2rem;
+.card-body {
+  padding: 0.85em;
+}
+
+.container {
+  padding: 0.7em;
 }
