@@ -9,27 +9,45 @@ const dashboard = new Dashboard();
 const robot = new Robot();
 
 dashboard.telemetryServer.registerDataPoints([
-  new DataPoint('batteryVoltage', 'Battery Voltage (V)', 1000, 60, {
+  new DataPoint('enabled', 'Enabled', {
+    graph: false,
+    allowEditing: true,
+    isState: true,
+    possibleStates: { enabled: 'primary', disabled: 'warning' },
+  }),
+  new DataPoint('batteryVoltage', 'Battery Voltage (V)', {
+    updateIntervalMs: 1000,
+    historyLengthS: 60,
     range: [3, 7.2],
   }),
-  new DataPoint('gyroAngle', 'Gyro Relative Angle', 100, 5, {
+  new DataPoint('gyroAngle', 'Gyro Relative Angle', {
+    updateIntervalMs: 100,
+    historyLengthS: 5,
     isSampled: true,
     subKeys: ['roll', 'pitch', 'heading'],
   }),
-  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', 100, 5, {
+  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', {
+    updateIntervalMs: 100,
+    historyLengthS: 5,
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', 100, 5, {
+  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', {
+    updateIntervalMs: 100,
+    historyLengthS: 5,
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('driveOutput', 'Drive Output Power (%)', 100, 5, {
+  new DataPoint('driveOutput', 'Drive Output Power (%)', {
+    updateIntervalMs: 100,
+    historyLengthS: 5,
     range: [0, 1],
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('avrFreeRAM', 'AVR Free RAM (B)', 1000, 60, {
+  new DataPoint('avrFreeRAM', 'AVR Free RAM (B)', {
+    updateIntervalMs: 1000,
+    historyLengthS: 60,
   }),
 ]);
 

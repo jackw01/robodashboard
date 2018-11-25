@@ -44,8 +44,15 @@ class TelemetryDataView extends Component {
     telemetryClient.on('ready', () => {
       const visibility = {};
       Object.keys(telemetryClient.dataPoints).forEach((k) => { visibility[k] = false; });
+      const keys = Object.keys(telemetryClient.dataPoints).filter((k) => {
+        return (telemetryClient.dataPoints[k].graph);
+      });
+      // Invalidate stuff in storage if keys have changed
+      if (storage.read('telemetryDataListOrder', []).length !== keys.length) {
+        storage.write('telemetryDataListOrder', keys);
+      }
       this.setState({
-        items: storage.read('telemetryDataListOrder', Object.keys(telemetryClient.dataPoints)),
+        items: storage.read('telemetryDataListOrder', keys),
         visibility: storage.read('telemetryDataListVisibility', visibility),
         dataPoints: telemetryClient.dataPoints,
       });

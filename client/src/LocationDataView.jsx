@@ -24,7 +24,7 @@ class LocationDataView extends Component {
         <CardBody>
           <Row className='data-view-header'>
             <Col>
-              <CardTitle>Telemetry</CardTitle>
+              <CardTitle>Location</CardTitle>
             </Col>
           </Row>
         </CardBody>

@@ -14,8 +14,13 @@ class TelemetryServer {
 
     // Set up data points for system monitor
     [
-      new DataPoint('serverFreeRAM', 'Server Free RAM (MB)', 1000, 60, {}),
-      new DataPoint('serverCPUUsage', 'Server CPU Usage (%)', 1000, 60, {
+      new DataPoint('serverFreeRAM', 'Server Free RAM (MB)', {
+        updateIntervalMs: 1000,
+        historyLengthS: 60,
+      }),
+      new DataPoint('serverCPUUsage', 'Server CPU Usage (%)', {
+        updateIntervalMs: 1000,
+        historyLengthS: 60,
         range: [0, 100],
       }),
     ].forEach((p) => { this.dataPoints[p.key] = p; });

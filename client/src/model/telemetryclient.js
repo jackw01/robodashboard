@@ -25,6 +25,8 @@ class TelemetryClient extends EventEmitter {
     });
 
     this.ws.addEventListener('close', (e) => {
+      this.dataPoints = {};
+      this.dataPointsInitialized = false;
       this.emit('disconnect');
       console.log(`Telemetry server socket closed:`);
       console.table(e);
@@ -39,6 +41,7 @@ class TelemetryClient extends EventEmitter {
       });
     } else { // Receiving first packet with metadata on data points
       Object.entries(obj).forEach(([key, value]) => { this.dataPoints[key] = value; });
+      console.table(this.dataPoints);
       this.dataPointsInitialized = true;
       this.emit('ready');
     }
