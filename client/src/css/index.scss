@@ -88,3 +88,7 @@ code {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
+
+.status-indicator-view .multi-badge:not(:first-child) {
+  margin-left: 0.6rem;
+}

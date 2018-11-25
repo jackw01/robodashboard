@@ -29,19 +29,19 @@ class TelemetryGraph extends Component {
     telemetryClient.removeListener(`data-${this.props.dataKey}`, this.eventHandler);
   }
 
-  handleIncomingData(value) {
+  handleIncomingData(key, value) {
     this.setState((state) => {
       let ready = state.ready;
       if (state.lastHistoryLength !== this.props.historyLength) ready = false;
       const data = state.data;
       if (typeof value === 'object') {
-        Object.entries(value).forEach(([key, value]) => {
+        Object.entries(value).forEach(([k, v]) => {
           if (!ready) {
-            data[key] = [];
-            for (let x = -this.props.historyLength; x < 0; x++) data[key].push([x, 0]);
+            data[k] = [];
+            for (let x = -this.props.historyLength; x < 0; x++) data[k].push([x, 0]);
           }
-          data[key].shift();
-          data[key].push([data[key][data[key].length - 1][0] + 1, value]);
+          data[k].shift();
+          data[k].push([data[k][data[k].length - 1][0] + 1, v]);
         });
       } else {
         if (!ready) {

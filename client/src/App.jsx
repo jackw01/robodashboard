@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import TelemetryDataView from './TelemetryDataView';
 import LocationDataView from './LocationDataView';
-import StatusIndicator from './StatusIndicator';
+import StatusIndicatorView from './StatusIndicatorView';
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class App extends Component {
     return (
       <div>
         <div className='info-floater'>
-          <StatusIndicator/>
+          <StatusIndicatorView/>
         </div>
         <Container className='app'>
           <Row>

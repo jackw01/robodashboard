@@ -18,7 +18,7 @@ class MultiBadge extends Component {
     return (
       <span className='multi-badge'>
         <span className='badge badge-pill'>{this.props.label}</span>
-        {this.props.segments.map((seg) => <Badge color={seg.color} pill>{seg.contents}</Badge>)}
+        {this.props.segments.map((seg, i) => <Badge color={seg.color} pill key={i}>{seg.contents}</Badge>)}
       </span>
     );
   }

@@ -9,11 +9,12 @@ const dashboard = new Dashboard();
 const robot = new Robot();
 
 dashboard.telemetryServer.registerDataPoints([
-  new DataPoint('enabled', 'Enabled', {
+  new DataPoint('mode', 'Mode', {
     graph: false,
     allowEditing: true,
     isState: true,
-    possibleStates: { enabled: 'primary', disabled: 'warning' },
+    defaultState: 'Disabled',
+    stateColors: { Enabled: 'primary', Disabled: 'warning' },
   }),
   new DataPoint('batteryVoltage', 'Battery Voltage (V)', {
     updateIntervalMs: 1000,
