@@ -58,7 +58,9 @@ $theme-colors: (
 $body-bg: $gray-900;
 $body-color: $gray-200;
 
+$yiq-contrasted-threshold: 110;
 $yiq-text-light: $foreground-1;
+$yiq-text-dark: $gray-900;
 
 $enable-shadows: true;
 

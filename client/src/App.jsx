@@ -15,13 +15,16 @@ class App extends Component {
   render() {
     return (
       <div>
+        <div className='info-floater'>
+          <StatusIndicator/>
+        </div>
         <Container className='app'>
           <Row>
             <Col><TelemetryDataView/></Col>
             <Col><LocationDataView/></Col>
           </Row>
         </Container>
-        <StatusIndicator/>
+
       </div>
     );
   }
