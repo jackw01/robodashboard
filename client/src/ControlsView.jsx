@@ -28,15 +28,31 @@ class ControlsView extends Component {
     });
   }
 
+  onClick(key, event) {
+    console.log(key);
+  }
+
   render() {
     return (
       <span className='controls-view'>
         {Object.entries(this.state.controls).map(([k, v]) => {
           if (v.type === 'state') {
             return (
-              <ButtonGroup>
+              <ButtonGroup key={k}>
                 {Object.entries(v.states).map(([k, v]) => {
-                  return (<Button color={v.controlColor} size='sm'>{v.controlLabel}</Button>);
+                  return (<Button color={v.controlColor} size='sm' onClick={this.onClick.bind(this, k)} key={k}>
+                    {v.controlLabel}
+                  </Button>);
+                })}
+              </ButtonGroup>
+            );
+          } else if (v.type === 'buttonGroup') {
+            return (
+              <ButtonGroup key={k}>
+                {Object.entries(v.controls).map(([k, v]) => {
+                  return (<Button color={v.color} size='sm' onClick={this.onClick.bind(this, k)} key={k}>
+                    {v.label}
+                  </Button>);
                 })}
               </ButtonGroup>
             );

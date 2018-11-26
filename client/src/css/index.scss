@@ -20,11 +20,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-.telemetry-container-legend {
-  font-size: 0.7rem;
+.container {
+  padding: 0.7em;
+}
+
+.card-body {
+  padding: 0.85em;
+}
+
+.data-view .card-title {
+  font-size: 1.5rem;
+}
+
+.data-view:not(:last-child) {
+  margin-bottom: 0.6em;
 }
 
 .telemetry-container-body {
+  font-size: 0.7rem;
+}
+
+.telemetry-container-legend {
   font-size: 0.7rem;
 }
 
@@ -42,22 +58,6 @@ code {
   font-size: 0.7rem;
 }
 
-.data-view:not(:last-child) {
-  margin-bottom: 0.6em;
-}
-
-.data-view .card-title {
-  font-size: 1.5rem;
-}
-
-.card-body {
-  padding: 0.85em;
-}
-
-.container {
-  padding: 0.7em;
-}
-
 .info-floater {
   position: fixed;
   bottom: 0px;
@@ -68,6 +68,29 @@ code {
   overflow-y: auto !important;
   padding: 0.5rem 0.6rem;
   background: rgba(0, 0, 0, 0.2);
+}
+
+.info-floater>span>*:not(:first-child) {
+  margin-left: 0.6rem;
+}
+
+.controls-view {
+  float: left;
+}
+
+.btn-group .btn:not(:last-child) {
+  border-right: 1px solid $gray-800;
+}
+
+.status-indicator-view {
+  float: right;
+  margin-top: 0.15rem;
+}
+
+.status-indicator-view .multi-badge .badge {
+  font-size: 0.9rem;
+  line-height: 1.0rem;
+  padding-top: 0.2rem;
 }
 
 .badge {
@@ -89,22 +112,4 @@ code {
 .multi-badge .badge:last-child {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-}
-
-.status-indicator-view .multi-badge .badge {
-  font-size: 0.9rem;
-  line-height: 1rem;
-}
-
-.status-indicator-view {
-  float: right;
-  margin-top: 0.15rem;
-}
-
-.status-indicator-view .multi-badge:not(:first-child) {
-  margin-left: 0.6rem;
-}
-
-.controls-view {
-  float: left;
 }
