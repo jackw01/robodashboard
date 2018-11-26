@@ -2,47 +2,60 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 const Dashboard = require('./dashboard');
-const DashboardItem = require('./dashboard/dashboarditem');
-const DashboardTypes = require('./dashboard/dashboardtypes');
+const { DashboardTypes, DashboardItem, DashboardItemState, DashboardItemControl } = require('./dashboard/items');
 const Robot = require('./robot');
 
 const dashboard = new Dashboard();
 const robot = new Robot();
 
 dashboard.telemetryServer.registerDashboardItems([
-  new DashboardItem(DashboardTypes.State, 'mode', 'Mode', {
-    allowEditing: true,
-    defaultState: 'Disabled',
-    stateColors: { Enabled: 'primary', Disabled: 'warning' },
+  new DashboardItem(DashboardTypes.State, 'mode', {
+    createControl: true,
+    description: 'Mode',
+    defaultState: 'disabled',
+    states: {
+      enabled: new DashboardItemState('Enabled', 'primary', 'enable'),
+      disabled: new DashboardItemState('Disabled', 'warning', 'disable'),
+    },
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', 'Battery Voltage (V)', {
+  new DashboardItem(DashboardTypes.ButtonGroup, 'calibrateGyro', 'Calibrate Gyro', {
+    controls: {
+      calibrateGyro: new DashboardItemControl('Calibrate Gyro', 'primary'),
+    },
+  }),
+  new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', {
+    description: 'Battery Voltage (V)',
     showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,
     range: [3, 7.2],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'gyroAngle', 'Gyro Relative Angle', {
+  new DashboardItem(DashboardTypes.Numeric, 'gyroAngle', {
+    description: 'Gyro Relative Angle',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
     isSampled: true,
     subKeys: ['roll', 'pitch', 'heading'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderDistance', 'Drive Distance (mm)', {
+  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderDistance', {
+    description: 'Drive Distance (mm)',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', {
+  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderVelocity', {
+    description: 'Drive Surface Velocity (mm/s)',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'driveOutput', 'Drive Output Power (%)', {
+  new DashboardItem(DashboardTypes.Numeric, 'driveOutput', {
+    description: 'Drive Output Power (%)',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
@@ -50,7 +63,8 @@ dashboard.telemetryServer.registerDashboardItems([
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'avrFreeRAM', 'AVR Free RAM (B)', {
+  new DashboardItem(DashboardTypes.Numeric, 'avrFreeRAM', {
+    description: 'AVR Free RAM (B)',
     showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,

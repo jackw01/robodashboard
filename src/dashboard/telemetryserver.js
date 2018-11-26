@@ -3,8 +3,7 @@
 
 const WebSocket = require('ws');
 const logger = require('../logger');
-const DashboardItem = require('./dashboarditem');
-const DashboardTypes = require('./dashboardtypes');
+const { DashboardTypes, DashboardItem } = require('./items');
 const SystemMonitor = require('./systemmonitor');
 
 // Collects telemetry data for logging and displaying
@@ -15,12 +14,14 @@ class TelemetryServer {
 
     // Set up data points for system monitor
     [
-      new DashboardItem(DashboardTypes.Numeric, 'serverFreeRAM', 'Server Free RAM (MB)', {
+      new DashboardItem(DashboardTypes.Numeric, 'serverFreeRAM', {
+        description: 'Server Free RAM (MB)',
         showGraph: true,
         updateIntervalMs: 1000,
         historyLengthS: 60,
       }),
-      new DashboardItem(DashboardTypes.Numeric, 'serverCPUUsage', 'Server CPU Usage (%)', {
+      new DashboardItem(DashboardTypes.Numeric, 'serverCPUUsage', {
+        description: 'Server CPU Usage (%)',
         showGraph: true,
         updateIntervalMs: 1000,
         historyLengthS: 60,
