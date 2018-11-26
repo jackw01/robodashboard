@@ -64,7 +64,7 @@ code {
   box-sizing: border-box;
   border-radius: 8px 0px 0px 0px;
   overflow-y: auto !important;
-  padding: 0.4rem 0.6rem;
+  padding: 0.22rem 0.6rem 0.5rem;
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -87,6 +87,10 @@ code {
 .multi-badge .badge:last-child {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
+}
+
+.status-indicator-view {
+  font-size: 1.2rem;
 }
 
 .status-indicator-view .multi-badge:not(:first-child) {

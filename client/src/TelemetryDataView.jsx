@@ -10,11 +10,11 @@ import telemetryClient from './model/telemetryclient';
 
 const SortableTelemetryItem = SortableElement(TelemetryContainer);
 
-const SortableList = SortableContainer(({ items, dataPoints, visibility, onVisibilityChange }) => {
+const SortableList = SortableContainer(({ items, dashboardItems, visibility, onVisibilityChange }) => {
   return (
     <div>
       {items.map((k, i) => {
-        const dp = dataPoints[k];
+        const dp = dashboardItems[k];
         return (
           <SortableTelemetryItem
             key={k}
@@ -43,9 +43,9 @@ class TelemetryDataView extends Component {
 
     telemetryClient.on('ready', () => {
       const visibility = {};
-      Object.keys(telemetryClient.dataPoints).forEach((k) => { visibility[k] = false; });
-      const keys = Object.keys(telemetryClient.dataPoints).filter((k) => {
-        return (telemetryClient.dataPoints[k].graph);
+      Object.keys(telemetryClient.dashboardItems).forEach((k) => { visibility[k] = false; });
+      const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
+        return telemetryClient.dashboardItems[k].showGraph;
       });
       // Invalidate stuff in storage if keys have changed
       if (storage.read('telemetryDataListOrder', []).length !== keys.length) {
@@ -54,7 +54,7 @@ class TelemetryDataView extends Component {
       this.setState({
         items: storage.read('telemetryDataListOrder', keys),
         visibility: storage.read('telemetryDataListVisibility', visibility),
-        dataPoints: telemetryClient.dataPoints,
+        dashboardItems: telemetryClient.dashboardItems,
       });
     });
   }
@@ -93,7 +93,7 @@ class TelemetryDataView extends Component {
           <Button color="secondary" onClick={this.toggleAllGraphs.bind(this)}
             active={this.state.visibilityToggle}>Toggle All</Button>
           <br/><br/>
-          <SortableList items={this.state.items} dataPoints={this.state.dataPoints}
+          <SortableList items={this.state.items} dashboardItems={this.state.dashboardItems}
             visibility={this.state.visibility} onVisibilityChange={this.onGraphVisibilityChange.bind(this)}
             key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
             pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>

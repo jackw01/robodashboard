@@ -3,29 +3,32 @@
 
 const WebSocket = require('ws');
 const logger = require('../logger');
-const DataPoint = require('./datapoint');
+const DashboardItem = require('./dashboarditem');
+const DashboardTypes = require('./dashboardtypes');
 const SystemMonitor = require('./systemmonitor');
 
 // Collects telemetry data for logging and displaying
 class TelemetryServer {
   constructor(port) {
-    this.dataPoints = {};
+    this.items = {};
     this.systemMonitor = new SystemMonitor(1000);
 
     // Set up data points for system monitor
     [
-      new DataPoint('serverFreeRAM', 'Server Free RAM (MB)', {
+      new DashboardItem(DashboardTypes.Numeric, 'serverFreeRAM', 'Server Free RAM (MB)', {
+        showGraph: true,
         updateIntervalMs: 1000,
         historyLengthS: 60,
       }),
-      new DataPoint('serverCPUUsage', 'Server CPU Usage (%)', {
+      new DashboardItem(DashboardTypes.Numeric, 'serverCPUUsage', 'Server CPU Usage (%)', {
+        showGraph: true,
         updateIntervalMs: 1000,
         historyLengthS: 60,
         range: [0, 100],
       }),
-    ].forEach((p) => { this.dataPoints[p.key] = p; });
+    ].forEach((p) => { this.items[p.key] = p; });
 
-    this.systemMonitor.on('telemetry', this.setValueForDataPoint.bind(this));
+    this.systemMonitor.on('telemetry', this.setValueForDashboardItem.bind(this));
 
     // Server
     logger.info('Starting telemetry server...');
@@ -35,7 +38,7 @@ class TelemetryServer {
       this.ws = ws;
 
       // Send metadata about data points to let the client know what it will recieve
-      if (this.dataPoints) this.sendMetadata();
+      if (this.items) this.sendMetadata();
       else logger.warn('Data points not registered yet, not sending to client.');
 
       // Event handlers
@@ -54,35 +57,35 @@ class TelemetryServer {
   }
 
   sendMetadata() {
-    this.ws.send(JSON.stringify(this.dataPoints), () => {
+    this.ws.send(JSON.stringify(this.items), () => {
       logger.info('Telemetry data points registered with client.');
     });
   }
 
-  registerDataPoints(dataPoints) {
-    dataPoints.forEach((p) => { this.dataPoints[p.key] = p; });
+  registerDashboardItems(items) {
+    items.forEach((p) => { this.items[p.key] = p; });
     if (this.ws) this.sendMetadata(); // Send metadata if web socket exists already (it shouldn't)
-    const interval = Math.min(...(dataPoints.map(p => p.updateIntervalMs)));
+    const interval = Math.min(...(items.map(p => p.updateIntervalMs)));
     this.updateInterval = setInterval(this.update.bind(this), interval); // Set interval to send data
   }
 
-  setValueForDataPoint(key, value) {
+  setValueForDashboardItem(key, value) {
     // If the value is not meant to be sampled at a regular interval, send it now
-    if (this.ws && !this.dataPoints[key].isSampled) {
+    if (this.ws && !this.items[key].isSampled) {
       const obj = {};
       obj[key] = value;
       this.ws.send(JSON.stringify(obj), () => {});
     }
-    this.dataPoints[key].value = value;
+    this.items[key].value = value;
   }
 
   update() {
-    if (this.dataPoints) {
+    if (this.items) {
       const now = new Date();
       const newData = {};
-      Object.entries(this.dataPoints).forEach(([key, dataPoint]) => {
-        if (this.dataPoints[key].isSampled && now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
-          this.dataPoints[key].lastUpdated = now;
+      Object.entries(this.items).forEach(([key, dataPoint]) => {
+        if (this.items[key].isSampled && now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
+          this.items[key].lastUpdated = now;
           newData[key] = dataPoint.value;
         }
       });

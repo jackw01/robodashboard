@@ -6,8 +6,8 @@ import EventEmitter from 'events';
 class TelemetryClient extends EventEmitter {
   constructor() {
     super();
-    this.dataPoints = {};
-    this.dataPointsInitialized = false;
+    this.dashboardItems = {};
+    this.dashboardItemsInitialized = false;
 
     const host = window.document.location.host.replace(/:.*/, '');
     this.ws = new WebSocket(`ws://${host}:8080`);
@@ -25,8 +25,8 @@ class TelemetryClient extends EventEmitter {
     });
 
     this.ws.addEventListener('close', (e) => {
-      this.dataPoints = {};
-      this.dataPointsInitialized = false;
+      this.dashboardItems = {};
+      this.dashboardItemsInitialized = false;
       this.emit('disconnect');
       console.log(`Telemetry server socket closed:`);
       console.table(e);
@@ -35,14 +35,14 @@ class TelemetryClient extends EventEmitter {
 
   handleIncomingData(message) {
     const obj = JSON.parse(message.data);
-    if (this.dataPointsInitialized) { // Recieving a data packet
+    if (this.dashboardItemsInitialized) { // Recieving a data packet
       Object.entries(obj).forEach(([key, value]) => {
         this.emit(`data-${key}`, key, value);
       });
     } else { // Receiving first packet with metadata on data points
-      Object.entries(obj).forEach(([key, value]) => { this.dataPoints[key] = value; });
-      console.table(this.dataPoints);
-      this.dataPointsInitialized = true;
+      Object.entries(obj).forEach(([key, value]) => { this.dashboardItems[key] = value; });
+      console.table(this.dashboardItems);
+      this.dashboardItemsInitialized = true;
       this.emit('ready');
     }
   }

@@ -36,11 +36,11 @@ class StatusIndicatorView extends Component {
 
     telemetryClient.on('ready', () => {
       const keyStates = {};
-      Object.keys(telemetryClient.dataPoints).filter((k) => {
-        return (telemetryClient.dataPoints[k].isState);
+      Object.keys(telemetryClient.dashboardItems).filter((k) => {
+        return telemetryClient.dashboardItems[k].type === 'state';
       }).forEach((k) => {
         telemetryClient.on(`data-${k}`, this.eventHandler);
-        keyStates[k] = telemetryClient.dataPoints[k].defaultState;
+        keyStates[k] = telemetryClient.dashboardItems[k].defaultState;
       });
       this.setState({ readyStatus: 'Ready', readyStatusColor: 'success', keyStates: keyStates });
     });
@@ -57,14 +57,14 @@ class StatusIndicatorView extends Component {
   render() {
     return (
       <span className='status-indicator-view'>
-        <MultiBadge label='Status:' segments={[
+        <MultiBadge label='Status' segments={[
             { color: this.state.statusColor, contents: this.state.status },
             { color: this.state.readyStatusColor, contents: this.state.readyStatus },
           ]}/>
         {Object.entries(this.state.keyStates).map(([k, v]) => {
-          const dataPoint = telemetryClient.dataPoints[k];
-          return (<MultiBadge label={dataPoint.description} segments={[
-              { color: dataPoint.stateColors[v], contents: v },
+          const dashboardItem = telemetryClient.dashboardItems[k];
+          return (<MultiBadge label={dashboardItem.description} segments={[
+              { color: dashboardItem.stateColors[v], contents: v },
             ]}/>);
         })}
       </span>

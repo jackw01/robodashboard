@@ -2,54 +2,59 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 const Dashboard = require('./dashboard');
-const DataPoint = require('./dashboard/datapoint');
+const DashboardItem = require('./dashboard/dashboarditem');
+const DashboardTypes = require('./dashboard/dashboardtypes');
 const Robot = require('./robot');
 
 const dashboard = new Dashboard();
 const robot = new Robot();
 
-dashboard.telemetryServer.registerDataPoints([
-  new DataPoint('mode', 'Mode', {
-    graph: false,
+dashboard.telemetryServer.registerDashboardItems([
+  new DashboardItem(DashboardTypes.State, 'mode', 'Mode', {
     allowEditing: true,
-    isState: true,
     defaultState: 'Disabled',
     stateColors: { Enabled: 'primary', Disabled: 'warning' },
   }),
-  new DataPoint('batteryVoltage', 'Battery Voltage (V)', {
+  new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', 'Battery Voltage (V)', {
+    showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,
     range: [3, 7.2],
   }),
-  new DataPoint('gyroAngle', 'Gyro Relative Angle', {
+  new DashboardItem(DashboardTypes.Numeric, 'gyroAngle', 'Gyro Relative Angle', {
+    showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
     isSampled: true,
     subKeys: ['roll', 'pitch', 'heading'],
   }),
-  new DataPoint('driveEncoderDistance', 'Drive Distance (mm)', {
+  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderDistance', 'Drive Distance (mm)', {
+    showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', {
+  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderVelocity', 'Drive Surface Velocity (mm/s)', {
+    showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('driveOutput', 'Drive Output Power (%)', {
+  new DashboardItem(DashboardTypes.Numeric, 'driveOutput', 'Drive Output Power (%)', {
+    showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
     range: [0, 1],
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DataPoint('avrFreeRAM', 'AVR Free RAM (B)', {
+  new DashboardItem(DashboardTypes.Numeric, 'avrFreeRAM', 'AVR Free RAM (B)', {
+    showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,
   }),
 ]);
 
-robot.on('telemetry', dashboard.telemetryServer.setValueForDataPoint.bind(dashboard.telemetryServer));
+robot.on('telemetry', dashboard.telemetryServer.setValueForDashboardItem.bind(dashboard.telemetryServer));
