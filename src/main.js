@@ -14,8 +14,8 @@ dashboard.telemetryServer.registerDashboardItems([
     description: 'Mode',
     defaultState: 'disabled',
     states: {
-      enabled: new DashboardItemState('Enabled', 'primary', 'enable'),
-      disabled: new DashboardItemState('Disabled', 'warning', 'disable'),
+      enabled: new DashboardItemState('Enabled', 'primary', 'Enable'),
+      disabled: new DashboardItemState('Disabled', 'warning', 'Disable'),
     },
   }),
   new DashboardItem(DashboardTypes.ButtonGroup, 'calibrateGyro', 'Calibrate Gyro', {

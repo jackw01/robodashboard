@@ -6,6 +6,7 @@ import { Container, Row, Col } from 'reactstrap';
 import TelemetryDataView from './TelemetryDataView';
 import LocationDataView from './LocationDataView';
 import StatusIndicatorView from './StatusIndicatorView';
+import ControlsView from './ControlsView';
 
 class App extends Component {
   constructor(props) {
@@ -16,15 +17,19 @@ class App extends Component {
     return (
       <div>
         <div className='info-floater'>
+          <ControlsView/>
           <StatusIndicatorView/>
         </div>
         <Container className='app'>
           <Row>
-            <Col><TelemetryDataView/></Col>
-            <Col><LocationDataView/></Col>
+            <Col>
+              <TelemetryDataView/>
+            </Col>
+            <Col>
+              <LocationDataView/>
+            </Col>
           </Row>
         </Container>
-
       </div>
     );
   }

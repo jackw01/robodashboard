@@ -42,6 +42,10 @@ code {
   font-size: 0.7rem;
 }
 
+.data-view:not(:last-child) {
+  margin-bottom: 0.6em;
+}
+
 .data-view .card-title {
   font-size: 1.5rem;
 }
@@ -57,14 +61,12 @@ code {
 .info-floater {
   position: fixed;
   bottom: 0px;
-  right: 0px;
-  max-height: 100%;
+  width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border-radius: 8px 0px 0px 0px;
   overflow-y: auto !important;
-  padding: 0.22rem 0.6rem 0.5rem;
+  padding: 0.5rem 0.6rem;
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -89,10 +91,20 @@ code {
   border-bottom-left-radius: 0px;
 }
 
+.status-indicator-view .multi-badge .badge {
+  font-size: 0.9rem;
+  line-height: 1rem;
+}
+
 .status-indicator-view {
-  font-size: 1.2rem;
+  float: right;
+  margin-top: 0.15rem;
 }
 
 .status-indicator-view .multi-badge:not(:first-child) {
   margin-left: 0.6rem;
+}
+
+.controls-view {
+  float: left;
 }

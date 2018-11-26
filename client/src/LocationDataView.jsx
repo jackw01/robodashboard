@@ -20,7 +20,7 @@ class LocationDataView extends Component {
 
   render() {
     return (
-      <Card className='telemetry-data-view'>
+      <Card className='data-view location-data-view'>
         <CardBody>
           <Row className='data-view-header'>
             <Col>
