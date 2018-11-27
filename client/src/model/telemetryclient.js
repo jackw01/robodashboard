@@ -46,6 +46,11 @@ class TelemetryClient extends EventEmitter {
       this.emit('ready');
     }
   }
+
+  handleControlClick(key) {
+    const obj = { type: 'controlClick', key: key };
+    this.ws.send(JSON.stringify(obj));
+  }
 }
 
 export default new TelemetryClient();

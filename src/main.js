@@ -72,3 +72,7 @@ dashboard.telemetryServer.registerDashboardItems([
 ]);
 
 robot.on('telemetry', dashboard.telemetryServer.setValueForDashboardItem.bind(dashboard.telemetryServer));
+
+dashboard.telemetryServer.on('controlClick', (key) => {
+  if (key === 'calibrateGyro') robot.calibrateGyro();
+});

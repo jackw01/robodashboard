@@ -29,7 +29,7 @@ class ControlsView extends Component {
   }
 
   onClick(key, event) {
-    console.log(key);
+    telemetryClient.handleControlClick(key);
   }
 
   render() {

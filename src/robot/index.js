@@ -3,6 +3,7 @@
 
 const EventEmitter = require('events');
 const types = require('./interface/types');
+const Packet = require('./interface/packet');
 const robotInterface = require('./interface/robotinterface');
 const positionTracker = require('./positiontracker');
 const Drive = require('./drive');
@@ -12,14 +13,12 @@ class Robot extends EventEmitter {
   constructor() {
     super();
     this.drive = new Drive();
-    this.robotInterface = robotInterface;
 
     // Event handler for packets
     robotInterface.on('data', (packets) => {
       packets.forEach((p) => {
         if (p.type === types.DataTypeBatteryVoltage) {
           this.emit('telemetry', 'batteryVoltage', p.contents[0]);
-          console.log('bv');
         } else if (p.type === types.DataTypeGyro) { // Update position tracker with gyro data and last distance
           if (this.lastDistance) positionTracker.calculate(this.lastDistance[0], this.lastDistance[1], p.contents[2]);
           this.emit('telemetry', 'gyroAngle', { roll: p.contents[0], pitch: p.contents[1], heading: p.contents[2] });
@@ -34,6 +33,10 @@ class Robot extends EventEmitter {
         }
       });
     });
+  }
+
+  calibrateGyro() {
+    robotInterface.writePacket(new Packet(types.CmdTypeCalibrateGyro, 1));
   }
 
   update() {

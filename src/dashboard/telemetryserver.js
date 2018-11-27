@@ -43,6 +43,8 @@ class TelemetryServer {
       else logger.warn('Data points not registered yet, not sending to client.');
 
       // Event handlers
+      ws.on('message', this.messageHandler);
+
       ws.on('error', (err) => {
         logger.error(`Telemetry server socket error: ${err.message}`);
       });
@@ -78,6 +80,13 @@ class TelemetryServer {
       this.ws.send(JSON.stringify(obj), () => {});
     }
     this.items[key].value = value;
+  }
+
+  messageHandler(message) {
+    const obj = JSON.parse(message.data);
+    if (obj.type === 'controlClick') {
+      this.emit('controlClick', obj.key);
+    }
   }
 
   update() {
