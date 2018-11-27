@@ -75,4 +75,6 @@ robot.on('telemetry', dashboard.telemetryServer.setValueForDashboardItem.bind(da
 
 dashboard.telemetryServer.on('controlClick', (key) => {
   if (key === 'calibrateGyro') robot.calibrateGyro();
+  else if (key === 'disabled') robot.drive.disable();
+  else if (key === 'enabled') robot.drive.enable();
 });
