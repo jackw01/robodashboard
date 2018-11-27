@@ -9,6 +9,14 @@ const dashboard = new Dashboard();
 const robot = new Robot();
 
 dashboard.telemetryServer.registerDashboardItems([
+  new DashboardItem(DashboardTypes.State, 'receivingData', {
+    description: 'Connection',
+    defaultState: 'notReceivingData',
+    states: {
+      notReceivingData: new DashboardItemState('Not Receiving Data', 'warning'),
+      receivingData: new DashboardItemState('Receiving Data', 'success'),
+    },
+  }),
   new DashboardItem(DashboardTypes.State, 'mode', {
     createControl: true,
     description: 'Mode',

@@ -89,10 +89,11 @@ class TelemetryDataView extends Component {
     return (
       <Card className='data-view telemetry-data-view'>
         <CardBody>
-          <CardTitle>Telemetry</CardTitle>
-          <Button color="secondary" onClick={this.toggleAllGraphs.bind(this)}
+          <CardTitle>
+            Telemetry
+            <Button color='secondary' onClick={this.toggleAllGraphs.bind(this)}
             active={this.state.visibilityToggle}>Toggle All</Button>
-          <br/><br/>
+          </CardTitle>
           <SortableList items={this.state.items} dashboardItems={this.state.dashboardItems}
             visibility={this.state.visibility} onVisibilityChange={this.onGraphVisibilityChange.bind(this)}
             key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
