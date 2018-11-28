@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import { XYPlot, XAxis, YAxis, Hint, HorizontalGridLines, LineSeries } from 'react-vis';
+import { XYPlot, XAxis, YAxis, Hint, HorizontalGridLines, AreaSeries, GradientDefs } from 'react-vis';
 import PropTypes from 'prop-types';
 import telemetryClient from './model/telemetryclient';
 import colors from './model/colors';
@@ -59,9 +59,16 @@ class TelemetryGraph extends Component {
     return (
       <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
         getX={(d) => d[0]} getY={(d) => d[1]}>
+        <GradientDefs>
+          <linearGradient id='CoolGradient' x1='0' x2='0' y1='0' y2='1'>
+            <stop offset='0%' stopColor='red' stopOpacity={1}/>
+            <stop offset='100%' stopColor='blue' stopOpacity={1} />
+          </linearGradient>
+        </GradientDefs>
         <HorizontalGridLines style={styles.gridLines}/>
         {Object.keys(this.state.data).map((k, i) => (
-          <LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>
+          <AreaSeries key={k} data={this.state.data[k]} color={colors[i]}
+            fill={(Object.keys(this.state.data).length === 1) ? 'url(#CoolGradient)' : ''}/>
         ))}
         <XAxis style={styles.axes}/>
         <YAxis style={styles.axes}/>
