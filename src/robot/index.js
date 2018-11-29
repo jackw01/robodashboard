@@ -13,10 +13,12 @@ class Robot extends EventEmitter {
   constructor() {
     super();
     this.receivingData = false;
+    this.lastDataTime = 0;
     this.drive = new Drive();
 
     // Heartbeat ping message to let dashboard know if the server is receiving data
     setInterval(() => {
+      if (Date.now() - this.lastDataTime > 5000) this.receivingData = false;
       this.emit('telemetry', 'receivingData', this.receivingData ? 'receivingData' : 'notReceivingData');
     }, 1000);
 
@@ -39,9 +41,8 @@ class Robot extends EventEmitter {
         }
       });
 
-      if (!this.receivingData) {
-        this.receivingData = true;
-      }
+      this.receivingData = true;
+      this.lastDataTime = Date.now();
     });
   }
 

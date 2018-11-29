@@ -14,6 +14,7 @@ body {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
+  overflow: hidden;
 }
 
 code {
@@ -30,6 +31,8 @@ code {
 
 .card-body {
   padding: 0.85em;
+  max-height: 670px;
+  overflow-y: scroll;
 }
 
 .data-view .card-title {
@@ -83,6 +86,7 @@ code {
   overflow-y: auto !important;
   padding: 0.5rem 0.6rem;
   background: rgba(0, 0, 0, 0.2);
+  z-index: 100;
 }
 
 .info-floater>span>*:not(:first-child) {
