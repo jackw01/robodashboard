@@ -60,15 +60,15 @@ class TelemetryGraph extends Component {
       <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
         getX={(d) => d[0]} getY={(d) => d[1]}>
         <GradientDefs>
-          <linearGradient id='CoolGradient' x1='0' x2='0' y1='0' y2='1'>
-            <stop offset='0%' stopColor='red' stopOpacity={1}/>
-            <stop offset='100%' stopColor='blue' stopOpacity={1} />
+          <linearGradient id='colorGradient1' x1='0.5' x2='0' y1='0' y2='0.8'>
+            <stop offset='0%' stopColor={colors.primary} stopOpacity={0.75}/>
+            <stop offset='100%' stopColor='black' stopOpacity={0} />
           </linearGradient>
         </GradientDefs>
         <HorizontalGridLines style={styles.gridLines}/>
         {Object.keys(this.state.data).map((k, i) => (
-          <AreaSeries key={k} data={this.state.data[k]} color={colors[i]}
-            fill={(Object.keys(this.state.data).length === 1) ? 'url(#CoolGradient)' : ''}/>
+          <AreaSeries key={k} data={this.state.data[k]} color={colors.array[i]}
+            fill={(Object.keys(this.state.data).length === 1) ? 'url(#colorGradient1)' : ''}/>
         ))}
         <XAxis style={styles.axes}/>
         <YAxis style={styles.axes}/>
