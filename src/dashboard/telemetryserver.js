@@ -45,7 +45,7 @@ class TelemetryServer extends EventEmitter {
       else logger.warn('Data points not registered yet, not sending to client.');
 
       // Event handlers
-      ws.on('message', this.messageHandler);
+      ws.on('message', this.messageHandler.bind(this));
 
       ws.on('error', (err) => {
         logger.error(`Telemetry server socket error: ${err.message}`);
@@ -85,7 +85,7 @@ class TelemetryServer extends EventEmitter {
   }
 
   messageHandler(message) {
-    const obj = JSON.parse(message.data);
+    const obj = JSON.parse(message);
     if (obj.type === 'controlClick') {
       this.emit('controlClick', obj.key);
     }

@@ -72,7 +72,7 @@ class RobotInterface extends EventEmitter {
       out += p.contents.reduce((a, i) => `${a}${constants.PacketSeparator}${Math.round(i, 3)}`);
     } else out += `${constants.PacketSeparator}${p.contents}`;
     out += constants.PacketMarker;
-    logger.debug(`Wrote data ${out}`);
+    logger.info(`Wrote data ${out}`);
     this.serial.write(out);
   }
 

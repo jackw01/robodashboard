@@ -1,6 +1,7 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
+const logger = require('./logger');
 const Dashboard = require('./dashboard');
 const { DashboardTypes, DashboardItem, DashboardItemState, DashboardItemControl } = require('./dashboard/items');
 const Robot = require('./robot');
@@ -36,7 +37,7 @@ dashboard.telemetryServer.registerDashboardItems([
     showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,
-    range: [3, 7.2],
+    range: [0, 7.2],
   }),
   new DashboardItem(DashboardTypes.Numeric, 'gyroAngle', {
     description: 'Gyro Relative Angle',
@@ -82,6 +83,7 @@ dashboard.telemetryServer.registerDashboardItems([
 robot.on('telemetry', dashboard.telemetryServer.setValueForDashboardItem.bind(dashboard.telemetryServer));
 
 dashboard.telemetryServer.on('controlClick', (key) => {
+  logger.info(`Dashboard control clicked: ${key}`);
   if (key === 'calibrateGyro') robot.calibrateGyro();
   else if (key === 'disabled') robot.drive.disable();
   else if (key === 'enabled') robot.drive.enable();
