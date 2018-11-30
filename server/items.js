@@ -38,22 +38,24 @@ class DashboardItem {
 
     // All possible options depending on type
     Object.assign(this, {
-      description: '',
-      showGraph: false,
-      updateIntervalMs: 1000,
-      historyLengthS: 60,
-      isSampled: false,
-      subKeys: [],
+      description: '', // User-facing description text
+      showGraph: false, // If true, graph will be displayed on web dashboard
+      isSampled: false, // If true, the value of the data point will be sent to the dashboard at a preset interval
+      updateIntervalMs: 1000, // Update interval, if sampled
+      historyLengthS: 60, // Default time period of graph
+      subKeys: [], // If the data point is an object containing multiple values, these are the expected keys
+      createControl: false, // If true, dashboard will show a control for editing the value
 
-      defaultState: true,
-      states: [],
+      // Type: State
+      states: {}, // Object containing DashboardItemStates for each key
+      defaultState: true, // Default state key
 
-      createControl: false,
-
-      controls: {},
+      // Type: ButtonGroup
+      controls: {}, // Object containing DashboardItemControls for each key
     }, options);
 
     this.value = 0;
+    this.timestamp = 0;
     this.lastUpdated = 0;
   }
 }

@@ -74,11 +74,12 @@ class TelemetryServer extends EventEmitter {
     this.updateInterval = setInterval(this.update.bind(this), interval); // Set interval to send data
   }
 
-  setValueForDashboardItem(key, value) {
+  setValueForDashboardItem(key, value, timestampIn) {
+    const timestamp = timestampIn || Date.now(); // Get timestamp
     // If the value is not meant to be sampled at a regular interval, send it now
     if (this.ws && !this.items[key].isSampled) {
       const obj = {};
-      obj[key] = value;
+      obj[key] = { value, timestamp };
       this.ws.send(JSON.stringify(obj), () => {});
     }
     this.items[key].value = value;
@@ -92,7 +93,7 @@ class TelemetryServer extends EventEmitter {
   }
 
   update() {
-    if (this.items) {
+    if (this.items) { // Sample values of any data points with a set sample interval
       const now = new Date();
       const newData = {};
       Object.entries(this.items).forEach(([key, dataPoint]) => {

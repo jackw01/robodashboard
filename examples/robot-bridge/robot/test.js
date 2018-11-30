@@ -1,8 +1,8 @@
 import test from 'ava';
 
-const transform = require('./src/robot/control/transform');
-const path = require('./src/robot/control/path');
-const RateLimiter = require('./src/robot/control/ratelimiter');
+const transform = require('./control/transform');
+const path = require('./control/path');
+const RateLimiter = require('./control/ratelimiter');
 
 function round(num, prec) {
   const precision = [1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10][prec];

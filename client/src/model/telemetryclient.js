@@ -36,11 +36,11 @@ class TelemetryClient extends EventEmitter {
   handleIncomingData(message) {
     const obj = JSON.parse(message.data);
     if (this.dashboardItemsInitialized) { // Recieving a data packet
-      Object.entries(obj).forEach(([key, value]) => {
-        this.emit(`data-${key}`, key, value);
+      Object.entries(obj).forEach(([key, data]) => { // data contains properties value and timestamp
+        this.emit(`data-${key}`, key, data.value);
       });
     } else { // Receiving first packet with metadata on data points
-      Object.entries(obj).forEach(([key, value]) => { this.dashboardItems[key] = value; });
+      Object.entries(obj).forEach(([key, value]) => { this.dashboardItems[key] = value; }); // value is a DashboardItem
       console.table(this.dashboardItems);
       this.dashboardItemsInitialized = true;
       this.emit('ready');
