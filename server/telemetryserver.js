@@ -3,7 +3,7 @@
 
 const EventEmitter = require('events');
 const WebSocket = require('ws');
-const logger = require('../logger');
+const logger = require('./logger');
 const { DashboardTypes, DashboardItem } = require('./items');
 const SystemMonitor = require('./systemmonitor');
 

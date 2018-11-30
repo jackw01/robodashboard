@@ -3,7 +3,7 @@
 
 const path = require('path');
 const express = require('express');
-const logger = require('../logger');
+const logger = require('./logger');
 
 // Server for main dashboard web app
 class WebDashServer {
@@ -11,7 +11,7 @@ class WebDashServer {
     // Server
     logger.info('Starting web dashboard server...');
     this.app = express();
-    this.app.use(express.static(path.join(__dirname, '..', '..', 'client/build')));
+    this.app.use(express.static(path.join(__dirname, '..', 'client/build')));
     this.app.listen(port);
   }
 }

@@ -1,8 +1,9 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
-const pkg = require('../../package.json');
-const logger = require('../logger');
+const pkg = require('../package.json');
+const logger = require('./logger');
+const { DashboardTypes, DashboardItem, DashboardItemState, DashboardItemControl } = require('./items');
 const WebDashServer = require('./webdashserver');
 const TelemetryServer = require('./telemetryserver');
 
@@ -21,4 +22,11 @@ class Dashboard {
   }
 }
 
-module.exports = Dashboard;
+module.exports = {
+  Dashboard,
+  DashboardTypes,
+  DashboardItem,
+  DashboardItemState,
+  DashboardItemControl,
+  logger,
+};

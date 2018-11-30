@@ -3,7 +3,7 @@
 
 const EventEmitter = require('events');
 const SerialPort = require('serialport');
-const logger = require('../../logger');
+const { logger } = require('../../../../server');
 const constants = require('../constants');
 const Packet = require('./packet');
 const types = require('./types');

@@ -12,7 +12,7 @@
     "client-build": "cd client && react-scripts build",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "dev-server": "cd client && react-scripts build && cd .. && npm run server",
-    "server": "node src/main.js",
+    "server": "node examples/robot-bridge/main.js",
     "test": "ava -v"
   },
   "engines": {
