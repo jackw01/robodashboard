@@ -16,7 +16,7 @@ class LegendItem extends Component {
         &nbsp;
         <svg height={2} width={14}>
           <path
-            d="M 0, 1 L 14, 1"
+            d='M 0, 1 L 14, 1'
             style={{ stroke: this.props.color, strokeWidth: 2 }}
           />
         </svg>&nbsp;

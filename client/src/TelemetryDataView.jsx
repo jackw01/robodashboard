@@ -5,8 +5,9 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Button } from 'reactstrap';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import TelemetryContainer from './TelemetryContainer';
-import storage from './model/storage';
+
 import telemetryClient from './model/telemetryclient';
+import storage from './model/storage';
 
 const SortableTelemetryItem = SortableElement(TelemetryContainer);
 

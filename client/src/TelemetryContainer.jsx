@@ -1,11 +1,12 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, ButtonGroup, Input } from 'reactstrap';
-import PropTypes from 'prop-types';
 import TelemetryGraph from './TelemetryGraph';
 import LegendItem from './LegendItem';
+
 import colors from './model/colors';
 
 class TelemetryContainer extends Component {
@@ -40,7 +41,7 @@ class TelemetryContainer extends Component {
       <div className='telemetry-container'>
         <span className='telemetry-container-description'>{this.props.description}</span>&nbsp;
         <ButtonGroup>
-          <Button color="secondary" onClick={this.toggleVisible.bind(this)}
+          <Button color='secondary' onClick={this.toggleVisible.bind(this)}
             active={this.state.visible}>Graph</Button>
         </ButtonGroup>
         <br/>
@@ -48,8 +49,8 @@ class TelemetryContainer extends Component {
           <div>
             <span className='telemetry-container-body'>
               Duration:&nbsp;
-              <Input className='telemetry-container-input' type="number" step="1"
-                placeholder="Duration" defaultValue={this.props.historyLength}
+              <Input className='telemetry-container-input' type='number' step='1'
+                placeholder='Duration' defaultValue={this.props.historyLength}
                 onChange={this.setHistoryLength.bind(this)}/>s
             </span>
             {this.props.subKeys.length > 0 &&

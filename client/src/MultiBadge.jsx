@@ -1,9 +1,9 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Badge } from 'reactstrap';
-import PropTypes from 'prop-types';
 
 class MultiBadge extends Component {
   static propTypes = {

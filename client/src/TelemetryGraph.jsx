@@ -1,9 +1,10 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, AreaSeries, LineSeries, GradientDefs } from 'react-vis';
-import PropTypes from 'prop-types';
+
 import telemetryClient from './model/telemetryclient';
 import colors from './model/colors';
 import styles from './model/styles';

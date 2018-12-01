@@ -151,3 +151,7 @@ code {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
 }
+
+.location-data-view .plot-flexible-container>div {
+  height: calc(100% - 1em);
+}

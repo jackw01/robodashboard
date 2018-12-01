@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react';
 import MultiBadge from './MultiBadge';
+
 import telemetryClient from './model/telemetryclient';
 
 class StatusIndicatorView extends Component {

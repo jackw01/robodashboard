@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react';
 import { Button, ButtonGroup } from 'reactstrap';
+
 import telemetryClient from './model/telemetryclient';
 
 class ControlsView extends Component {
