@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, ButtonGroup, Input } from 'reactstrap';
+import { Button, ButtonGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
 import TelemetryGraph from './TelemetryGraph';
 import LegendItem from './LegendItem';

@@ -2,14 +2,10 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import MultiBadge from './MultiBadge';
 import telemetryClient from './model/telemetryclient';
 
 class StatusIndicatorView extends Component {
-  static propTypes = {
-  }
-
   constructor(props) {
     super(props);
 

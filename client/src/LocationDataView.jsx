@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
+import { XYPlot, XAxis, YAxis, Hint, HorizontalGridLines, AreaSeries, LineSeries, GradientDefs } from 'react-vis';
 import storage from './model/storage';
 import telemetryClient from './model/telemetryclient';
 

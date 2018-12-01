@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import { Card, CardBody, CardTitle, Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
+import { Card, CardBody, CardTitle, Button } from 'reactstrap';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import TelemetryContainer from './TelemetryContainer';
 import storage from './model/storage';

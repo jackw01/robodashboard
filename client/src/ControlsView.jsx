@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import { Card, CardBody, CardTitle, Container, Row, Col, Button, ButtonGroup } from 'reactstrap';
+import { Button, ButtonGroup } from 'reactstrap';
 import telemetryClient from './model/telemetryclient';
 
 class ControlsView extends Component {
@@ -57,6 +57,7 @@ class ControlsView extends Component {
               </ButtonGroup>
             );
           }
+          return '';
         })}
       </span>
     );

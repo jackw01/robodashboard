@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import { XYPlot, XAxis, YAxis, Hint, HorizontalGridLines, AreaSeries, LineSeries, GradientDefs } from 'react-vis';
+import { XYPlot, XAxis, YAxis, HorizontalGridLines, AreaSeries, LineSeries, GradientDefs } from 'react-vis';
 import PropTypes from 'prop-types';
 import telemetryClient from './model/telemetryclient';
 import colors from './model/colors';
