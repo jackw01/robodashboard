@@ -64,7 +64,7 @@ class TelemetryGraph extends Component {
       <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
         getX={(d) => d[0]} getY={(d) => d[1]}>
         <GradientDefs>
-          <linearGradient id='colorGradient1' x1='0' x2='0' y1='0' y2='0.8'>
+          <linearGradient id='colorGradient1' x1='0' x2='0' y1='0' y2='1'>
             <stop offset='0%' stopColor={colors.primary} stopOpacity={0.75}/>
             <stop offset='100%' stopColor='black' stopOpacity={0} />
           </linearGradient>

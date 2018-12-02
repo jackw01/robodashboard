@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
 import { Card, CardBody, CardTitle, Button, ButtonGroup } from 'reactstrap';
-import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, LineSeries } from 'react-vis';
+import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, LineSeries, PolygonSeries } from 'react-vis';
 
 import telemetryClient from './model/telemetryclient';
 import storage from './model/storage';
@@ -17,10 +17,23 @@ class LocationDataView extends Component {
     this.state = {
       width: 0,
       height: 0,
+      currentData: {},
     };
 
-    telemetryClient.on('ready', () => {
+    this.eventHandler = this.handleIncomingData.bind(this);
 
+    telemetryClient.on('ready', () => {
+      const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
+        return telemetryClient.dashboardItems[k].type === 'location';
+      });
+      if (keys.length) telemetryClient.on(`data-${keys[0]}`, this.eventHandler);
+    });
+  }
+
+  handleIncomingData(key, value) {
+    this.setState((state) => {
+      console.table(value);
+      return { currentData: value };
     });
   }
 
@@ -38,9 +51,9 @@ class LocationDataView extends Component {
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
               <VerticalGridLines style={styles.gridLines}/>
-              <LineSeries key='t' data={[{ x: 0, y: 0 }]} color={colors.primary}/>
               <XAxis top={200} style={styles.axes}/>
               <YAxis left={this.state.width / 2} style={styles.axes}/>
+              <PolygonSeries className="polygon-series-example" data={[{ x: 0, y: 0 }, { x: 20, y: 0 }, { x: 0, y: 20 }]} style={styles.robotPath}/>
             </FlexibleXYPlot>
           </ResizeAware>
         </CardBody>

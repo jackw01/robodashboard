@@ -12,6 +12,10 @@ const styles = {
   gridLines: {
     stroke: colors.gray700,
   },
+  robotPath: {
+    stroke: colors.primary,
+    fill: 'none',
+  },
 }
 
 export default styles;

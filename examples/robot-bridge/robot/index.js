@@ -2,6 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 const EventEmitter = require('events');
+const { LocationValue } = require('../../../server');
 const types = require('./interface/types');
 const Packet = require('./interface/packet');
 const robotInterface = require('./interface/robotinterface');
@@ -28,7 +29,11 @@ class Robot extends EventEmitter {
         if (p.type === types.DataTypeBatteryVoltage) {
           this.emit('telemetry', 'batteryVoltage', p.contents[0]);
         } else if (p.type === types.DataTypeGyro) { // Update position tracker with gyro data and last distance
-          if (this.lastDistance) positionTracker.calculate(this.lastDistance[0], this.lastDistance[1], p.contents[2]);
+          if (this.lastDistance) {
+            positionTracker.calculate(this.lastDistance[0], this.lastDistance[1], p.contents[2]);
+            delete this.lastDistance;
+            this.emit('telemetry', 'location', new LocationValue(positionTracker.getCurrentOdometry(), p.contents[2]));
+          }
           this.emit('telemetry', 'gyroAngle', { roll: p.contents[0], pitch: p.contents[1], heading: p.contents[2] });
         } else if (p.type === types.DataTypeDriveDistance) { // Save drive distance packet to buffer
           this.lastDistance = p.contents;

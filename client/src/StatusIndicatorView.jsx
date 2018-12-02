@@ -9,7 +9,6 @@ import telemetryClient from './model/telemetryclient';
 class StatusIndicatorView extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       status: 'Disconnected',
       readyStatus: 'Not Ready',

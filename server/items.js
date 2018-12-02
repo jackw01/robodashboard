@@ -61,9 +61,17 @@ class DashboardItem {
   }
 }
 
+class LocationValue {
+  constructor(transform, rawHeading) {
+    this.transform = transform;
+    this.rawHeading = rawHeading;
+  }
+}
+
 module.exports = {
   DashboardTypes,
   DashboardItemState,
   DashboardItemControl,
   DashboardItem,
+  LocationValue,
 };
