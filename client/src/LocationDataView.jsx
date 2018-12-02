@@ -32,7 +32,6 @@ class LocationDataView extends Component {
 
   handleIncomingData(key, value) {
     this.setState((state) => {
-      console.table(value);
       return { currentData: value };
     });
   }

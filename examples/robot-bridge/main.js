@@ -38,6 +38,8 @@ dashboard.telemetryServer.registerDashboardItems([
       calibrateGyro: new DashboardItemControl('Calibrate Gyro', 'primary'),
     },
   }),
+  new DashboardItem(DashboardTypes.Location, 'location', {
+  }),
   new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', {
     description: 'Battery Voltage (V)',
     showGraph: true,

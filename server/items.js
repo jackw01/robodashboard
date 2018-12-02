@@ -55,7 +55,11 @@ class DashboardItem {
       controls: {}, // Object containing DashboardItemControls for each key
     }, options);
 
-    this.value = 0;
+    if (this.subKeys.length) {
+      this.value = {};
+      this.subKeys.forEach((k) => { this.value[k] = 0; });
+    } else this.value = 0;
+
     this.timestamp = 0;
     this.lastUpdated = 0;
   }

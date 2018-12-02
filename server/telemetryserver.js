@@ -83,6 +83,7 @@ class TelemetryServer extends EventEmitter {
       this.ws.send(JSON.stringify(obj), () => {});
     }
     this.items[key].value = value;
+    this.items[key].timestamp = timestamp;
   }
 
   messageHandler(message) {
@@ -97,9 +98,9 @@ class TelemetryServer extends EventEmitter {
       const now = new Date();
       const newData = {};
       Object.entries(this.items).forEach(([key, dataPoint]) => {
-        if (this.items[key].isSampled && now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
+        if (dataPoint.isSampled && now - dataPoint.lastUpdated > dataPoint.updateIntervalMs) {
           this.items[key].lastUpdated = now;
-          newData[key] = dataPoint.value;
+          newData[key] = { value: dataPoint.value, timestamp: dataPoint.timestamp };
         }
       });
       if (Object.entries(newData).length > 0) if (this.ws) this.ws.send(JSON.stringify(newData), () => {});
