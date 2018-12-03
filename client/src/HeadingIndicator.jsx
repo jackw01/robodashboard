@@ -9,14 +9,23 @@ import styles from './model/styles';
 
 class HeadingIndicator extends Component {
   static propTypes = {
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    radius: PropTypes.number.isRequired,
     heading: PropTypes.number.isRequired,
   }
 
   render() {
+    const cx = this.props.width / 2;
+    const cy = this.props.height / 2;
+    const x = cx + Math.cos(this.props.heading) * (this.props.radius - 2);
+    const y = cy + Math.sin(this.props.heading) * (this.props.radius - 2);
     return (
-      <svg height={40} width={40} className='heading-indicator'>
-        <circle cx={20} cy={20} r={16} stroke={colors.gray400} fill='none'/>
-          <path d='M 0, 1 L 14, 1' style={{ stroke: this.props.color, strokeWidth: 2 }}/>
+      <svg height={this.props.height} width={this.props.width} className='heading-indicator'>
+        <circle cx={cx} cy={cy} r={this.props.radius} stroke={colors.gray400} fill='none'/>
+          <path
+            d={`M ${cx}, ${cy} L ${x}, ${y}`}
+            style={{ stroke:colors.primary, strokeWidth: 2 }}/>
       </svg>
     );
   }

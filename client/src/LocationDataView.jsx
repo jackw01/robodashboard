@@ -33,6 +33,7 @@ class LocationDataView extends Component {
 
   handleIncomingData(key, value) {
     this.setState({ currentData: value });
+    console.log(value);
   }
 
   handleResize({ width, height }) {
@@ -45,7 +46,7 @@ class LocationDataView extends Component {
         <CardBody>
           <CardTitle>Location</CardTitle>
           <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)}>
-            <HeadingIndicator/>
+            <HeadingIndicator width={40} height={40} radius={16} heading={this.state.currentData.rawHeading}/>
             <FlexibleXYPlot height={400} animation={false} xDomain={[-100, 100]} yDomain={[-100, 100]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
