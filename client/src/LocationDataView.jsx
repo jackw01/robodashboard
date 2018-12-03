@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
 import { Card, CardBody, CardTitle, Button, ButtonGroup } from 'reactstrap';
 import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, LineSeries, PolygonSeries } from 'react-vis';
+import HeadingIndicator from './HeadingIndicator';
 
 import telemetryClient from './model/telemetryclient';
 import storage from './model/storage';
@@ -31,9 +32,7 @@ class LocationDataView extends Component {
   }
 
   handleIncomingData(key, value) {
-    this.setState((state) => {
-      return { currentData: value };
-    });
+    this.setState({ currentData: value });
   }
 
   handleResize({ width, height }) {
@@ -46,6 +45,7 @@ class LocationDataView extends Component {
         <CardBody>
           <CardTitle>Location</CardTitle>
           <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)}>
+            <HeadingIndicator/>
             <FlexibleXYPlot height={400} animation={false} xDomain={[-100, 100]} yDomain={[-100, 100]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>

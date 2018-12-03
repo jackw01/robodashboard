@@ -155,3 +155,7 @@ code {
 .location-data-view .plot-flexible-container>div {
   height: calc(100% - 1em);
 }
+
+.location-data-view .heading-indicator {
+  position: fixed;
+}

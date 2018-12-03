@@ -4,23 +4,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class LegendItem extends Component {
+import colors from './model/colors';
+import styles from './model/styles';
+
+class HeadingIndicator extends Component {
   static propTypes = {
-    color: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
+    heading: PropTypes.number.isRequired,
   }
 
   render() {
     return (
-      <span>
-        &nbsp;
-        <svg height={2} width={14}>
+      <svg height={40} width={40} className='heading-indicator'>
+        <circle cx={20} cy={20} r={16} stroke={colors.gray400} fill='none'/>
           <path d='M 0, 1 L 14, 1' style={{ stroke: this.props.color, strokeWidth: 2 }}/>
-        </svg>&nbsp;
-        <span>{this.props.title}</span>&nbsp;
-      </span>
+      </svg>
     );
   }
 }
 
-export default LegendItem;
+export default HeadingIndicator;
