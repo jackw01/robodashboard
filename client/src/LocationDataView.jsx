@@ -3,8 +3,8 @@
 
 import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
-import { Card, CardBody, CardTitle, Button, ButtonGroup } from 'reactstrap';
-import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, LineSeries, PolygonSeries } from 'react-vis';
+import { Card, CardBody, CardTitle, Button, ButtonGroup, Input } from 'reactstrap';
+import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, PolygonSeries } from 'react-vis';
 import HeadingIndicator from './HeadingIndicator';
 
 import telemetryClient from './model/telemetryclient';
@@ -19,6 +19,7 @@ class LocationDataView extends Component {
       width: 0,
       height: 0,
       currentData: {},
+      headingOffset: 0,
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
@@ -40,13 +41,18 @@ class LocationDataView extends Component {
     this.setState({ width, height });
   }
 
+  setHeadingOffset(event) {
+    this.setState({ headingOffset: event.target.value });
+  }
+
   render() {
     return (
       <Card className='data-view location-data-view'>
         <CardBody>
           <CardTitle>Location</CardTitle>
           <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)}>
-            <HeadingIndicator width={40} height={40} radius={16} heading={this.state.currentData.rawHeading}/>
+            <HeadingIndicator width={40} height={40} radius={16}
+              heading={this.state.currentData.rawHeading + this.state.headingOffset}/>
             <FlexibleXYPlot height={400} animation={false} xDomain={[-100, 100]} yDomain={[-100, 100]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
@@ -56,6 +62,13 @@ class LocationDataView extends Component {
               <PolygonSeries className="polygon-series-example" data={[{ x: 0, y: 0 }, { x: 20, y: 0 }, { x: 0, y: 20 }]} style={styles.robotPath}/>
             </FlexibleXYPlot>
           </ResizeAware>
+          <br/>
+          <div>
+            Heading Offset:&nbsp;
+            <Input className='input-inline-short' type='number' step='0.01' bsSize="sm"
+              placeholder='Heading Offset' defaultValue={this.state.headingOffset}
+              onChange={this.setHeadingOffset.bind(this)}/>
+          </div>
         </CardBody>
       </Card>
     );
