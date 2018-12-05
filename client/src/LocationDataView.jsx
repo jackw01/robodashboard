@@ -19,7 +19,7 @@ class LocationDataView extends Component {
       width: 0,
       height: 0,
       currentData: {},
-      headingOffset: 0,
+      headingOffset: storage.read('headingOffset', 0),
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
@@ -42,7 +42,9 @@ class LocationDataView extends Component {
   }
 
   setHeadingOffset(event) {
-    this.setState({ headingOffset: event.target.value });
+    const newOffset = parseFloat(event.target.value);
+    storage.write('headingOffset', newOffset);
+    this.setState({ headingOffset: newOffset });
   }
 
   render() {
