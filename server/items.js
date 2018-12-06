@@ -66,9 +66,10 @@ class DashboardItem {
 }
 
 class LocationValue {
-  constructor(transform, rawHeading) {
+  constructor(transform, rawHeading, reset) {
     this.transform = transform;
     this.rawHeading = rawHeading;
+    this.reset = reset;
   }
 }
 

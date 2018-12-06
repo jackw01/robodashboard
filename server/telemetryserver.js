@@ -75,7 +75,6 @@ class TelemetryServer extends EventEmitter {
   }
 
   setValueForDashboardItem(key, value, timestampIn) {
-    if (key === 'location') console.log('loc');
     const timestamp = timestampIn || Date.now(); // Get timestamp
     // If the value is not meant to be sampled at a regular interval, send it now
     if (this.ws && !this.items[key].isSampled) {

@@ -35,11 +35,11 @@ class LocationDataView extends Component {
 
   handleIncomingData(key, value) {
     this.setState((state) => {
-      const newOdometryHistory = state.odometryHistory;
+      let newOdometryHistory = state.odometryHistory;
+      if (value.reset) newOdometryHistory = [];
       newOdometryHistory.push(value.transform);
       return { currentData: value, odometryHistory: newOdometryHistory };
     });
-    console.log(value);
   }
 
   handleResize({ width, height }) {

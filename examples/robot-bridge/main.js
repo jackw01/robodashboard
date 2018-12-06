@@ -38,6 +38,11 @@ dashboard.telemetryServer.registerDashboardItems([
       calibrateGyro: new DashboardItemControl('Calibrate Gyro', 'primary'),
     },
   }),
+  new DashboardItem(DashboardTypes.ButtonGroup, 'resetOdometry', {
+    controls: {
+      resetOdometry: new DashboardItemControl('Reset Odometry', 'primary'),
+    },
+  }),
   new DashboardItem(DashboardTypes.Location, 'location', {
   }),
   new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', {
@@ -93,6 +98,7 @@ robot.on('telemetry', dashboard.telemetryServer.setValueForDashboardItem.bind(da
 dashboard.telemetryServer.on('controlClick', (key) => {
   logger.info(`Dashboard control clicked: ${key}`);
   if (key === 'calibrateGyro') robot.calibrateGyro();
+  else if (key === 'resetOdometry') robot.resetOdometry();
   else if (key === 'disabled') robot.drive.disable();
   else if (key === 'enabled') robot.drive.enable();
 });

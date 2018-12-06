@@ -14,10 +14,11 @@ class PositionTracker {
   // Assuming that angle changes continuously over the course of the robot's movement, deltaAngle is divided by 2
   // to get the average angle during this tick and predict how the heading changes affect the direction of movement
   calculate(leftDistance, rightDistance, deltaAngle) {
+    console.log((leftDistance + rightDistance) / 2.0, deltaAngle);
     const currentDistance = (leftDistance + rightDistance) / 2.0;
     const deltaP = new transform.Translation2D(currentDistance - this.oldDistance, 0);
     const deltaR = transform.Rotation2DFromRadians(-deltaAngle);
-    const halfR = transform.Rotation2DFromRadians(deltaR.getRadians() / 2.0);
+    const halfR = transform.Rotation2DFromRadians(-deltaAngle / 2.0);
     this.transform = this.transform.transform(new transform.RigidTransform2D(deltaP.rotateBy(halfR), deltaR));
     this.oldDistance = currentDistance;
     this.oldLeftDistance = leftDistance;
@@ -34,6 +35,15 @@ class PositionTracker {
     this.oldDistance = 0;
     this.oldLeftDistance = 0;
     this.oldRightDistance = 0;
+    this.reset = true;
+  }
+
+  getReset() {
+    if (this.reset) {
+      this.reset = false;
+      return true;
+    }
+    return false;
   }
 }
 

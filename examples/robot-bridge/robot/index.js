@@ -32,7 +32,8 @@ class Robot extends EventEmitter {
           if (this.lastDistance) {
             positionTracker.calculate(this.lastDistance[0], this.lastDistance[1], -p.contents[2]);
             delete this.lastDistance;
-            this.emit('telemetry', 'location', new LocationValue(positionTracker.getCurrentOdometry(), -p.contents[2]));
+            this.emit('telemetry', 'location',
+              new LocationValue(positionTracker.getCurrentOdometry(), -p.contents[2], positionTracker.getReset()));
           }
           this.emit('telemetry', 'gyroAngle', { roll: p.contents[0], pitch: p.contents[1], heading: -p.contents[2] });
         } else if (p.type === types.DataTypeDriveDistance) { // Save drive distance packet to buffer
@@ -49,6 +50,11 @@ class Robot extends EventEmitter {
       this.receivingData = true;
       this.lastDataTime = Date.now();
     });
+  }
+
+  resetOdometry() {
+    robotInterface.writePacket(new Packet(types.CmdTypeResetDrive, 1));
+    positionTracker.resetOdometry();
   }
 
   calibrateGyro() {

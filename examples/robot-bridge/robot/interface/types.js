@@ -15,4 +15,5 @@ module.exports = Object.freeze({
   CmdTypeSetDrivePIDTuning: 4,
   CmdTypeSetAllStatusLEDs: 5,
   CmdTypeCalibrateGyro: 6,
+  CmdTypeResetDrive: 7,
 });
