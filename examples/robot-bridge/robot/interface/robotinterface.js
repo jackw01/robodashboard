@@ -60,7 +60,7 @@ class RobotInterface extends EventEmitter {
         newPackets.push(new Packet(type, contents));
         this.packetBuffer.push(new Packet(type, contents));
       }
-      logger.info(`Recieved packets ${JSON.stringify(newPackets)}`);
+      logger.debug(`Recieved packets ${JSON.stringify(newPackets)}`);
       this.emit('data', newPackets);
     });
   }

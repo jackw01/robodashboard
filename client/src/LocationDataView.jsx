@@ -20,6 +20,7 @@ class LocationDataView extends Component {
       height: 0,
       currentData: {},
       headingOffset: storage.read('headingOffset', 0),
+      odometryHistory: [],
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
@@ -33,7 +34,11 @@ class LocationDataView extends Component {
   }
 
   handleIncomingData(key, value) {
-    this.setState({ currentData: value });
+    this.setState((state) => {
+      const newOdometryHistory = state.odometryHistory;
+      newOdometryHistory.push(value.transform);
+      return { currentData: value, odometryHistory: newOdometryHistory };
+    });
     console.log(value);
   }
 
@@ -61,7 +66,8 @@ class LocationDataView extends Component {
               <VerticalGridLines style={styles.gridLines}/>
               <XAxis top={200} style={styles.axes}/>
               <YAxis left={this.state.width / 2} style={styles.axes}/>
-              <PolygonSeries className="polygon-series-example" data={[{ x: 0, y: 0 }, { x: 20, y: 0 }, { x: 0, y: 20 }]} style={styles.robotPath}/>
+              <PolygonSeries className="polygon-series-example" data={this.state.odometryHistory}
+                style={styles.robotPath} getX={(d) => d.translation.x} getY={(d) => d.translation.y}/>
             </FlexibleXYPlot>
           </ResizeAware>
           <br/>
