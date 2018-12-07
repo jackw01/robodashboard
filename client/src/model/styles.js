@@ -16,6 +16,11 @@ const styles = {
     stroke: colors.primary,
     fill: 'none',
   },
+  robotPosition: {
+    stroke: 'none',
+    fill: colors.primary,
+    opacity: 0.6,
+  },
 }
 
 export default styles;

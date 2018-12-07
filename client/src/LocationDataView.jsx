@@ -4,7 +4,8 @@
 import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
 import { Card, CardBody, CardTitle, Button, ButtonGroup, Input } from 'reactstrap';
-import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, PolygonSeries } from 'react-vis';
+import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, MarkSeries } from 'react-vis';
+import OpenPolygonSeries from './OpenPolygonSeries';
 import HeadingIndicator from './HeadingIndicator';
 
 import telemetryClient from './model/telemetryclient';
@@ -66,8 +67,10 @@ class LocationDataView extends Component {
               <VerticalGridLines style={styles.gridLines}/>
               <XAxis top={200} style={styles.axes}/>
               <YAxis left={this.state.width / 2} style={styles.axes}/>
-              <PolygonSeries className="polygon-series-example" data={this.state.odometryHistory}
-                style={styles.robotPath} getX={(d) => d.translation.x} getY={(d) => d.translation.y}/>
+              <OpenPolygonSeries style={styles.robotPath} data={this.state.odometryHistory}
+                getX={(d) => d.translation.x} getY={(d) => d.translation.y}/>
+              <MarkSeries size={3} style={styles.robotPosition}
+                data={this.state.currentData.transform ? [this.state.currentData.transform.translation] : []}/>
             </FlexibleXYPlot>
           </ResizeAware>
           <br/>
