@@ -20,8 +20,9 @@ class LocationDataView extends Component {
       width: 0,
       height: 0,
       currentData: {},
-      headingOffset: storage.read('headingOffset', 0),
       odometryHistory: [],
+      headingOffset: storage.read('headingOffset', 0),
+      positionOffset: { x: 0, y: 0 },
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
@@ -37,7 +38,10 @@ class LocationDataView extends Component {
   handleIncomingData(key, value) {
     this.setState((state) => {
       let newOdometryHistory = state.odometryHistory;
-      if (value.reset) newOdometryHistory = [];
+      if (value.reset) {
+        newOdometryHistory = [];
+        this.setState({ positionOffset: { x: 0, y: 0 }});
+      }
       newOdometryHistory.push(value.transform);
       return { currentData: value, odometryHistory: newOdometryHistory };
     });
@@ -47,10 +51,27 @@ class LocationDataView extends Component {
     this.setState({ width, height });
   }
 
+  zeroPosition(event) {
+    if (this.state.currentData.transform) {
+      this.setState({ positionOffset: {
+        x: -this.state.currentData.transform.translation.x,
+        y: -this.state.currentData.transform.translation.y,
+      }});
+    }
+  }
+
   setHeadingOffset(event) {
     const newOffset = parseFloat(event.target.value);
     storage.write('headingOffset', newOffset);
     this.setState({ headingOffset: newOffset });
+  }
+
+  getOffsetX(d) {
+    return d.translation.x + this.state.positionOffset.x;
+  }
+
+  getOffsetY(d) {
+    return d.translation.y + this.state.positionOffset.y;
   }
 
   render() {
@@ -68,15 +89,18 @@ class LocationDataView extends Component {
               <XAxis top={200} style={styles.axes}/>
               <YAxis left={this.state.width / 2} style={styles.axes}/>
               <OpenPolygonSeries style={styles.robotPath} data={this.state.odometryHistory}
-                getX={(d) => d.translation.x} getY={(d) => d.translation.y}/>
+                getX={this.getOffsetX.bind(this)} getY={this.getOffsetY.bind(this)}/>
               <MarkSeries size={3} style={styles.robotPosition}
-                data={this.state.currentData.transform ? [this.state.currentData.transform.translation] : []}/>
+                data={this.state.currentData.transform ? [this.state.currentData.transform] : []}
+                getX={this.getOffsetX.bind(this)} getY={this.getOffsetY.bind(this)}/>
             </FlexibleXYPlot>
           </ResizeAware>
           <br/>
           <div>
+            <Button color='secondary' size='sm' onClick={this.zeroPosition.bind(this)}>Zero Position</Button>
+            &nbsp;
             Heading Offset:&nbsp;
-            <Input className='input-inline-short' type='number' step='0.01' bsSize="sm"
+            <Input className='input-inline-short' type='number' step='0.01' bsSize='sm'
               placeholder='Heading Offset' defaultValue={this.state.headingOffset}
               onChange={this.setHeadingOffset.bind(this)}/>
           </div>
