@@ -35,7 +35,7 @@ class TelemetryGraph extends Component {
       let ready = state.ready;
       if (state.lastHistoryLength !== this.props.historyLength) ready = {};
       let data = state.data;
-      if (typeof value === 'object') {
+      if (typeof value === 'object' && value) {
         Object.entries(value).forEach(([k, v]) => {
           if (!ready[k]) {
             data[k] = [];
