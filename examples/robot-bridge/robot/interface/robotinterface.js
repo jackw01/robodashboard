@@ -16,8 +16,22 @@ function isFloat(value) {
 class RobotInterface extends EventEmitter {
   constructor() {
     super();
+    this.receivingData = false;
+    this.lastDataTime = 0;
     this.serialBuffer = '';
     this.packetBuffer = [];
+
+    // Heartbeat ping message to let dashboard know if the server is receiving data
+    setInterval(() => {
+      // If robot has been disconnected for a while, clear out the buffers
+      if (Date.now() - this.lastDataTime > 5000) {
+        this.serialBuffer = '';
+        this.packetBuffer = [];
+        this.receivingData = false;
+      }
+      this.emit('receivingData', this.receivingData);
+    }, 1000);
+
     this.serial = new SerialPort(constants.Port, { baudRate: constants.BaudRate }, (err) => {
       if (err) logger.error(err.message);
       else logger.info('Serial port opened.');
@@ -62,6 +76,8 @@ class RobotInterface extends EventEmitter {
       }
       logger.debug(`Recieved packets ${JSON.stringify(newPackets)}`);
       this.emit('data', newPackets);
+      this.receivingData = true;
+      this.lastDataTime = Date.now();
     });
   }
 

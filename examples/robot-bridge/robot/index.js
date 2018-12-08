@@ -13,15 +13,12 @@ const Drive = require('./drive');
 class Robot extends EventEmitter {
   constructor() {
     super();
-    this.receivingData = false;
-    this.lastDataTime = 0;
     this.drive = new Drive();
 
-    // Heartbeat ping message to let dashboard know if the server is receiving data
-    setInterval(() => {
-      if (Date.now() - this.lastDataTime > 5000) this.receivingData = false;
-      this.emit('telemetry', 'receivingData', this.receivingData ? 'receivingData' : 'notReceivingData');
-    }, 1000);
+    // Ping message to let dashboard know if the server is receiving data
+    robotInterface.on('receivingData', (state) => {
+      this.emit('telemetry', 'receivingData', state ? 'receivingData' : 'notReceivingData');
+    });
 
     // Event handler for packets
     robotInterface.on('data', (packets) => {
@@ -46,9 +43,6 @@ class Robot extends EventEmitter {
           this.emit('telemetry', 'avrFreeRAM', p.contents[0]);
         }
       });
-
-      this.receivingData = true;
-      this.lastDataTime = Date.now();
     });
   }
 
