@@ -52,7 +52,7 @@ class Robot extends EventEmitter {
   }
 
   calibrateGyro() {
-    robotInterface.writePacket(new Packet(types.CmdTypeCalibrateGyro, 1));
+    robotInterface.writePacket(new Packet(types.CmdTypeCalibrateGyro, 500));
   }
 
   update() {
