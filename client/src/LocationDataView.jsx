@@ -67,11 +67,13 @@ class LocationDataView extends Component {
   }
 
   getOffsetX(d) {
-    return d.translation.x + this.state.positionOffset.x;
+    return (d.translation.x + this.state.positionOffset.x) * Math.cos(this.state.headingOffset) -
+           (d.translation.y + this.state.positionOffset.y) * Math.sin(this.state.headingOffset);
   }
 
   getOffsetY(d) {
-    return d.translation.y + this.state.positionOffset.y;
+    return (d.translation.x + this.state.positionOffset.x) * Math.sin(this.state.headingOffset) +
+           (d.translation.y + this.state.positionOffset.y) * Math.cos(this.state.headingOffset);
   }
 
   render() {
@@ -81,8 +83,8 @@ class LocationDataView extends Component {
           <CardTitle>Location</CardTitle>
           <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)}>
             <HeadingIndicator width={40} height={40} radius={16}
-              heading={this.state.currentData.rawHeading + this.state.headingOffset}/>
-            <FlexibleXYPlot height={400} animation={false} xDomain={[-100, 100]} yDomain={[-100, 100]}
+              heading={this.state.currentData.rawHeading - this.state.headingOffset}/>
+            <FlexibleXYPlot height={400} animation={false} xDomain={[-200, 200]} yDomain={[-200, 200]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
               <VerticalGridLines style={styles.gridLines}/>
