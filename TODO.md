@@ -17,7 +17,7 @@
 - [x] display current heading
 - [x] editable location position offset
 - [x] editable location heading offset
-- [ ] show numerical data value in real time
+- [x] show numerical data value in real time
 - [ ] location graph hints
 - [ ] base graph x axis on timestamps
 - [ ] location view zooming

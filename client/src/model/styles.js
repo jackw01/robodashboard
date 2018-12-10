@@ -7,7 +7,8 @@ const styles = {
   axes: {
     line: { stroke: colors.gray600 },
     ticks: { stroke: colors.gray300 },
-    text: { stroke: 'none', fill: colors.gray200, fontWeight: 400, fontSize: 9 }
+    text: { stroke: 'none', fill: colors.gray200, fontWeight: 400, fontSize: 9 },
+    title: { stroke: 'none', fill: colors.gray200, fontWeight: 400, fontSize: 11 }
   },
   gridLines: {
     stroke: colors.gray700,

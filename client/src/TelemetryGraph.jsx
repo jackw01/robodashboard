@@ -75,7 +75,12 @@ class TelemetryGraph extends Component {
             fill={(Object.keys(this.state.data).length === 1) ? 'url(#colorGradient1)' : ''}/>);
           else return (<LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>);
         })}
-        <XAxis style={styles.axes}/>
+        <XAxis style={styles.axes}
+          title={Object.keys(this.state.data).map((k, i) => {
+            if (this.state.data[k].length > 0) {
+              return this.state.data[k][this.state.data[k].length - 1][1].toFixed(2);
+            } else return '';
+          }).join(', ')}/>
         <YAxis style={styles.axes}/>
       </XYPlot>
     );
