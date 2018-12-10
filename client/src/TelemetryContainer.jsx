@@ -10,6 +10,10 @@ import LegendItem from './LegendItem';
 import colors from './model/colors';
 
 class TelemetryContainer extends Component {
+  static ModeHidden = 0;
+  static ModeGraph = 1;
+  static ModeValue = 2;
+
   static propTypes = {
     dataKey: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
@@ -17,18 +21,18 @@ class TelemetryContainer extends Component {
     historyLength: PropTypes.number.isRequired,
     historyLengthMultiplier: PropTypes.number.isRequired,
     subKeys: PropTypes.array,
-    visible: PropTypes.bool,
+    mode: PropTypes.number,
     onVisibilityChange: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-    this.state = { visible: this.props.visible, historyLength: this.props.historyLength };
+    this.state = { mode: this.props.mode, historyLength: this.props.historyLength };
   }
 
-  toggleVisible() {
-    this.setState({ visible: !this.state.visible }, () => {
-      this.props.onVisibilityChange(this.props.dataKey, this.state.visible);
+  toggleGraphVisible() {
+    this.setState({ mode: this.ModeGraph }, () => {
+      this.props.onVisibilityChange(this.props.dataKey, this.state.mode);
     });
   }
 
@@ -41,11 +45,11 @@ class TelemetryContainer extends Component {
       <div className='telemetry-container'>
         <span className='telemetry-container-description'>{this.props.description}</span>&nbsp;
         <ButtonGroup>
-          <Button color='secondary' onClick={this.toggleVisible.bind(this)}
-            active={this.state.visible}>Graph</Button>
+          <Button color='secondary' onClick={this.toggleGraphVisible.bind(this)}
+            active={this.state.mode === this.ModeGraph}>Graph</Button>
         </ButtonGroup>
         <br/>
-        {this.state.visible &&
+        {this.state.mode === this.ModeGraph &&
           <div>
             <span className='telemetry-container-body'>
               Duration:&nbsp;

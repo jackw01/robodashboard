@@ -18,6 +18,8 @@
 - [x] editable location position offset
 - [x] editable location heading offset
 - [x] show numerical data value in real time
+- [ ] show large numerical data instead of graph
+- [ ] save graph duration in local storage
 - [ ] location graph hints
 - [ ] base graph x axis on timestamps
 - [ ] location view zooming

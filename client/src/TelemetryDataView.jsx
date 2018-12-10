@@ -11,7 +11,7 @@ import storage from './model/storage';
 
 const SortableTelemetryItem = SortableElement(TelemetryContainer);
 
-const SortableList = SortableContainer(({ items, dashboardItems, visibility, onVisibilityChange }) => {
+const SortableList = SortableContainer(({ items, dashboardItems, mode, onVisibilityChange }) => {
   return (
     <div>
       {items.map((k, i) => {
@@ -26,7 +26,7 @@ const SortableList = SortableContainer(({ items, dashboardItems, visibility, onV
             historyLength={dp.historyLengthS}
             historyLengthMultiplier={1000 / dp.updateIntervalMs}
             subKeys={dp.subKeys}
-            visible={visibility[k]}
+            mode={mode[k]}
             onVisibilityChange={onVisibilityChange}/>
         );
       })}
@@ -43,8 +43,8 @@ class TelemetryDataView extends Component {
     };
 
     telemetryClient.on('ready', () => {
-      const visibility = {};
-      Object.keys(telemetryClient.dashboardItems).forEach((k) => { visibility[k] = false; });
+      const mode = {};
+      Object.keys(telemetryClient.dashboardItems).forEach((k) => { mode[k] = TelemetryContainer.ModeHidden; });
       const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
         return telemetryClient.dashboardItems[k].showGraph;
       });
@@ -54,7 +54,7 @@ class TelemetryDataView extends Component {
       }
       this.setState({
         items: storage.read('telemetryDataListOrder', keys),
-        visibility: storage.read('telemetryDataListVisibility', visibility),
+        mode: storage.read('telemetryDataListVisibility', mode),
         dashboardItems: telemetryClient.dashboardItems,
       });
     });
@@ -62,21 +62,21 @@ class TelemetryDataView extends Component {
 
   toggleAllGraphs() {
     this.setState((state) => {
-      const newToggleState = !state.visibilityToggle;
-      const newVisibility = state.visibility;
-      Object.keys(newVisibility).forEach((k) => { newVisibility[k] = newToggleState; });
+      const newToggleState = TelemetryContainer.ModeHidden; // Fix
+      const newMode = state.mode;
+      Object.keys(newMode).forEach((k) => { newMode[k] = newToggleState; });
       storage.write('telemetryDataListVisibilityToggle', newToggleState);
-      storage.write('telemetryDataListVisibility', newVisibility);
-      return { visibility: newVisibility, visibilityToggle: newToggleState };
+      storage.write('telemetryDataListVisibility', newMode);
+      return { visibility: newMode, visibilityToggle: newToggleState };
     });
   };
 
-  onGraphVisibilityChange(key, newState) {
+  onVisibilityChange(key, newState) {
     this.setState((state) => {
-      const newVisibility = state.visibility;
-      newVisibility[key] = newState;
-      storage.write('telemetryDataListVisibility', newVisibility);
-      return { visibility: newVisibility };
+      const newMode = state.mode;
+      newMode[key] = newState;
+      storage.write('telemetryDataListVisibility', newMode);
+      return { mode: newMode };
     });
   }
 
@@ -96,7 +96,7 @@ class TelemetryDataView extends Component {
             active={this.state.visibilityToggle}>Toggle All</Button>
           </CardTitle>
           <SortableList items={this.state.items} dashboardItems={this.state.dashboardItems}
-            visibility={this.state.visibility} onVisibilityChange={this.onGraphVisibilityChange.bind(this)}
+            mode={this.state.mode} onVisibilityChange={this.onVisibilityChange.bind(this)}
             key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
             pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
         </CardBody>
