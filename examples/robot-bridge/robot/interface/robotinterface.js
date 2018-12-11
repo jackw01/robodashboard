@@ -17,6 +17,7 @@ class RobotInterface extends EventEmitter {
   constructor() {
     super();
     this.receivingData = false;
+    this.lastState = true;
     this.lastDataTime = 0;
     this.serialBuffer = '';
     this.packetBuffer = [];
@@ -29,7 +30,10 @@ class RobotInterface extends EventEmitter {
         this.packetBuffer = [];
         this.receivingData = false;
       }
-      this.emit('receivingData', this.receivingData);
+      if (this.receivingData !== this.lastState) {
+        this.lastState = this.receivingData;
+        this.emit('receivingData', this.receivingData);
+      }
     }, 1000);
 
     this.serial = new SerialPort(constants.Port, { baudRate: constants.BaudRate }, (err) => {

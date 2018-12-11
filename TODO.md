@@ -33,6 +33,7 @@
 - [x] path following
 - [x] drivebase controls
 - [x] reporting all data from robot
+- [x] log robot connection events
 - [ ] LED controls
 - [ ] drive with joystick
 
