@@ -38,12 +38,17 @@ class LocationDataView extends Component {
   handleIncomingData(key, value) {
     this.setState((state) => {
       let newOdometryHistory = state.odometryHistory;
+      let positionOffset = state.positionOffset;
       if (value.reset) {
         newOdometryHistory = [];
-        this.setState({ positionOffset: { x: 0, y: 0 }});
+        positionOffset = { x: 0, y: 0 };
       }
-      newOdometryHistory.push(value.transform);
-      return { currentData: value, odometryHistory: newOdometryHistory };
+      const lastTransform = newOdometryHistory[newOdometryHistory.length - 1] || { translation: { x: 0, y: 0 } };
+      if (value.transform.translation.x !== lastTransform.translation.x ||
+        value.transform.translation.y !== lastTransform.translation.y) {
+        newOdometryHistory.push(value.transform);
+      }
+      return { currentData: value, odometryHistory: newOdometryHistory, positionOffset: positionOffset };
     });
   }
 
