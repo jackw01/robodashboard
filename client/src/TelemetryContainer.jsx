@@ -31,7 +31,10 @@ class TelemetryContainer extends Component {
   }
 
   toggleGraphVisible() {
-    this.setState({ mode: this.ModeGraph }, () => {
+    const newMode =
+      this.state.mode === TelemetryContainer.ModeGraph ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeGraph;
+    this.setState({ mode: newMode }, () => {
+      console.log(this.state.mode);
       this.props.onVisibilityChange(this.props.dataKey, this.state.mode);
     });
   }
@@ -46,10 +49,10 @@ class TelemetryContainer extends Component {
         <span className='telemetry-container-description'>{this.props.description}</span>&nbsp;
         <ButtonGroup>
           <Button color='secondary' onClick={this.toggleGraphVisible.bind(this)}
-            active={this.state.mode === this.ModeGraph}>Graph</Button>
+            active={this.state.mode === TelemetryContainer.ModeGraph}>Graph</Button>
         </ButtonGroup>
         <br/>
-        {this.state.mode === this.ModeGraph &&
+        {this.state.mode === TelemetryContainer.ModeGraph &&
           <div>
             <span className='telemetry-container-body'>
               Duration:&nbsp;
