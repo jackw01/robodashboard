@@ -81,8 +81,7 @@ class TelemetryContainer extends Component {
             }
             <TelemetryGraph height={100} width={300} dataKey={this.props.dataKey}
               historyLength={this.state.historyLength * this.props.historyLengthMultiplier}
-              range={this.props.range}
-            />
+              range={this.props.range}/>
           </div>
         }
         {this.state.mode === TelemetryContainer.ModeValue &&
@@ -95,15 +94,8 @@ class TelemetryContainer extends Component {
                 ))}
               </span>
             }
-            <span className='telemetry-container-value-text'>
-              &nbsp;
-              {this.props.subKeys.map((subKey, i) => (
-                <LegendItem key={subKey} color={colors.array[i]} title={subKey}/>
-              ))}
-            </span>
             <TelemetryGraph height={100} width={300} dataKey={this.props.dataKey} historyLength={2}
-              range={this.props.range} valueOnly
-            />
+              range={this.props.range} valueOnly/>
           </div>
         }
       </div>

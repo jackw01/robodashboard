@@ -85,13 +85,18 @@ class TelemetryGraph extends Component {
             }).join(', ')}/>
           <YAxis style={styles.axes}/>
         </XYPlot>}
-        {this.props.valueOnly && <span>
+        {this.props.valueOnly && <div className='telemetry-value-text'>
           {Object.keys(this.state.data).map((k, i) => {
             if (this.state.data[k].length > 0) {
-              return this.state.data[k][this.state.data[k].length - 1][1].toFixed(2);
+              return (<span>
+                <span style={{ color: colors.array[i] }}>
+                  {this.state.data[k][this.state.data[k].length - 1][1].toFixed(2)}
+                </span>
+                {i < Object.keys(this.state.data).length - 1 ? ', ' : ''}
+              </span>);
             } else return '';
-          }).join(', ')}
-        </span>}
+          })}
+        </div>}
       </div>
     );
   }
