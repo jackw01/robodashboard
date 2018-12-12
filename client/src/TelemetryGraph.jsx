@@ -16,6 +16,7 @@ class TelemetryGraph extends Component {
     width: PropTypes.number,
     range: PropTypes.array,
     historyLength: PropTypes.number.isRequired,
+    valueOnly: PropTypes.bool,
   }
 
   constructor(props) {
@@ -61,28 +62,37 @@ class TelemetryGraph extends Component {
   render() {
     const graphType = Object.keys(this.state.data).length === 1;
     return (
-      <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
-        getX={(d) => d[0]} getY={(d) => d[1]}>
-        <GradientDefs>
-          <linearGradient id='colorGradient1' x1='0' x2='0' y1='0' y2='1'>
-            <stop offset='0%' stopColor={colors.primary} stopOpacity={0.75}/>
-            <stop offset='100%' stopColor='black' stopOpacity={0} />
-          </linearGradient>
-        </GradientDefs>
-        <HorizontalGridLines style={styles.gridLines}/>
-        {Object.keys(this.state.data).map((k, i) => {
-          if (graphType) return (<AreaSeries key={k} data={this.state.data[k]} color={colors.array[i]}
-            fill={(Object.keys(this.state.data).length === 1) ? 'url(#colorGradient1)' : ''}/>);
-          else return (<LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>);
-        })}
-        <XAxis style={styles.axes} position='start'
-          title={Object.keys(this.state.data).map((k, i) => {
+      <div>
+        {!this.props.valueOnly && <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
+          getX={(d) => d[0]} getY={(d) => d[1]}>
+          <GradientDefs>
+            <linearGradient id='colorGradient1' x1='0' x2='0' y1='0' y2='1'>
+              <stop offset='0%' stopColor={colors.primary} stopOpacity={0.75}/>
+              <stop offset='100%' stopColor='black' stopOpacity={0} />
+            </linearGradient>
+          </GradientDefs>
+          <HorizontalGridLines style={styles.gridLines}/>
+          {Object.keys(this.state.data).map((k, i) => {
+            if (graphType) return (<AreaSeries key={k} data={this.state.data[k]} color={colors.array[i]}
+              fill={(Object.keys(this.state.data).length === 1) ? 'url(#colorGradient1)' : ''}/>);
+            else return (<LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>);
+          })}
+          <XAxis style={styles.axes} position='start'
+            title={Object.keys(this.state.data).map((k, i) => {
+              if (this.state.data[k].length > 0) {
+                return this.state.data[k][this.state.data[k].length - 1][1].toFixed(2);
+              } else return '';
+            }).join(', ')}/>
+          <YAxis style={styles.axes}/>
+        </XYPlot>}
+        {this.props.valueOnly && <span>
+          {Object.keys(this.state.data).map((k, i) => {
             if (this.state.data[k].length > 0) {
               return this.state.data[k][this.state.data[k].length - 1][1].toFixed(2);
             } else return '';
-          }).join(', ')}/>
-        <YAxis style={styles.axes}/>
-      </XYPlot>
+          }).join(', ')}
+        </span>}
+      </div>
     );
   }
 }
