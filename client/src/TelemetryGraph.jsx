@@ -12,6 +12,7 @@ import styles from './model/styles';
 class TelemetryGraph extends Component {
   static propTypes = {
     dataKey: PropTypes.string.isRequired,
+    unitSymbol: PropTypes.string,
     height: PropTypes.number,
     width: PropTypes.number,
     range: PropTypes.array,
@@ -90,7 +91,7 @@ class TelemetryGraph extends Component {
             if (this.state.data[k].length > 0) {
               return (<span>
                 <span style={{ color: colors.array[i] }}>
-                  {this.state.data[k][this.state.data[k].length - 1][1].toFixed(2)}
+                  {this.state.data[k][this.state.data[k].length - 1][1].toFixed(2)}{this.props.unitSymbol}
                 </span>
                 {i < Object.keys(this.state.data).length - 1 ? ', ' : ''}
               </span>);

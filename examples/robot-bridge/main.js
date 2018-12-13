@@ -46,7 +46,8 @@ dashboard.telemetryServer.registerDashboardItems([
   new DashboardItem(DashboardTypes.Location, 'location', {
   }),
   new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', {
-    description: 'Battery Voltage (V)',
+    description: 'Battery Voltage',
+    unitSymbol: 'V',
     showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,
@@ -54,6 +55,7 @@ dashboard.telemetryServer.registerDashboardItems([
   }),
   new DashboardItem(DashboardTypes.Numeric, 'gyroAngle', {
     description: 'Gyro Relative Angle',
+    unitSymbol: '°',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
@@ -61,7 +63,8 @@ dashboard.telemetryServer.registerDashboardItems([
     subKeys: ['roll', 'pitch', 'heading'],
   }),
   new DashboardItem(DashboardTypes.Numeric, 'driveEncoderDistance', {
-    description: 'Drive Distance (mm)',
+    description: 'Drive Distance',
+    unitSymbol: 'mm',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
@@ -69,7 +72,8 @@ dashboard.telemetryServer.registerDashboardItems([
     subKeys: ['left', 'right'],
   }),
   new DashboardItem(DashboardTypes.Numeric, 'driveEncoderVelocity', {
-    description: 'Drive Surface Velocity (mm/s)',
+    description: 'Drive Surface Velocity',
+    unitSymbol: 'mm/s',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
@@ -77,7 +81,8 @@ dashboard.telemetryServer.registerDashboardItems([
     subKeys: ['left', 'right'],
   }),
   new DashboardItem(DashboardTypes.Numeric, 'driveOutput', {
-    description: 'Drive Output Power (%)',
+    description: 'Drive Output Power',
+    unitSymbol: '%',
     showGraph: true,
     updateIntervalMs: 100,
     historyLengthS: 5,
@@ -86,7 +91,8 @@ dashboard.telemetryServer.registerDashboardItems([
     subKeys: ['left', 'right'],
   }),
   new DashboardItem(DashboardTypes.Numeric, 'avrFreeRAM', {
-    description: 'AVR Free RAM (B)',
+    description: 'AVR Free RAM',
+    unitSymbol: 'B',
     showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,

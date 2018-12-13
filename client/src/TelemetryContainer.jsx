@@ -17,6 +17,7 @@ class TelemetryContainer extends Component {
   static propTypes = {
     dataKey: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    unitSymbol: PropTypes.string,
     range: PropTypes.array,
     historyLength: PropTypes.number.isRequired,
     historyLengthMultiplier: PropTypes.number.isRequired,
@@ -55,7 +56,8 @@ class TelemetryContainer extends Component {
   render() {
     return (
       <div className='telemetry-container'>
-        <span className='telemetry-container-description'>{this.props.description}</span>&nbsp;
+        <span className='telemetry-container-description'>{this.props.description} ({this.props.unitSymbol})</span>
+        &nbsp;
         <ButtonGroup>
           <Button color='secondary' onClick={this.toggleGraphVisible.bind(this)}
             active={this.state.mode === TelemetryContainer.ModeGraph}>Graph</Button>
@@ -95,7 +97,7 @@ class TelemetryContainer extends Component {
               </span>
             }
             <TelemetryGraph height={100} width={300} dataKey={this.props.dataKey} historyLength={2}
-              range={this.props.range} valueOnly/>
+              range={this.props.range} unitSymbol={this.props.unitSymbol} valueOnly/>
           </div>
         }
       </div>

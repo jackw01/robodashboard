@@ -22,6 +22,7 @@ const SortableList = SortableContainer(({ items, dashboardItems, mode, onVisibil
             index={i}
             dataKey={k}
             description={dp.description}
+            unitSymbol={dp.unitSymbol}
             range={dp.range}
             historyLength={dp.historyLengthS}
             historyLengthMultiplier={1000 / dp.updateIntervalMs}

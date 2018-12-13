@@ -40,6 +40,7 @@ class DashboardItem {
     // All possible options depending on type
     Object.assign(this, {
       description: '', // User-facing description text
+      unitSymbol: '', // Symbol for measurement unit
       showGraph: false, // If true, graph will be displayed on web dashboard
       isSampled: false, // If true, the value of the data point will be sent to the dashboard at a preset interval
       updateIntervalMs: 1000, // Update interval, if sampled

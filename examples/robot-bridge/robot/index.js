@@ -11,6 +11,10 @@ const robotInterface = require('./interface/robotinterface');
 const positionTracker = require('./positiontracker');
 const Drive = require('./drive');
 
+function radToDeg(radians) {
+  return radians * (180 / Math.PI);
+}
+
 // Main robot controller
 class Robot extends EventEmitter {
   constructor() {
@@ -36,7 +40,11 @@ class Robot extends EventEmitter {
             this.emit('telemetry', 'location',
               new LocationValue(positionTracker.getCurrentOdometry(), -p.contents[2], positionTracker.getReset()));
           }
-          this.emit('telemetry', 'gyroAngle', { roll: p.contents[0], pitch: p.contents[1], heading: -p.contents[2] });
+          this.emit('telemetry', 'gyroAngle', {
+            roll: radToDeg(p.contents[0]),
+            pitch: radToDeg(p.contents[1]),
+            heading: -radToDeg(p.contents[2]),
+          });
         } else if (p.type === types.DataTypeDriveDistance) { // Save drive distance packet to buffer
           this.lastDistance = p.contents;
           this.emit('telemetry', 'driveEncoderDistance', { left: p.contents[0], right: p.contents[1] });

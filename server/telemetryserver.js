@@ -17,13 +17,15 @@ class TelemetryServer extends EventEmitter {
     // Set up data points for system monitor
     [
       new DashboardItem(DashboardTypes.Numeric, 'serverFreeRAM', {
-        description: 'Server Free RAM (MB)',
+        description: 'Server Free RAM',
+        unitSymbol: 'MB',
         showGraph: true,
         updateIntervalMs: 1000,
         historyLengthS: 60,
       }),
       new DashboardItem(DashboardTypes.Numeric, 'serverCPUUsage', {
-        description: 'Server CPU Usage (%)',
+        description: 'Server CPU Usage',
+        unitSymbol: '%',
         showGraph: true,
         updateIntervalMs: 1000,
         historyLengthS: 60,
