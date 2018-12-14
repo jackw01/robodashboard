@@ -1,4 +1,4 @@
-### Dashboard
+ ### Dashboard
 - [x] graph numerical data
 - [x] recieve metadata about data
 - [x] allow user to hide/show graphs
@@ -19,6 +19,8 @@
 - [x] editable location heading offset
 - [x] show numerical data value in real time
 - [x] show large numerical data instead of graph
+- [ ] toggle both values and graph
+- [ ] basic log viewer
 - [ ] save graph duration in local storage
 - [ ] location graph hints
 - [ ] base graph x axis on timestamps

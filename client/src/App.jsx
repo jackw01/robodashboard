@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import TelemetryDataView from './TelemetryDataView';
 import LocationDataView from './LocationDataView';
+import LogDataView from './LogDataView';
 import StatusIndicatorView from './StatusIndicatorView';
 import ControlsView from './ControlsView';
 
@@ -23,6 +24,9 @@ class App extends Component {
             </Col>
             <Col>
               <LocationDataView/>
+            </Col>
+            <Col>
+              <LogDataView/>
             </Col>
           </Row>
         </Container>
