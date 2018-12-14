@@ -12,24 +12,23 @@ import ControlsView from './ControlsView';
 class App extends Component {
   render() {
     return (
-      <div>
-        <div className='info-floater'>
+      <div className='main'>
+        <Container className='app'>
+          <Row>
+            <Col xs='5'>
+              <TelemetryDataView/>
+            </Col>
+            <Col xs='7'>
+              <LocationDataView/>
+              <LogDataView/>
+            </Col>
+
+          </Row>
+        </Container>
+        <div className='status-container'>
           <ControlsView/>
           <StatusIndicatorView/>
         </div>
-        <Container className='app'>
-          <Row>
-            <Col>
-              <TelemetryDataView/>
-            </Col>
-            <Col>
-              <LocationDataView/>
-            </Col>
-            <Col>
-              <LogDataView/>
-            </Col>
-          </Row>
-        </Container>
       </div>
     );
   }

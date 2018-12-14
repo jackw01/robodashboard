@@ -17,32 +17,32 @@ class LocationDataView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      messages: ['RoboDashboard Log'],
     };
 
-    /*this.eventHandler = this.handleIncomingData.bind(this);
+    this.eventHandler = this.handleIncomingData.bind(this);
 
     telemetryClient.on('ready', () => {
       const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
-        return telemetryClient.dashboardItems[k].type === 'location';
+        return telemetryClient.dashboardItems[k].type === 'log';
       });
       if (keys.length) telemetryClient.on(`data-${keys[0]}`, this.eventHandler);
-    });*/
+    });
   }
 
   handleIncomingData(key, value) {
     this.setState((state) => {
-
-      return {  };
+      let newMessages = state.messages;
+      newMessages.push(value);
+      return { messages: newMessages };
     });
   }
 
   render() {
     return (
-      <Card className='data-view location-data-view'>
+      <Card className='data-view log-data-view'>
         <CardBody>
-          <CardTitle>Log</CardTitle>
-          Log
+          {this.state.messages.map((message) => { return <div>{message}<br/></div> })}
         </CardBody>
       </Card>
     );

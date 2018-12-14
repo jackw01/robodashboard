@@ -45,6 +45,8 @@ dashboard.telemetryServer.registerDashboardItems([
   }),
   new DashboardItem(DashboardTypes.Location, 'location', {
   }),
+  new DashboardItem(DashboardTypes.Log, 'log', {
+  }),
   new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', {
     description: 'Battery Voltage',
     unitSymbol: 'V',

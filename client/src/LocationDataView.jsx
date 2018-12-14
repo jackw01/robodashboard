@@ -85,7 +85,6 @@ class LocationDataView extends Component {
     return (
       <Card className='data-view location-data-view'>
         <CardBody>
-          <CardTitle>Location</CardTitle>
           <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)}>
             <HeadingIndicator width={40} height={40} radius={16}
               heading={this.state.currentData.rawHeading - this.state.headingOffset}/>

@@ -12,6 +12,7 @@
 const DashboardTypes = Object.freeze({
   Numeric: 'numeric',
   Location: 'location',
+  Log: 'log',
   State: 'state',
   ButtonGroup: 'buttonGroup',
 });

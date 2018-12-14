@@ -40,13 +40,25 @@ code {
 }
 
 .container {
-  padding: 0.7em;
+  padding: 0.5rem 0;
   margin: 0;
   max-width: 100%;
 }
 
-.col:not(:first-child) {
-  padding-left: 0px;
+.row {
+  margin: 0;
+}
+
+.row > div {
+  padding: 0 0.6em;
+}
+
+.row > div:first-child {
+  margin-bottom: 0.5rem;
+}
+
+.row > div:not(:first-child) {
+  padding-left: 0;
 }
 
 .card {
@@ -55,7 +67,7 @@ code {
 
 .card-body {
   padding: 0.85em;
-  max-height: 670px;
+  max-height: calc(100vh - 4rem);
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -76,7 +88,7 @@ code {
 }
 
 .data-view:not(:last-child) {
-  margin-bottom: 0.6em;
+  margin-bottom: 0.5em;
 }
 
 .telemetry-container-body {
@@ -117,7 +129,7 @@ code {
   border-bottom-left-radius: 0px;
 }
 
-.info-floater {
+.status-container {
   position: fixed;
   bottom: 0px;
   width: 100%;
@@ -130,8 +142,8 @@ code {
   z-index: 100;
 }
 
-.info-floater>span>*:not(:first-child) {
-  margin-left: 0.6rem;
+.status-container>span>*:not(:first-child) {
+  margin-left: 0.5rem;
 }
 
 .controls-view {
