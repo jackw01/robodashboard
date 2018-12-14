@@ -4,9 +4,7 @@
 import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
 import { Card, CardBody, CardTitle, Button, ButtonGroup, Input } from 'reactstrap';
-import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, MarkSeries } from 'react-vis';
-import OpenPolygonSeries from './OpenPolygonSeries';
-import HeadingIndicator from './HeadingIndicator';
+import Ansi from 'ansi-to-react';
 
 import telemetryClient from './model/telemetryclient';
 import storage from './model/storage';
@@ -17,7 +15,7 @@ class LocationDataView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: ['RoboDashboard Log'],
+      messages: [],
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
@@ -25,8 +23,9 @@ class LocationDataView extends Component {
     telemetryClient.on('ready', () => {
       const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
         return telemetryClient.dashboardItems[k].type === 'log';
+      }).forEach((k) => {
+        telemetryClient.on(`data-${k}`, this.eventHandler);
       });
-      if (keys.length) telemetryClient.on(`data-${keys[0]}`, this.eventHandler);
     });
   }
 
@@ -42,7 +41,7 @@ class LocationDataView extends Component {
     return (
       <Card className='data-view log-data-view'>
         <CardBody>
-          {this.state.messages.map((message) => { return <div>{message}<br/></div> })}
+          <code>{this.state.messages.map((message) => { return <div><Ansi>{message}</Ansi><br/></div> })}</code>
         </CardBody>
       </Card>
     );

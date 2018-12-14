@@ -18,7 +18,9 @@ body {
 }
 
 code {
-  font-family: "Source Code Pro", monospace;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.8rem;
+  color: $gray-100;
 }
 
 ::-webkit-scrollbar {
@@ -53,11 +55,11 @@ code {
   padding: 0 0.6em;
 }
 
-.row > div:first-child {
+.row>div:first-child {
   margin-bottom: 0.5rem;
 }
 
-.row > div:not(:first-child) {
+.row>div:not(:first-child) {
   padding-left: 0;
 }
 

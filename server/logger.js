@@ -6,12 +6,11 @@ const winston = require('winston');
 const logLevels = {
   error: 0, warn: 1, info: 2, debug: 3,
 };
+const consoleTransport = new winston.transports.Console({ colorize: true, timestamp: true });
 
 module.exports = winston.createLogger({
   levels: logLevels,
-  transports: [
-    new winston.transports.Console({ colorize: true, timestamp: true }),
-  ],
+  transports: [consoleTransport],
   format: winston.format.combine(
     winston.format.colorize(),
     winston.format.padLevels({ levels: logLevels }),
@@ -20,6 +19,8 @@ module.exports = winston.createLogger({
   ),
   level: 'info',
 });
+
+module.exports.transport = consoleTransport;
 
 winston.addColors({
   error: 'red',

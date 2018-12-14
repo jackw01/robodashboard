@@ -93,7 +93,7 @@ class TelemetryGraph extends Component {
                 <span style={{ color: colors.array[i] }}>
                   {this.state.data[k][this.state.data[k].length - 1][1].toFixed(2)}{this.props.unitSymbol}
                 </span>
-                {i < Object.keys(this.state.data).length - 1 ? ', ' : ''}
+                {i < Object.keys(this.state.data).length - 1 ? ' ' : ''}
               </span>);
             } else return '';
           })}

@@ -3,6 +3,7 @@
 
 const EventEmitter = require('events');
 const WebSocket = require('ws');
+const { LEVEL, MESSAGE } = require('triple-beam');
 const logger = require('./logger');
 const { DashboardTypes, DashboardItem } = require('./items');
 const SystemMonitor = require('./systemmonitor');
@@ -14,7 +15,7 @@ class TelemetryServer extends EventEmitter {
     this.items = {};
     this.systemMonitor = new SystemMonitor(1000);
 
-    // Set up data points for system monitor
+    // Set up data points for system monitor and log
     [
       new DashboardItem(DashboardTypes.Numeric, 'serverFreeRAM', {
         description: 'Server Free RAM',
@@ -31,9 +32,15 @@ class TelemetryServer extends EventEmitter {
         historyLengthS: 60,
         range: [0, 100],
       }),
+      new DashboardItem(DashboardTypes.Log, 'serverLog', {
+      }),
     ].forEach((p) => { this.items[p.key] = p; });
 
     this.systemMonitor.on('telemetry', this.setValueForDashboardItem.bind(this));
+
+    logger.transport.on('logged', (info) => {
+      this.setValueForDashboardItem('serverLog', `${info[MESSAGE].replace(info.timestamp, '')}`);
+    });
 
     // Server
     logger.info('Starting telemetry server...');
