@@ -15,7 +15,7 @@ class LocationDataView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
+      messages: ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);

@@ -32,7 +32,7 @@ class Robot extends EventEmitter {
     robotInterface.on('data', (packets) => {
       packets.forEach((p) => {
         if (p.type === types.DataTypeHumanReadable) {
-          logger.robot(p.contents[0]);
+          logger.robot(p.contents);
           //this.emit('telemetry', 'log', p.contents[0]);
         } else if (p.type === types.DataTypeBatteryVoltage) {
           this.emit('telemetry', 'batteryVoltage', p.contents[0]);

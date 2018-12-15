@@ -51,7 +51,6 @@ code {
   color: #fa5f8b;
 }
 
-
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -70,18 +69,21 @@ code {
   background: $gray-700;
 }
 
-.container {
+.container-fluid {
   padding: 0.5rem 0;
   margin: 0;
-  max-width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  left: 0;
 }
 
 .row {
   margin: 0;
 }
 
-.row > div {
-  padding: 0 0.6em;
+.row>div {
+  padding: 0 0.5rem;
 }
 
 .row>div:first-child {
@@ -98,9 +100,14 @@ code {
 
 .card-body {
   padding: 0.85em;
-  max-height: calc(100vh - 4rem);
+
+}
+
+.data-view {
   overflow-x: hidden;
   overflow-y: auto;
+  position: relative;
+  max-height: 100%;
 }
 
 .data-view .card-title {
@@ -120,6 +127,12 @@ code {
 
 .data-view:not(:last-child) {
   margin-bottom: 0.5em;
+}
+
+.telemetry-data-view {
+  //max-height: calc(100vh - 1rem - 1rem - 29px);
+  //overflow-x: hidden;
+  //overflow-y: auto;
 }
 
 .telemetry-container-body {
@@ -228,4 +241,10 @@ code {
 .input-inline-short {
   width: 6rem;
   display: inline;
+}
+
+.log-data-view {
+  margin: 0;
+  max-height: auto;
+  //max-height: calc(100vh - 4rem - 1.5rem - 400px - 4rem);
 }
