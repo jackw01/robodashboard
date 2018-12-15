@@ -32,7 +32,8 @@ class Robot extends EventEmitter {
     robotInterface.on('data', (packets) => {
       packets.forEach((p) => {
         if (p.type === types.DataTypeHumanReadable) {
-          this.emit('telemetry', 'log', p.contents[0]);
+          logger.robot(p.contents[0]);
+          //this.emit('telemetry', 'log', p.contents[0]);
         } else if (p.type === types.DataTypeBatteryVoltage) {
           this.emit('telemetry', 'batteryVoltage', p.contents[0]);
         } else if (p.type === types.DataTypeGyro) { // Update position tracker with gyro data and last distance

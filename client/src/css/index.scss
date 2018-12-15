@@ -23,7 +23,34 @@ code {
   color: $gray-100;
 }
 
-.ansi-
+.ansi-black {
+  color: $gray-400;
+}
+
+.ansi-red {
+  color: #f06c6f;
+}
+
+.ansi-yellow {
+  color: #d08447;
+}
+
+.ansi-green {
+  color: #00ab9a;
+}
+
+.ansi-cyan {
+  color: #00a9b9;
+}
+
+.ansi-blue {
+  color: #00a3d2;
+}
+
+.ansi-magenta {
+  color: #fa5f8b;
+}
+
 
 ::-webkit-scrollbar {
   width: 8px;
