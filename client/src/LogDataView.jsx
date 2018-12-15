@@ -2,6 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
+import dateFormat from 'dateformat';
 import ResizeAware from 'react-resize-aware';
 import { Card, CardBody, CardTitle, Button, ButtonGroup, Input } from 'reactstrap';
 import Ansi from './AnsiView';
@@ -15,7 +16,7 @@ class LocationDataView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a'],
+      messages: [],
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
@@ -29,10 +30,10 @@ class LocationDataView extends Component {
     });
   }
 
-  handleIncomingData(key, value) {
+  handleIncomingData(key, value, timestamp) {
     this.setState((state) => {
       let newMessages = state.messages;
-      newMessages.push(value);
+      newMessages.push({ timestamp: new Date(timestamp), value });
       return { messages: newMessages };
     });
   }
@@ -41,7 +42,9 @@ class LocationDataView extends Component {
     return (
       <Card className='data-view log-data-view'>
         <CardBody>
-          {this.state.messages.map((message) => { return <div><Ansi>{message}</Ansi><br/></div> })}
+          {this.state.messages.map((m) => {
+            return <div><Ansi>{`${dateFormat(m.timestamp, 'UTC:"T"HH:MM:ss.l"Z"')} ${m.value}`}</Ansi><br/></div>
+          })}
         </CardBody>
       </Card>
     );
