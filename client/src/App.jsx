@@ -24,13 +24,11 @@ class App extends Component {
 
             </Col>
           </Row>
-          <Row className='footer'>
-            <div className='status-container'>
-              <ControlsView/>
-              <StatusIndicatorView/>
-            </div>
-          </Row>
         </Container>
+        <div className='status-container'>
+          <ControlsView/>
+          <StatusIndicatorView/>
+        </div>
       </div>
     );
   }

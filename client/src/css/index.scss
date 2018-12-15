@@ -70,7 +70,7 @@ code {
 }
 
 .container-fluid {
-  padding: 0.5rem 0;
+  padding: 0.5rem 0 calc(29px + 1.5rem);
   margin: 0;
   height: 100vh;
   position: absolute;
@@ -244,7 +244,5 @@ code {
 }
 
 .log-data-view {
-  margin: 0;
-  max-height: auto;
-  //max-height: calc(100vh - 4rem - 1.5rem - 400px - 4rem);
+  max-height: calc(100vh - 29px - 1.5rem - 3rem - 400px - 29px - 1.5rem);
 }
