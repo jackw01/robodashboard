@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
 import { Card, CardBody, CardTitle, Button, ButtonGroup, Input } from 'reactstrap';
-import Ansi from 'ansi-to-react';
+import Ansi from './AnsiView';
 
 import telemetryClient from './model/telemetryclient';
 import storage from './model/storage';
@@ -41,7 +41,7 @@ class LocationDataView extends Component {
     return (
       <Card className='data-view log-data-view'>
         <CardBody>
-          <code>{this.state.messages.map((message) => { return <div><Ansi>{message}</Ansi><br/></div> })}</code>
+          {this.state.messages.map((message) => { return <div><Ansi>{message}</Ansi><br/></div> })}
         </CardBody>
       </Card>
     );
