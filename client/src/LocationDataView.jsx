@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
-import { Card, CardBody, CardTitle, Button, ButtonGroup, Input } from 'reactstrap';
+import { Card, CardBody, Button, ButtonGroup, Input } from 'reactstrap';
 import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, MarkSeries } from 'react-vis';
 import OpenPolygonSeries from './OpenPolygonSeries';
 import HeadingIndicator from './HeadingIndicator';

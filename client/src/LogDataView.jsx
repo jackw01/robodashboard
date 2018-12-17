@@ -3,16 +3,13 @@
 
 import React, { Component } from 'react';
 import dateFormat from 'dateformat';
-import ResizeAware from 'react-resize-aware';
-import { Card, CardBody, CardTitle, Button, ButtonGroup, Input } from 'reactstrap';
+import { Card, CardBody, Button, ButtonGroup, Input } from 'reactstrap';
 import Ansi from './AnsiView';
 
 import telemetryClient from './model/telemetryclient';
 import storage from './model/storage';
-import colors from './model/colors';
-import styles from './model/styles';
 
-class LocationDataView extends Component {
+class LogDataView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +19,7 @@ class LocationDataView extends Component {
     this.eventHandler = this.handleIncomingData.bind(this);
 
     telemetryClient.on('ready', () => {
-      const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
+      Object.keys(telemetryClient.dashboardItems).filter((k) => {
         return telemetryClient.dashboardItems[k].type === 'log';
       }).forEach((k) => {
         telemetryClient.on(`data-${k}`, this.eventHandler);
@@ -51,4 +48,4 @@ class LocationDataView extends Component {
   }
 }
 
-export default LocationDataView;
+export default LogDataView;

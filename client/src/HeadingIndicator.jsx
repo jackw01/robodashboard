@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import colors from './model/colors';
-import styles from './model/styles';
 
 class HeadingIndicator extends Component {
   static propTypes = {

@@ -3,10 +3,10 @@
 // Originally released under the BSD 3-Clause License
 
 import * as React from "react";
-import { ansiToJson, AnserJsonEntry } from "anser";
+import { ansiToJson } from "anser";
 import { escapeCarriageReturn } from "escape-carriage";
 
-const LINK_REGEX = /(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
+const LINK_REGEX = /(https?:\/\/(?:www\.|(?!www))[^\s.]+.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
 
 /**
  * Converts ANSI strings into JSON output.
