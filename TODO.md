@@ -19,10 +19,10 @@
 - [x] editable location heading offset
 - [x] show numerical data value in real time
 - [x] show large numerical data instead of graph
-- [ ] toggle both values and graph
+- [x] toggle both values and graph
 - [x] basic log viewer
 - [x] save graph duration in local storage
-- [ ] location graph hints
+- [ ] location graph time indication
 - [ ] base graph x axis on timestamps
 - [ ] location view zooming
 - [ ] location view mouse pan and rotate

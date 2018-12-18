@@ -2,7 +2,7 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
-import { Card, CardBody, CardTitle, Button } from 'reactstrap';
+import { Card, CardBody, CardTitle, Button, ButtonGroup } from 'reactstrap';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import TelemetryContainer from './TelemetryContainer';
 
@@ -40,7 +40,7 @@ class TelemetryDataView extends Component {
     super(props);
     this.state = {
       items: [],
-      visibilityToggle: storage.read('telemetryDataListVisibilityToggle', false),
+      toggle: storage.read('telemetryDataListToggle', TelemetryContainer.ModeHidden),
     };
 
     telemetryClient.on('ready', () => {
@@ -61,14 +61,27 @@ class TelemetryDataView extends Component {
     });
   }
 
-  toggleAllGraphs() {
+  toggleGraphVisible() {
     this.setState((state) => {
-      const newToggleState = TelemetryContainer.ModeHidden; // Fix
+      const newToggleState =
+        state.toggle === TelemetryContainer.ModeGraph ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeGraph;
       const newMode = state.mode;
       Object.keys(newMode).forEach((k) => { newMode[k] = newToggleState; });
-      storage.write('telemetryDataListVisibilityToggle', newToggleState);
+      storage.write('telemetryDataListToggle', newToggleState);
       storage.write('telemetryDataListVisibility', newMode);
-      return { visibility: newMode, visibilityToggle: newToggleState };
+      return { mode: newMode, toggle: newToggleState };
+    });
+  };
+
+  toggleValueVisible() {
+    this.setState((state) => {
+      const newToggleState =
+        state.toggle === TelemetryContainer.ModeValue ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeValue;
+      const newMode = state.mode;
+      Object.keys(newMode).forEach((k) => { newMode[k] = newToggleState; });
+      storage.write('telemetryDataListToggle', newToggleState);
+      storage.write('telemetryDataListVisibility', newMode);
+      return { mode: newMode, toggle: newToggleState };
     });
   };
 
@@ -93,12 +106,16 @@ class TelemetryDataView extends Component {
         <CardBody>
           <CardTitle>
             Telemetry
-            <Button color='secondary' onClick={this.toggleAllGraphs.bind(this)}
-            active={this.state.visibilityToggle}>Toggle All</Button>
+            <ButtonGroup>
+              <Button color='secondary' onClick={this.toggleGraphVisible.bind(this)}
+                active={this.state.toggle === TelemetryContainer.ModeGraph}>Toggle All Graph</Button>
+              <Button color='secondary' onClick={this.toggleValueVisible.bind(this)}
+                active={this.state.toggle === TelemetryContainer.ModeValue}>Toggle All Value</Button>
+            </ButtonGroup>
           </CardTitle>
           <SortableList items={this.state.items} dashboardItems={this.state.dashboardItems}
             mode={this.state.mode} onVisibilityChange={this.onVisibilityChange.bind(this)}
-            key={this.state.visibilityToggle} onSortEnd={this.onSortEnd}
+            key={this.state.toggle} onSortEnd={this.onSortEnd}
             pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
         </CardBody>
       </Card>
