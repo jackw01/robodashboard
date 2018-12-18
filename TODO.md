@@ -20,8 +20,8 @@
 - [x] show numerical data value in real time
 - [x] show large numerical data instead of graph
 - [ ] toggle both values and graph
-- [ ] basic log viewer
-- [ ] save graph duration in local storage
+- [x] basic log viewer
+- [x] save graph duration in local storage
 - [ ] location graph hints
 - [ ] base graph x axis on timestamps
 - [ ] location view zooming

@@ -7,6 +7,7 @@ import { Button, ButtonGroup, Input } from 'reactstrap';
 import TelemetryGraph from './TelemetryGraph';
 import LegendItem from './LegendItem';
 
+import storage from './model/storage';
 import colors from './model/colors';
 
 class TelemetryContainer extends Component {
@@ -28,7 +29,11 @@ class TelemetryContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { mode: this.props.mode, historyLength: this.props.historyLength };
+    console.log(storage.read(`telemetryDataHistoryLength_${this.props.dataKey}`, this.props.historyLength));
+    this.state = {
+      mode: this.props.mode,
+      historyLength: storage.read(`telemetryDataHistoryLength_${this.props.dataKey}`, this.props.historyLength),
+    };
   }
 
   toggleGraphVisible() {
@@ -50,6 +55,7 @@ class TelemetryContainer extends Component {
   }
 
   setHistoryLength(event) {
+    storage.write(`telemetryDataHistoryLength_${this.props.dataKey}`, parseInt(event.target.value, 10));
     this.setState({ historyLength: event.target.value });
   }
 
@@ -70,7 +76,7 @@ class TelemetryContainer extends Component {
             <span className='telemetry-container-body'>
               Duration:&nbsp;
               <Input className='telemetry-container-input' type='number' step='1'
-                placeholder='Duration' defaultValue={this.props.historyLength}
+                placeholder='Duration' defaultValue={this.state.historyLength}
                 onChange={this.setHistoryLength.bind(this)}/>s
             </span>
             {this.props.subKeys.length > 0 &&
