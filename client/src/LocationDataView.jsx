@@ -23,8 +23,10 @@ class LocationDataView extends Component {
       odometryHistory: [],
       headingOffset: storage.read('headingOffset', 0),
       positionOffset: { x: 0, y: 0 },
-      lastDrawLocation: { left: -200, right: 200, top: 200, bottom: -200 },
+      defaultBounds: { left: -200, right: 200, top: 200, bottom: -200 },
     };
+
+    this.state.lastBounds = this.state.defaultBounds;
 
     this.eventHandler = this.handleIncomingData.bind(this);
 
@@ -55,6 +57,10 @@ class LocationDataView extends Component {
 
   handleResize({ width, height }) {
     this.setState({ width, height });
+  }
+
+  resetBounds() {
+    this.setState({ lastBounds: this.state.defaultBounds });
   }
 
   zeroPosition(event) {
@@ -90,8 +96,8 @@ class LocationDataView extends Component {
             <HeadingIndicator width={40} height={40} radius={16}
               heading={this.state.currentData.rawHeading - this.state.headingOffset}/>
             <FlexibleXYPlot height={400} animation={false}
-              xDomain={[this.state.lastDrawLocation.left, this.state.lastDrawLocation.right]}
-              yDomain={[this.state.lastDrawLocation.top, this.state.lastDrawLocation.bottom]}
+              xDomain={[this.state.lastBounds.left, this.state.lastBounds.right]}
+              yDomain={[this.state.lastBounds.top, this.state.lastBounds.bottom]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
               <VerticalGridLines style={styles.gridLines}/>
@@ -103,14 +109,14 @@ class LocationDataView extends Component {
                 data={this.state.currentData.transform ? [this.state.currentData.transform] : []}
                 getX={this.getOffsetX.bind(this)} getY={this.getOffsetY.bind(this)}/>
               <Highlight
-                onBrushEnd={area => this.setState({lastDrawLocation: area})}
+                onBrushEnd={area => this.setState({lastBounds: area})}
                 onDrag={area => {
                   this.setState({
-                    lastDrawLocation: {
-                      bottom: this.state.lastDrawLocation.bottom + (area.top - area.bottom),
-                      left: this.state.lastDrawLocation.left - (area.right - area.left),
-                      right: this.state.lastDrawLocation.right - (area.right - area.left),
-                      top: this.state.lastDrawLocation.top + (area.top - area.bottom)
+                    lastBounds: {
+                      bottom: this.state.lastBounds.bottom + (area.top - area.bottom),
+                      left: this.state.lastBounds.left - (area.right - area.left),
+                      right: this.state.lastBounds.right - (area.right - area.left),
+                      top: this.state.lastBounds.top + (area.top - area.bottom)
                     }
                   });
                 }}/>
@@ -118,6 +124,8 @@ class LocationDataView extends Component {
           </ResizeAware>
           <br/>
           <div>
+            <Button color='secondary' size='sm' onClick={this.resetBounds.bind(this)}>Reset Zoom</Button>
+            &nbsp;
             <Button color='secondary' size='sm' onClick={this.zeroPosition.bind(this)}>Zero Position</Button>
             &nbsp;
             Heading Offset:&nbsp;
