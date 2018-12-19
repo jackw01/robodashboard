@@ -108,9 +108,9 @@ class TelemetryDataView extends Component {
             Telemetry
             <ButtonGroup>
               <Button color='secondary' onClick={this.toggleGraphVisible.bind(this)}
-                active={this.state.toggle === TelemetryContainer.ModeGraph}>Toggle All Graph</Button>
+                active={this.state.toggle === TelemetryContainer.ModeGraph}>Toggle All Graphs</Button>
               <Button color='secondary' onClick={this.toggleValueVisible.bind(this)}
-                active={this.state.toggle === TelemetryContainer.ModeValue}>Toggle All Value</Button>
+                active={this.state.toggle === TelemetryContainer.ModeValue}>Toggle All Values</Button>
             </ButtonGroup>
           </CardTitle>
           <SortableList items={this.state.items} dashboardItems={this.state.dashboardItems}

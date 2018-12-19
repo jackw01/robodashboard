@@ -24,10 +24,18 @@
 - [x] save graph duration in local storage
 - [ ] location graph time indication
 - [ ] base graph x axis on timestamps
-- [ ] location view zooming
+- [x] location view zooming
 - [ ] location view mouse pan and rotate
 - [ ] location view path display
 - [ ] location view arbitrary point display
+- [ ] location view path editing
+- [ ] better ui look
+- [x] window title
+- [ ] arbitrary text view for links and stuff
+- [ ] controls popout
+- [ ] multi value controls
+- [ ] joystick with hide show control
+- [ ] hud on camera stream?
 
 ### robot-bridge Interface
 - [x] serial communication

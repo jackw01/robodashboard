@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import ResizeAware from 'react-resize-aware';
 import { Card, CardBody, Button, ButtonGroup, Input } from 'reactstrap';
-import { FlexibleXYPlot, XAxis, YAxis, Hint, HorizontalGridLines, VerticalGridLines, MarkSeries } from 'react-vis';
+import { FlexibleXYPlot, XAxis, YAxis, Highlight, HorizontalGridLines, VerticalGridLines, MarkSeries } from 'react-vis';
 import OpenPolygonSeries from './OpenPolygonSeries';
 import HeadingIndicator from './HeadingIndicator';
 
@@ -23,6 +23,7 @@ class LocationDataView extends Component {
       odometryHistory: [],
       headingOffset: storage.read('headingOffset', 0),
       positionOffset: { x: 0, y: 0 },
+      lastDrawLocation: { left: -200, right: 200, top: 200, bottom: -200 },
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
@@ -88,7 +89,9 @@ class LocationDataView extends Component {
           <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)}>
             <HeadingIndicator width={40} height={40} radius={16}
               heading={this.state.currentData.rawHeading - this.state.headingOffset}/>
-            <FlexibleXYPlot height={400} animation={false} xDomain={[-200, 200]} yDomain={[-200, 200]}
+            <FlexibleXYPlot height={400} animation={false}
+              xDomain={[this.state.lastDrawLocation.left, this.state.lastDrawLocation.right]}
+              yDomain={[this.state.lastDrawLocation.top, this.state.lastDrawLocation.bottom]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
               <VerticalGridLines style={styles.gridLines}/>
@@ -99,6 +102,18 @@ class LocationDataView extends Component {
               <MarkSeries size={3} style={styles.robotPosition}
                 data={this.state.currentData.transform ? [this.state.currentData.transform] : []}
                 getX={this.getOffsetX.bind(this)} getY={this.getOffsetY.bind(this)}/>
+              <Highlight
+                onBrushEnd={area => this.setState({lastDrawLocation: area})}
+                onDrag={area => {
+                  this.setState({
+                    lastDrawLocation: {
+                      bottom: this.state.lastDrawLocation.bottom + (area.top - area.bottom),
+                      left: this.state.lastDrawLocation.left - (area.right - area.left),
+                      right: this.state.lastDrawLocation.right - (area.right - area.left),
+                      top: this.state.lastDrawLocation.top + (area.top - area.bottom)
+                    }
+                  });
+                }}/>
             </FlexibleXYPlot>
           </ResizeAware>
           <br/>
