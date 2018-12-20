@@ -70,7 +70,7 @@ class LocationDataView extends Component {
   };
 
   onMouseMove(event) {
-    if (this.state.isScrolling) {
+    if (this.state.isScrolling && event.buttons & 0x04) { // Bitmask bit 4 is middle click
       this.setState((state) => {
         const newDefaultBounds = state.defaultBounds;
         const rateX = event.clientX - state.clientX;
@@ -146,8 +146,8 @@ class LocationDataView extends Component {
           <br/>
           <div>
             <ButtonGroup>
-              <Button color='secondary' onClick={this.changeZoom.bind(this)}>+</Button>
-              <Button color='secondary' onClick={this.changeZoom.bind(this)}>-</Button>
+              <Button color='secondary' size='sm' onClick={this.changeZoom.bind(this)}>+</Button>
+              <Button color='secondary' size='sm' onClick={this.changeZoom.bind(this)}>-</Button>
             </ButtonGroup>
             &nbsp;
             <Button color='secondary' size='sm' onClick={this.resetBounds.bind(this)}>Reset Zoom</Button>
