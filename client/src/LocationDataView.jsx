@@ -24,11 +24,17 @@ class LocationDataView extends Component {
       headingOffset: storage.read('headingOffset', 0),
       positionOffset: { x: 0, y: 0 },
       defaultBounds: { left: -200, right: 200, top: 200, bottom: -200 },
+      clientX: 0,
+      clientY: 0,
+      isScrolling: false,
     };
-
     this.state.lastBounds = this.state.defaultBounds;
 
     this.eventHandler = this.handleIncomingData.bind(this);
+
+    window.addEventListener('mousedown', this.onMouseDown.bind(this));
+    window.addEventListener('mousemove', this.onMouseMove.bind(this));
+    window.addEventListener('mouseup', this.onMouseUp.bind(this));
 
     telemetryClient.on('ready', () => {
       const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
@@ -57,6 +63,33 @@ class LocationDataView extends Component {
 
   handleResize({ width, height }) {
     this.setState({ width, height });
+  }
+
+  onMouseDown(event) {
+    this.setState({ clientX: event.clientX, clientY: event.clientY, isScrolling: true });
+  };
+
+  onMouseMove(event) {
+    if (this.state.isScrolling) {
+      this.setState((state) => {
+        const newDefaultBounds = state.defaultBounds;
+        const rateX = event.clientX - state.clientX;
+        const rateY = event.clientY - state.clientY;
+        newDefaultBounds.left += rateX * 0.3;
+        newDefaultBounds.right += rateX * 0.3;
+        newDefaultBounds.top += rateY * 0.3;
+        newDefaultBounds.bottom += rateY * 0.3;
+        return { defaultBounds: newDefaultBounds, clientX: event.clientX, clientY: event.clientY };
+      });
+    }
+  }
+
+  onMouseUp(event) {
+    this.setState({ clientX: 0, clientY: 0, isScrolling: false });
+  }
+
+  changeZoom() {
+
   }
 
   resetBounds() {
@@ -108,22 +141,15 @@ class LocationDataView extends Component {
               <MarkSeries size={3} style={styles.robotPosition}
                 data={this.state.currentData.transform ? [this.state.currentData.transform] : []}
                 getX={this.getOffsetX.bind(this)} getY={this.getOffsetY.bind(this)}/>
-              <Highlight
-                onBrushEnd={area => this.setState({lastBounds: area})}
-                onDrag={area => {
-                  this.setState({
-                    lastBounds: {
-                      bottom: this.state.lastBounds.bottom + (area.top - area.bottom),
-                      left: this.state.lastBounds.left - (area.right - area.left),
-                      right: this.state.lastBounds.right - (area.right - area.left),
-                      top: this.state.lastBounds.top + (area.top - area.bottom)
-                    }
-                  });
-                }}/>
             </FlexibleXYPlot>
           </ResizeAware>
           <br/>
           <div>
+            <ButtonGroup>
+              <Button color='secondary' onClick={this.changeZoom.bind(this)}>+</Button>
+              <Button color='secondary' onClick={this.changeZoom.bind(this)}>-</Button>
+            </ButtonGroup>
+            &nbsp;
             <Button color='secondary' size='sm' onClick={this.resetBounds.bind(this)}>Reset Zoom</Button>
             &nbsp;
             <Button color='secondary' size='sm' onClick={this.zeroPosition.bind(this)}>Zero Position</Button>
