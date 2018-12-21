@@ -31,11 +31,6 @@ class LocationDataView extends Component {
 
     this.eventHandler = this.handleIncomingData.bind(this);
 
-    window.addEventListener('mousedown', this.onMouseDown.bind(this));
-    window.addEventListener('mousemove', this.onMouseMove.bind(this));
-    window.addEventListener('mouseup', this.onMouseUp.bind(this));
-    window.addEventListener('wheel', this.onWheel.bind(this));
-
     telemetryClient.on('ready', () => {
       const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
         return telemetryClient.dashboardItems[k].type === 'location';
@@ -67,6 +62,7 @@ class LocationDataView extends Component {
 
   onMouseDown(event) {
     this.setState({ clientX: event.clientX, clientY: event.clientY, isScrolling: true });
+    event.persist();
   };
 
   onMouseMove(event) {
@@ -75,17 +71,19 @@ class LocationDataView extends Component {
         const newBounds = state.bounds;
         const rateX = event.clientX - state.clientX;
         const rateY = event.clientY - state.clientY;
-        newBounds.left += rateX * 1;
-        newBounds.right += rateX * 1;
+        newBounds.left += rateX * -1;
+        newBounds.right += rateX * -1;
         newBounds.top += rateY * 1;
         newBounds.bottom += rateY * 1;
         return { bounds: newBounds, clientX: event.clientX, clientY: event.clientY };
       });
     }
+    event.persist();
   }
 
   onMouseUp(event) {
     this.setState({ clientX: 0, clientY: 0, isScrolling: false });
+    event.persist();
   }
 
   onWheel(event) {
@@ -101,10 +99,7 @@ class LocationDataView extends Component {
       }
       return { bounds: newBounds };
     });
-  }
-
-  changeZoom() {
-
+    event.persist();
   }
 
   resetBounds() {
@@ -149,13 +144,17 @@ class LocationDataView extends Component {
     return (
       <Card className='data-view location-data-view'>
         <CardBody>
-          <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)}>
+          <ResizeAware className='plot-flexible-container' onlyEvent onResize={this.handleResize.bind(this)} >
             <HeadingIndicator width={40} height={40} radius={16}
               heading={this.state.currentData.rawHeading - this.state.headingOffset}/>
             <FlexibleXYPlot height={400} animation={false}
               xDomain={[this.state.bounds.left, this.state.bounds.right]}
               yDomain={[this.state.bounds.bottom, this.state.bounds.top]}
-              margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
+              margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty
+              onMouseDown={this.onMouseDown.bind(this)}
+              onMouseMove={this.onMouseMove.bind(this)}
+              onMouseUp={this.onMouseUp.bind(this)}
+              onWheel={this.onWheel.bind(this)}>
               <HorizontalGridLines style={styles.gridLines}/>
               <VerticalGridLines style={styles.gridLines}/>
               <XAxis top={200} style={styles.axes}/>
