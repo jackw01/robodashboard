@@ -29,7 +29,6 @@ class TelemetryContainer extends Component {
 
   constructor(props) {
     super(props);
-    console.log(storage.read(`telemetryDataHistoryLength_${this.props.dataKey}`, this.props.historyLength));
     this.state = {
       mode: this.props.mode,
       historyLength: storage.read(`telemetryDataHistoryLength_${this.props.dataKey}`, this.props.historyLength),
@@ -40,7 +39,6 @@ class TelemetryContainer extends Component {
     const newMode =
       this.state.mode === TelemetryContainer.ModeGraph ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeGraph;
     this.setState({ mode: newMode }, () => {
-      console.log(this.state.mode);
       this.props.onVisibilityChange(this.props.dataKey, this.state.mode);
     });
   }
@@ -49,7 +47,6 @@ class TelemetryContainer extends Component {
     const newMode =
       this.state.mode === TelemetryContainer.ModeValue ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeValue;
     this.setState({ mode: newMode }, () => {
-      console.log(this.state.mode);
       this.props.onVisibilityChange(this.props.dataKey, this.state.mode);
     });
   }

@@ -25,7 +25,7 @@
 - [ ] location graph time indication
 - [ ] base graph x axis on timestamps
 - [x] location view zooming
-- [ ] location view mouse pan and rotate
+- [x] location view mouse pan and rotate
 - [ ] location view path display
 - [ ] location view arbitrary point display
 - [ ] location view path editing

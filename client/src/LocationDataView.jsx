@@ -35,6 +35,7 @@ class LocationDataView extends Component {
     window.addEventListener('mousedown', this.onMouseDown.bind(this));
     window.addEventListener('mousemove', this.onMouseMove.bind(this));
     window.addEventListener('mouseup', this.onMouseUp.bind(this));
+    window.addEventListener('wheel', this.onWheel.bind(this));
 
     telemetryClient.on('ready', () => {
       const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
@@ -75,10 +76,10 @@ class LocationDataView extends Component {
         const newDefaultBounds = state.defaultBounds;
         const rateX = event.clientX - state.clientX;
         const rateY = event.clientY - state.clientY;
-        newDefaultBounds.left += rateX * 0.3;
-        newDefaultBounds.right += rateX * 0.3;
-        newDefaultBounds.top += rateY * 0.3;
-        newDefaultBounds.bottom += rateY * 0.3;
+        newDefaultBounds.left += rateX * 1;
+        newDefaultBounds.right += rateX * 1;
+        newDefaultBounds.top += rateY * 1;
+        newDefaultBounds.bottom += rateY * 1;
         return { defaultBounds: newDefaultBounds, clientX: event.clientX, clientY: event.clientY };
       });
     }
@@ -86,6 +87,21 @@ class LocationDataView extends Component {
 
   onMouseUp(event) {
     this.setState({ clientX: 0, clientY: 0, isScrolling: false });
+  }
+
+  onWheel(event) {
+    this.setState((state) => {
+      const newDefaultBounds = state.defaultBounds;
+      const rate = event.deltaY;
+      if (newDefaultBounds.left + rate < newDefaultBounds.right - rate &&
+        newDefaultBounds.top - rate > newDefaultBounds.bottom + rate) {
+        newDefaultBounds.left += rate;
+        newDefaultBounds.right -= rate;
+        newDefaultBounds.top -= rate;
+        newDefaultBounds.bottom += rate;
+      }
+      return { defaultBounds: newDefaultBounds };
+    });
   }
 
   changeZoom() {
@@ -130,7 +146,7 @@ class LocationDataView extends Component {
               heading={this.state.currentData.rawHeading - this.state.headingOffset}/>
             <FlexibleXYPlot height={400} animation={false}
               xDomain={[this.state.lastBounds.left, this.state.lastBounds.right]}
-              yDomain={[this.state.lastBounds.top, this.state.lastBounds.bottom]}
+              yDomain={[this.state.lastBounds.bottom, this.state.lastBounds.top]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
               <VerticalGridLines style={styles.gridLines}/>
@@ -145,11 +161,6 @@ class LocationDataView extends Component {
           </ResizeAware>
           <br/>
           <div>
-            <ButtonGroup>
-              <Button color='secondary' size='sm' onClick={this.changeZoom.bind(this)}>+</Button>
-              <Button color='secondary' size='sm' onClick={this.changeZoom.bind(this)}>-</Button>
-            </ButtonGroup>
-            &nbsp;
             <Button color='secondary' size='sm' onClick={this.resetBounds.bind(this)}>Reset Zoom</Button>
             &nbsp;
             <Button color='secondary' size='sm' onClick={this.zeroPosition.bind(this)}>Zero Position</Button>
