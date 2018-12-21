@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { FaInfo } from 'react-icons/fa';
 
 class InfoModal extends Component {
   constructor(props) {
@@ -21,19 +22,19 @@ class InfoModal extends Component {
 
   render() {
     return (
-      <div>
-        <Button color="danger" onClick={this.toggle.bind(this)}>{this.props.buttonLabel}</Button>
+      <span className='info-modal-button'>
+        <Button color="secondary" size='sm' onClick={this.toggle.bind(this)}><FaInfo/></Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className={this.props.className}>
-          <ModalHeader toggle={this.toggle.bind(this)}>Modal title</ModalHeader>
+          <ModalHeader toggle={this.toggle.bind(this)}>RoboDashboard</ModalHeader>
           <ModalBody>
-
+            Text
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggle.bind(this)}>Do Something</Button>{' '}
             <Button color="secondary" onClick={this.toggle.bind(this)}>Cancel</Button>
           </ModalFooter>
         </Modal>
-      </div>
+      </span>
     );
   }
 }

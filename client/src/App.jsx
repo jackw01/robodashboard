@@ -6,8 +6,9 @@ import { Container, Row, Col } from 'reactstrap';
 import TelemetryDataView from './TelemetryDataView';
 import LocationDataView from './LocationDataView';
 import LogDataView from './LogDataView';
-import StatusIndicatorView from './StatusIndicatorView';
+import InfoModal from './InfoModal';
 import ControlsView from './ControlsView';
+import StatusIndicatorView from './StatusIndicatorView';
 
 class App extends Component {
   render() {
@@ -26,6 +27,7 @@ class App extends Component {
           </Row>
         </Container>
         <div className='status-container'>
+          <InfoModal/>
           <ControlsView/>
           <StatusIndicatorView/>
         </div>

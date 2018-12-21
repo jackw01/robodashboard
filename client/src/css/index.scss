@@ -69,6 +69,16 @@ code {
   background: $gray-700;
 }
 
+.close {
+  color: $gray-200;
+  text-shadow: none;
+}
+
+.close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
+  color: $gray-100;
+  text-shadow: none;
+}
+
 .container-fluid {
   padding: 0.5rem 0 calc(29px + 1.5rem);
   margin: 0;
@@ -245,4 +255,9 @@ code {
 
 .log-data-view {
   max-height: calc(100vh - 29px - 1.5rem - 3rem - 400px - 29px - 1.5rem);
+}
+
+.info-modal-button {
+  float: left;
+  margin-right: 0.5rem;
 }
