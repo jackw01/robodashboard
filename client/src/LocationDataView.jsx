@@ -23,12 +23,11 @@ class LocationDataView extends Component {
       odometryHistory: [],
       headingOffset: storage.read('headingOffset', 0),
       positionOffset: { x: 0, y: 0 },
-      defaultBounds: { left: -200, right: 200, top: 200, bottom: -200 },
+      bounds: { left: -200, right: 200, top: 200, bottom: -200 },
       clientX: 0,
       clientY: 0,
       isScrolling: false,
     };
-    this.state.lastBounds = this.state.defaultBounds;
 
     this.eventHandler = this.handleIncomingData.bind(this);
 
@@ -73,14 +72,14 @@ class LocationDataView extends Component {
   onMouseMove(event) {
     if (this.state.isScrolling && event.buttons & 0x04) { // Bitmask bit 4 is middle click
       this.setState((state) => {
-        const newDefaultBounds = state.defaultBounds;
+        const newBounds = state.bounds;
         const rateX = event.clientX - state.clientX;
         const rateY = event.clientY - state.clientY;
-        newDefaultBounds.left += rateX * 1;
-        newDefaultBounds.right += rateX * 1;
-        newDefaultBounds.top += rateY * 1;
-        newDefaultBounds.bottom += rateY * 1;
-        return { defaultBounds: newDefaultBounds, clientX: event.clientX, clientY: event.clientY };
+        newBounds.left += rateX * 1;
+        newBounds.right += rateX * 1;
+        newBounds.top += rateY * 1;
+        newBounds.bottom += rateY * 1;
+        return { bounds: newBounds, clientX: event.clientX, clientY: event.clientY };
       });
     }
   }
@@ -91,16 +90,16 @@ class LocationDataView extends Component {
 
   onWheel(event) {
     this.setState((state) => {
-      const newDefaultBounds = state.defaultBounds;
+      const newBounds = state.bounds;
       const rate = event.deltaY;
-      if (newDefaultBounds.left + rate < newDefaultBounds.right - rate &&
-        newDefaultBounds.top - rate > newDefaultBounds.bottom + rate) {
-        newDefaultBounds.left += rate;
-        newDefaultBounds.right -= rate;
-        newDefaultBounds.top -= rate;
-        newDefaultBounds.bottom += rate;
+      if (newBounds.left + rate < newBounds.right - rate &&
+        newBounds.top - rate > newBounds.bottom + rate) {
+        newBounds.left += rate;
+        newBounds.right -= rate;
+        newBounds.top -= rate;
+        newBounds.bottom += rate;
       }
-      return { defaultBounds: newDefaultBounds };
+      return { bounds: newBounds };
     });
   }
 
@@ -109,7 +108,16 @@ class LocationDataView extends Component {
   }
 
   resetBounds() {
-    this.setState({ lastBounds: this.state.defaultBounds });
+    this.setState((state) => {
+      const newBounds = state.bounds;
+      const width = newBounds.right - newBounds.left;
+      const height = newBounds.top - newBounds.bottom;
+      newBounds.left = -(width / 2.0);
+      newBounds.right = (width / 2.0);
+      newBounds.top = (height / 2.0);
+      newBounds.bottom = -(height / 2.0);
+      return { bounds: newBounds };
+    });
   }
 
   zeroPosition(event) {
@@ -145,8 +153,8 @@ class LocationDataView extends Component {
             <HeadingIndicator width={40} height={40} radius={16}
               heading={this.state.currentData.rawHeading - this.state.headingOffset}/>
             <FlexibleXYPlot height={400} animation={false}
-              xDomain={[this.state.lastBounds.left, this.state.lastBounds.right]}
-              yDomain={[this.state.lastBounds.bottom, this.state.lastBounds.top]}
+              xDomain={[this.state.bounds.left, this.state.bounds.right]}
+              yDomain={[this.state.bounds.bottom, this.state.bounds.top]}
               margin={{ left: 0, right: 0, top: 1, bottom: 1 }} dontCheckIfEmpty>
               <HorizontalGridLines style={styles.gridLines}/>
               <VerticalGridLines style={styles.gridLines}/>
@@ -161,7 +169,7 @@ class LocationDataView extends Component {
           </ResizeAware>
           <br/>
           <div>
-            <Button color='secondary' size='sm' onClick={this.resetBounds.bind(this)}>Reset Zoom</Button>
+            <Button color='secondary' size='sm' onClick={this.resetBounds.bind(this)}>Recenter</Button>
             &nbsp;
             <Button color='secondary' size='sm' onClick={this.zeroPosition.bind(this)}>Zero Position</Button>
             &nbsp;
