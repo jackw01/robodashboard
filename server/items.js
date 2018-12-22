@@ -16,6 +16,7 @@ const DashboardTypes = Object.freeze({
   Log: 'log',
   State: 'state',
   ButtonGroup: 'buttonGroup',
+  InputGroup: 'inputGroup',
 });
 
 class DashboardItemState {
@@ -30,6 +31,15 @@ class DashboardItemControl {
   constructor(label, color) {
     this.label = label;
     this.color = color;
+  }
+}
+
+class DashboardItemInput {
+  constructor(label, min, max, defaultValue) {
+    this.label = label;
+    this.min = min;
+    this.max = max;
+    this.default = defaultValue;
   }
 }
 
@@ -54,8 +64,8 @@ class DashboardItem {
       states: {}, // Object containing DashboardItemStates for each key
       defaultState: true, // Default state key
 
-      // Type: ButtonGroup
-      controls: {}, // Object containing DashboardItemControls for each key
+      // Type: ButtonGroup, InputGroup
+      controls: {}, // Object containing DashboardItemControls/Inputs for each key
 
       // Type: StaticText
       text: '',
@@ -83,6 +93,7 @@ module.exports = {
   DashboardTypes,
   DashboardItemState,
   DashboardItemControl,
+  DashboardItemInput,
   DashboardItem,
   LocationValue,
 };

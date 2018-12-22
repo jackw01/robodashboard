@@ -7,6 +7,7 @@ const {
   DashboardItem,
   DashboardItemState,
   DashboardItemControl,
+  DashboardItemInput,
   logger,
 } = require('../../server');
 
@@ -44,6 +45,13 @@ dashboard.telemetryServer.registerDashboardItems([
   new DashboardItem(DashboardTypes.ButtonGroup, 'resetOdometry', {
     controls: {
       resetOdometry: new DashboardItemControl('Reset Odometry', 'primary'),
+    },
+  }),
+  new DashboardItem(DashboardTypes.InputGroup, 'ledColor', {
+    controls: {
+      r: new DashboardItemInput('R', 0, 255, 0),
+      g: new DashboardItemInput('G', 0, 255, 64),
+      b: new DashboardItemInput('B', 0, 255, 64),
     },
   }),
   new DashboardItem(DashboardTypes.Location, 'location', {
