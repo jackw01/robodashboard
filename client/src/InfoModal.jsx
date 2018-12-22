@@ -3,15 +3,27 @@
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody} from 'reactstrap';
 import { FaInfo } from 'react-icons/fa';
+
+import telemetryClient from './model/telemetryclient';
 
 class InfoModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
+      content: [],
     };
+
+    telemetryClient.on('ready', () => {
+      Object.keys(telemetryClient.dashboardItems).filter((k) => {
+        return telemetryClient.dashboardItems[k].type === 'staticText';
+      }).forEach((k) => {
+        this.state.content.push(telemetryClient.dashboardItems[k].text);
+      });
+      console.log(this.state.content);
+    });
   }
 
   toggle() {
@@ -27,12 +39,8 @@ class InfoModal extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className={this.props.className}>
           <ModalHeader toggle={this.toggle.bind(this)}>RoboDashboard</ModalHeader>
           <ModalBody>
-            Text
+            {this.state.content.map((string) => <div>{string}</div>)}
           </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.toggle.bind(this)}>Do Something</Button>{' '}
-            <Button color="secondary" onClick={this.toggle.bind(this)}>Cancel</Button>
-          </ModalFooter>
         </Modal>
       </span>
     );

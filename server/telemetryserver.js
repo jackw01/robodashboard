@@ -1,6 +1,7 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
+const pkg = require('../package.json');
 const EventEmitter = require('events');
 const WebSocket = require('ws');
 const { LEVEL, MESSAGE } = require('triple-beam');
@@ -33,6 +34,9 @@ class TelemetryServer extends EventEmitter {
         range: [0, 100],
       }),
       new DashboardItem(DashboardTypes.Log, 'serverLog', {
+      }),
+      new DashboardItem(DashboardTypes.StaticText, 'versionInfo', {
+        text: `Version: v${pkg.version} ${pkg.date}`,
       }),
     ].forEach((p) => { this.items[p.key] = p; });
 

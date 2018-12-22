@@ -10,6 +10,7 @@
 // ButtonGroup - button group
 
 const DashboardTypes = Object.freeze({
+  StaticText: 'staticText',
   Numeric: 'numeric',
   Location: 'location',
   Log: 'log',
@@ -55,6 +56,9 @@ class DashboardItem {
 
       // Type: ButtonGroup
       controls: {}, // Object containing DashboardItemControls for each key
+
+      // Type: StaticText
+      text: '',
     }, options);
 
     if (this.subKeys.length) {

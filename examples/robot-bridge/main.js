@@ -16,6 +16,9 @@ const dashboard = new Dashboard();
 const robot = new Robot();
 
 dashboard.telemetryServer.registerDashboardItems([
+  new DashboardItem(DashboardTypes.StaticText, 'staticText', {
+    text: 'Interface: robot-bridge',
+  }),
   new DashboardItem(DashboardTypes.State, 'receivingData', {
     description: 'Connection',
     defaultState: 'notReceivingData',

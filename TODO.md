@@ -31,7 +31,7 @@
 - [ ] location view path editing
 - [ ] better ui look
 - [x] window title
-- [ ] arbitrary text view for links and stuff
+- [x] arbitrary text view for links and stuff
 - [ ] controls popout
 - [ ] multi value controls
 - [ ] joystick with hide show control
