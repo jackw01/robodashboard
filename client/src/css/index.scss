@@ -110,7 +110,6 @@ code {
 
 .card-body {
   padding: 0.85em;
-
 }
 
 .data-view {
@@ -204,6 +203,12 @@ code {
   float: left;
 }
 
+.icon-button {
+  font-size: 1.12rem;
+  padding-top: 0px;
+  padding-bottom: 2px;
+}
+
 .btn-group .btn:not(:last-child) {
   border-right: 1px solid $gray-800;
 }
@@ -260,4 +265,15 @@ code {
 .info-modal-button {
   float: left;
   margin-right: 0.5rem;
+}
+
+.value-input-table {
+  margin-left: 0.6rem;
+}
+
+.value-input {
+  font-size: 0.85rem;
+  padding: 4px;
+  height: 22px;
+  display: inline;
 }

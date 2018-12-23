@@ -35,10 +35,11 @@ class DashboardItemControl {
 }
 
 class DashboardItemInput {
-  constructor(label, min, max, defaultValue) {
+  constructor(label, min, max, step, defaultValue) {
     this.label = label;
     this.min = min;
     this.max = max;
+    this.step = step;
     this.default = defaultValue;
   }
 }

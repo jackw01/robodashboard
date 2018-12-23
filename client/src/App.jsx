@@ -7,6 +7,7 @@ import TelemetryDataView from './TelemetryDataView';
 import LocationDataView from './LocationDataView';
 import LogDataView from './LogDataView';
 import InfoModal from './InfoModal';
+import OptionsModal from './OptionsModal';
 import ControlsView from './ControlsView';
 import StatusIndicatorView from './StatusIndicatorView';
 
@@ -28,6 +29,7 @@ class App extends Component {
         </Container>
         <div className='status-container'>
           <InfoModal/>
+          <OptionsModal/>
           <ControlsView/>
           <StatusIndicatorView/>
         </div>
