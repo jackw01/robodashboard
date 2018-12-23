@@ -3,7 +3,14 @@
 
 const pkg = require('../package.json');
 const logger = require('./logger');
-const { DashboardTypes, DashboardItem, DashboardItemState, DashboardItemControl, LocationValue } = require('./items');
+const {
+  DashboardTypes,
+  DashboardItem,
+  DashboardItemState,
+  DashboardItemControl,
+  DashboardItemInput,
+  LocationValue,
+} = require('./items');
 const WebDashServer = require('./webdashserver');
 const TelemetryServer = require('./telemetryserver');
 
@@ -28,6 +35,7 @@ module.exports = {
   DashboardItem,
   DashboardItemState,
   DashboardItemControl,
+  DashboardItemInput,
   LocationValue,
   logger,
 };

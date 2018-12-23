@@ -48,6 +48,7 @@ dashboard.telemetryServer.registerDashboardItems([
     },
   }),
   new DashboardItem(DashboardTypes.InputGroup, 'ledColor', {
+    description: 'LED Color',
     controls: {
       r: new DashboardItemInput('R', 0, 255, 0),
       g: new DashboardItemInput('G', 0, 255, 64),

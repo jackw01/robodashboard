@@ -14,6 +14,7 @@ class InfoModal extends Component {
     this.state = {
       modal: false,
       content: [],
+      inputGroups: [],
     };
 
     telemetryClient.on('ready', () => {
@@ -22,7 +23,10 @@ class InfoModal extends Component {
       }).forEach((k) => {
         this.state.content.push(telemetryClient.dashboardItems[k].text);
       });
-      console.log(this.state.content);
+      this.state.inputGroups = Object.keys(telemetryClient.dashboardItems).filter((k) => {
+        return telemetryClient.dashboardItems[k].type === 'inputGroup';
+      }).map((k) => telemetryClient.dashboardItems[k]);
+      console.log(this.state.inputGroups);
     });
   }
 
