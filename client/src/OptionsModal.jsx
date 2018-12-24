@@ -7,12 +7,17 @@ import { MdSettings } from 'react-icons/md';
 
 import telemetryClient from './model/telemetryclient';
 
+function clamp(x, min, max) {
+  return Math.max(min, Math.min(x, max));
+}
+
 class OptionsModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
       inputGroups: [],
+      invalid: {},
     };
 
     telemetryClient.on('ready', () => {
@@ -30,8 +35,16 @@ class OptionsModal extends Component {
     });
   }
 
-  onValueChange(event) {
-
+  onValueChange(key, control, event) {
+    const floatValue = parseFloat(event.target.value);
+    const value = clamp(floatValue, control.min, control.max);
+    const invalid = value !== floatValue;
+    this.setState((state) => {
+      const newInvalid = state.invalid;
+      newInvalid[key] = invalid;
+      return { invalid: newInvalid };
+    });
+    telemetryClient.handleInputChange(key, value);
   }
 
   render() {
@@ -52,8 +65,9 @@ class OptionsModal extends Component {
                       <tr>
                         <td>{group.controls[k].label}:&nbsp;</td>
                         <td><Input className='value-input' type='number' step={group.controls[k].step}
-                        defaultValue={group.controls[k].default} onChange={this.onValueChange.bind(this)}/></td>
-                    </tr>
+                        defaultValue={group.controls[k].default} invalid={this.state.invalid[k]}
+                        onChange={this.onValueChange.bind(this, k, group.controls[k])} key={k}/></td>
+                      </tr>
                     ))}
                   </table>
                 </div>

@@ -21,6 +21,8 @@ class Robot extends EventEmitter {
     super();
     this.drive = new Drive();
 
+    this.ledColor = { r: 0, g: 0, b: 0 };
+
     // Ping message to let dashboard know if the server is receiving data
     robotInterface.on('receivingData', (state) => {
       this.emit('telemetry', 'receivingData', state ? 'receivingData' : 'notReceivingData');
@@ -33,7 +35,6 @@ class Robot extends EventEmitter {
       packets.forEach((p) => {
         if (p.type === types.DataTypeHumanReadable) {
           logger.robot(p.contents);
-          //this.emit('telemetry', 'log', p.contents[0]);
         } else if (p.type === types.DataTypeBatteryVoltage) {
           this.emit('telemetry', 'batteryVoltage', p.contents[0]);
         } else if (p.type === types.DataTypeGyro) { // Update position tracker with gyro data and last distance
@@ -68,6 +69,12 @@ class Robot extends EventEmitter {
 
   calibrateGyro() {
     robotInterface.writePacket(new Packet(types.CmdTypeCalibrateGyro, 500));
+  }
+
+  setLEDColor(newColor) {
+    this.ledColor = Object.assign(this.ledColor, newColor);
+    robotInterface.writePacket(new Packet(types.CmdTypeSetAllStatusLEDs,
+      [this.ledColor.r, this.ledColor.g, this.ledColor.b]));
   }
 
   update() {

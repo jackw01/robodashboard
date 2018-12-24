@@ -78,6 +78,16 @@ class TelemetryServer extends EventEmitter {
     this.ws.send(JSON.stringify(this.items), () => {
       logger.info('Telemetry data points registered with client.');
     });
+
+    // Trigger default values for inputs
+    Object.entries(this.items).forEach(([key, item]) => {
+      if (item.type === DashboardTypes.InputGroup) {
+        logger.info(`Sending default values for input group ${key}`);
+        Object.entries(item.controls).forEach(([k, i]) => {
+          this.emit('inputChange', k, i.default);
+        });
+      }
+    });
   }
 
   registerDashboardItems(items) {
@@ -103,6 +113,8 @@ class TelemetryServer extends EventEmitter {
     const obj = JSON.parse(message);
     if (obj.type === 'controlClick') {
       this.emit('controlClick', obj.key);
+    } else if (obj.type === 'inputChange') {
+      this.emit('inputChange', obj.key, obj.value);
     }
   }
 

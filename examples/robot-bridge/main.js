@@ -122,3 +122,10 @@ dashboard.telemetryServer.on('controlClick', (key) => {
   else if (key === 'disabled') robot.drive.disable();
   else if (key === 'enabled') robot.drive.enable();
 });
+
+dashboard.telemetryServer.on('inputChange', (key, value) => {
+  logger.info(`Dashboard input changed: {${key}: ${value}}`);
+  if (key === 'r') robot.setLEDColor({ r: value });
+  else if (key === 'g') robot.setLEDColor({ g: value });
+  else if (key === 'b') robot.setLEDColor({ b: value });
+});
