@@ -3,6 +3,7 @@
 // robodashboard FRC interface v0.1.0
 
 const EventEmitter = require('events');
+const dgram = require('dgram');
 
 const { logger, LocationValue } = require('../../../server');
 
@@ -11,6 +12,7 @@ class Robot extends EventEmitter {
   constructor() {
     super();
 
+    this.dgramClient = dgram.createSocket('udp4');
   }
 
   update() {
