@@ -12,7 +12,22 @@ class Robot extends EventEmitter {
   constructor() {
     super();
 
-    this.dgramClient = dgram.createSocket('udp4');
+    this.socket = dgram.createSocket('udp4');
+
+    this.socket.on('listening', () => {
+      const address = this.socket.address();
+      logger.info(`Dashboard UDP socket open on ${address.address}:${address.port}`);
+    });
+
+    this.socket.on('message', (msg, rinfo) => {
+      logger.info(`Dashboard UDP socket received ${msg} from ${rinfo.address}:${rinfo.port}`);
+    });
+
+    this.socket.on('error', (err) => {
+      logger.info(`Dashboard UDP socket error:\n${err.stack}`);
+    });
+
+    this.socket.bind(5800);
   }
 
   update() {

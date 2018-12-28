@@ -30,30 +30,11 @@ dashboard.telemetryServer.registerDashboardItems([
     },
   }),
   new DashboardItem(DashboardTypes.State, 'mode', {
-    createControl: true,
     description: 'Mode',
     defaultState: 'disabled',
     states: {
       enabled: new DashboardItemState('Enabled', 'primary', 'Enable'),
       disabled: new DashboardItemState('Disabled', 'warning', 'Disable'),
-    },
-  }),
-  new DashboardItem(DashboardTypes.ButtonGroup, 'calibrateGyro', {
-    controls: {
-      calibrateGyro: new DashboardItemControl('Calibrate Gyro', 'primary'),
-    },
-  }),
-  new DashboardItem(DashboardTypes.ButtonGroup, 'resetOdometry', {
-    controls: {
-      resetOdometry: new DashboardItemControl('Reset Odometry', 'primary'),
-    },
-  }),
-  new DashboardItem(DashboardTypes.InputGroup, 'ledColor', {
-    description: 'LED Color',
-    controls: {
-      r: new DashboardItemInput('R', 0, 255, 1, 0),
-      g: new DashboardItemInput('G', 0, 255, 1, 64),
-      b: new DashboardItemInput('B', 0, 255, 1, 64),
     },
   }),
   new DashboardItem(DashboardTypes.Location, 'location', {
@@ -66,7 +47,7 @@ dashboard.telemetryServer.registerDashboardItems([
     showGraph: true,
     updateIntervalMs: 1000,
     historyLengthS: 60,
-    range: [0, 7.2],
+    range: [0, 14],
   }),
   new DashboardItem(DashboardTypes.Numeric, 'gyroAngle', {
     description: 'Gyro Relative Angle',
@@ -105,28 +86,6 @@ dashboard.telemetryServer.registerDashboardItems([
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'avrFreeRAM', {
-    description: 'AVR Free RAM',
-    unitSymbol: 'B',
-    showGraph: true,
-    updateIntervalMs: 1000,
-    historyLengthS: 60,
-  }),
 ]);
 
 robot.on('telemetry', dashboard.telemetryServer.setValueForDashboardItem.bind(dashboard.telemetryServer));
-
-dashboard.telemetryServer.on('controlClick', (key) => {
-  logger.info(`Dashboard control clicked: ${key}`);
-  if (key === 'calibrateGyro') robot.calibrateGyro();
-  else if (key === 'resetOdometry') robot.resetOdometry();
-  else if (key === 'disabled') robot.drive.disable();
-  else if (key === 'enabled') robot.drive.enable();
-});
-
-dashboard.telemetryServer.on('inputChange', (key, value) => {
-  logger.info(`Dashboard input changed: {${key}: ${value}}`);
-  if (key === 'r') robot.setLEDColor({ r: value });
-  else if (key === 'g') robot.setLEDColor({ g: value });
-  else if (key === 'b') robot.setLEDColor({ b: value });
-});
