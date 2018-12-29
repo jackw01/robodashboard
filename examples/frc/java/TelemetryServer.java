@@ -2,7 +2,15 @@
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 // robodashboard FRC interface v0.1.0
 
-package org.usfirst.frc.team0000.utility;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -12,9 +20,13 @@ import org.json.simple.JSONValue;
 */
 public class TelemetryServer {
 
-  public static class TelemetryDataPoint {
+  public static class TelemetryDataPoint<T> {
 		public String key;
-		public double value;
+		public T value;
+
+    public byte[] getByteArrayRepresentation() {
+      String stringRep = '"' + key + '": "' + value + '"';
+    }
 	}
 
   private static final TelemetryServer instance = new TelemetryServer();
@@ -23,34 +35,26 @@ public class TelemetryServer {
 		return instance;
 	}
 
-  private TelemetryServer() {
+  private DatagramSocket socket;
 
+  private TelemetryServer(int port) {
+    try {
+      socket = new DatagramSocket(port);
+    } catch (SocketException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
 	 *
-	 * @param addr
-	 *            Address to send message to
-	 * @param message
-	 *            Contents of UDP packets
-	 * @param port
-	 *            Port to send message over
+	 * @param dataPoint
+	 *            Data point to send
 	 */
-	public void send(String message) {
-		if (!senders.containsKey(port)) {
-			try {
-				senders.put(port, new DatagramSocket(port));
-			} catch (SocketException e) {
-				e.printStackTrace();
-			}
-		}
-		DatagramPacket msg = null;
+	public <T> void send(TelemetryDataPoint<T> dataPoint) {
 		try {
-			msg = new DatagramPacket(message.getBytes(), message.getBytes().length, InetAddress.getByName(addr), port);
-			senders.get(port).send(msg);
-		} catch (UnknownHostException e1) {
-			e1.printStackTrace();
-			System.out.println("Host:" + addr + " not found!");
+      byte[] data = dataPoint.getByteArrayRepresentation();
+			DatagramPacket msg = new DatagramPacket(data, data.length);
+			socket.send(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
