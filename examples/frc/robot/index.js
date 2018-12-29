@@ -20,7 +20,7 @@ class Robot extends EventEmitter {
     });
 
     this.socket.on('message', (msg, rinfo) => {
-      logger.info(`Dashboard UDP socket received ${msg} from ${rinfo.address}:${rinfo.port}`);
+      logger.info(`Dashboard UDP socket received ${JSON.parse(msg)} from ${rinfo.address}:${rinfo.port}`);
     });
 
     this.socket.on('error', (err) => {

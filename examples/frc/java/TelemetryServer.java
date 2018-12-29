@@ -12,24 +12,12 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
 /**
 * Handles rx/tx of telemetry data on robot side
 */
 public class TelemetryServer {
 
-  public static class TelemetryDataPoint<T> {
-		public String key;
-		public T value;
-
-    public byte[] getByteArrayRepresentation() {
-      String stringRep = '"' + key + '": "' + value + '"';
-    }
-	}
-
-  private static final TelemetryServer instance = new TelemetryServer();
+  private static final TelemetryServer instance = new TelemetryServer(5800);
 
 	public static TelemetryServer getInstance() {
 		return instance;
@@ -53,9 +41,10 @@ public class TelemetryServer {
 	public <T> void send(TelemetryDataPoint<T> dataPoint) {
 		try {
       byte[] data = dataPoint.getByteArrayRepresentation();
-			DatagramPacket msg = new DatagramPacket(data, data.length);
+			DatagramPacket msg = new DatagramPacket(data, data.length, InetAddress.getByName("127.0.0.1"), 5800);
 			socket.send(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+  }
 }
