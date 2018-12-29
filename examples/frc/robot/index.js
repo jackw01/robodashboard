@@ -19,8 +19,14 @@ class Robot extends EventEmitter {
       logger.info(`Dashboard UDP socket open on ${address.address}:${address.port}`);
     });
 
-    this.socket.on('message', (msg, rinfo) => {
-      logger.info(`Dashboard UDP socket received ${JSON.parse(msg)} from ${rinfo.address}:${rinfo.port}`);
+    // UDP message handler
+    this.socket.on('message', (msg) => {
+      const obj = JSON.parse(msg.toString());
+      if (obj[0] === 'log') { // If message is a log entry from the roborio, handle it properly
+        logger.robot(obj[1]);
+      } else { // For all other cases, emit the telemetry event and let the dashboard handle it
+        this.emit('telemetry', obj[0], obj[1]);
+      }
     });
 
     this.socket.on('error', (err) => {
@@ -28,10 +34,6 @@ class Robot extends EventEmitter {
     });
 
     this.socket.bind(5800);
-  }
-
-  update() {
-
   }
 }
 

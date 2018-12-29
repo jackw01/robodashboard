@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 */
 public class TelemetryServer {
 
-  private static final TelemetryServer instance = new TelemetryServer(5800);
+  private static final TelemetryServer instance = new TelemetryServer(5801);
 
 	public static TelemetryServer getInstance() {
 		return instance;
