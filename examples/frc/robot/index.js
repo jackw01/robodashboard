@@ -4,6 +4,8 @@
 
 const EventEmitter = require('events');
 const dgram = require('dgram');
+const chalk = require('chalk');
+const prettyMs = require('pretty-ms');
 
 const { logger, LocationValue } = require('../../../server');
 
@@ -21,15 +23,17 @@ class Robot extends EventEmitter {
 
     // UDP message handler
     this.socket.on('message', (msg) => {
-      console.log(msg);
       const timestamp = msg.readUIntLE(0, 6);
       const key = msg.toString('utf8', 6, 10).trim();
       const value = msg.toString('utf8', 10);
 
       if (key === 'log') { // If message is a log entry from the roborio, handle it properly
-        logger.robot(value);
+        const latency = Date.now() - timestamp;
+        const valueString = `${chalk.cyan('robot')}: ${value}`;
+        this.emit('telemetry', 'log', valueString, timestamp);
+        this.emit('telemetry', 'latency', latency);
+        console.log(`${new Date(timestamp).toISOString()} ${valueString} [latency: ${prettyMs(latency)}]`);
       } else { // For all other cases, emit the telemetry event and let the dashboard handle it
-        // Key, value, timestamp
         this.emit('telemetry', key, value, timestamp);
       }
     });

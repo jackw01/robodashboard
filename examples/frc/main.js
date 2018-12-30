@@ -42,6 +42,13 @@ dashboard.telemetryServer.registerDashboardItems([
   new DashboardItem(DashboardTypes.Log, 'log', {
     description: 'Battery Voltage',
   }),
+  new DashboardItem(DashboardTypes.Numeric, 'latency', {
+    description: 'Connection Latency',
+    unitSymbol: 'ms',
+    showGraph: true,
+    updateIntervalMs: 1000,
+    historyLengthS: 60,
+  }),
   new DashboardItem(DashboardTypes.Numeric, 'vbat', {
     description: 'Battery Voltage',
     unitSymbol: 'V',
