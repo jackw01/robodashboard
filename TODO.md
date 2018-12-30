@@ -22,8 +22,7 @@
 - [x] toggle both values and graph
 - [x] basic log viewer
 - [x] save graph duration in local storage
-- [ ] location graph time indication
-- [ ] base graph x axis on timestamps
+- [x] base graph x axis on timestamps
 - [x] location view zooming
 - [x] location view mouse pan and rotate
 - [ ] location view path display
@@ -32,8 +31,8 @@
 - [ ] better ui look
 - [x] window title
 - [x] arbitrary text view for links and stuff
-- [ ] controls popout
-- [ ] multi value controls
+- [x] controls popout
+- [x] multi value controls
 - [ ] joystick with hide show control
 - [ ] hud on camera stream?
 
@@ -44,8 +43,12 @@
 - [x] drivebase controls
 - [x] reporting all data from robot
 - [x] log robot connection events
-- [ ] LED controls
+- [x] LED controls
 - [ ] drive with joystick
 
 ### FRC Interface
-- [ ] ???
+- [x] java interface for sending data packets
+- [x] send timestamps
+- [x] send logs with correct timestamps
+- [ ] make data packets small as possible
+- [ ] java local logger for roborio

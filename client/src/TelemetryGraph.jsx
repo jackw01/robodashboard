@@ -1,6 +1,7 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
 // Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
 
+import prettyMs from 'pretty-ms';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, AreaSeries, LineSeries, GradientDefs } from 'react-vis';
@@ -23,7 +24,7 @@ class TelemetryGraph extends Component {
   constructor(props) {
     super(props);
     const data = {};
-    this.state = { data: data, ready: {}, lastHistoryLength: 0 };
+    this.state = { data: data, timestamps: {}, ready: {}, lastHistoryLength: 0 };
     this.eventHandler = this.handleIncomingData.bind(this);
     telemetryClient.on(`data-${this.props.dataKey}`, this.eventHandler);
   }
@@ -32,31 +33,34 @@ class TelemetryGraph extends Component {
     telemetryClient.removeListener(`data-${this.props.dataKey}`, this.eventHandler);
   }
 
-  handleIncomingData(key, value) {
+  handleIncomingData(key, value, timestamp) {
     this.setState((state) => {
       let ready = state.ready;
       if (state.lastHistoryLength !== this.props.historyLength) ready = {};
       let data = state.data;
+      let timestamps = state.timestamps;
       if (typeof value === 'object' && value) {
         Object.entries(value).forEach(([k, v]) => {
           if (!ready[k]) {
+            timestamps[k] = timestamp;
             data[k] = [];
             for (let x = -this.props.historyLength; x < 0; x++) data[k].push([x, 0]);
             ready[k] = true;
           }
           data[k].shift();
-          data[k].push([data[k][data[k].length - 1][0] + 1, v]);
+          data[k].push([timestamp - timestamps[k], v]);
         });
       } else {
         if (!ready[this.props.dataKey]) {
+          timestamps[this.props.dataKey] = timestamp;
           data[this.props.dataKey] = [];
           for (let x = -this.props.historyLength; x < 0; x++) data[this.props.dataKey].push([x, 0]);
           ready[this.props.dataKey] = true;
         }
         data[this.props.dataKey].shift();
-        data[this.props.dataKey].push([data[this.props.dataKey][data[this.props.dataKey].length - 1][0] + 1, value]);
+        data[this.props.dataKey].push([timestamp - timestamps[this.props.dataKey], value]);
       }
-      return { data: data, ready: ready, lastHistoryLength: this.props.historyLength };
+      return { data: data, timestamps: timestamps, ready: ready, lastHistoryLength: this.props.historyLength };
     });
   }
 
@@ -78,7 +82,7 @@ class TelemetryGraph extends Component {
               fill={(Object.keys(this.state.data).length === 1) ? 'url(#colorGradient1)' : ''}/>);
             else return (<LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>);
           })}
-          <XAxis style={styles.axes} position='start'
+          <XAxis style={styles.axes} position='start' tickFormat={prettyMs}
             title={Object.keys(this.state.data).map((k, i) => {
               if (this.state.data[k].length > 0) {
                 return this.state.data[k][this.state.data[k].length - 1][1].toFixed(2);
