@@ -37,11 +37,12 @@ dashboard.telemetryServer.registerDashboardItems([
       disabled: new DashboardItemState('Disabled', 'warning', 'Disable'),
     },
   }),
-  new DashboardItem(DashboardTypes.Location, 'location', {
+  new DashboardItem(DashboardTypes.Location, 'loc', {
   }),
   new DashboardItem(DashboardTypes.Log, 'log', {
+    description: 'Battery Voltage',
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'batteryVoltage', {
+  new DashboardItem(DashboardTypes.Numeric, 'vbat', {
     description: 'Battery Voltage',
     unitSymbol: 'V',
     showGraph: true,
@@ -49,7 +50,7 @@ dashboard.telemetryServer.registerDashboardItems([
     historyLengthS: 60,
     range: [0, 14],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'gyroAngle', {
+  new DashboardItem(DashboardTypes.Numeric, 'aabs', {
     description: 'Gyro Relative Angle',
     unitSymbol: '°',
     showGraph: true,
@@ -58,7 +59,7 @@ dashboard.telemetryServer.registerDashboardItems([
     isSampled: true,
     subKeys: ['roll', 'pitch', 'heading'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderDistance', {
+  new DashboardItem(DashboardTypes.Numeric, 'ddst', {
     description: 'Drive Distance',
     unitSymbol: 'mm',
     showGraph: true,
@@ -67,7 +68,7 @@ dashboard.telemetryServer.registerDashboardItems([
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'driveEncoderVelocity', {
+  new DashboardItem(DashboardTypes.Numeric, 'dvel', {
     description: 'Drive Surface Velocity',
     unitSymbol: 'mm/s',
     showGraph: true,
@@ -76,7 +77,7 @@ dashboard.telemetryServer.registerDashboardItems([
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-  new DashboardItem(DashboardTypes.Numeric, 'driveOutput', {
+  new DashboardItem(DashboardTypes.Numeric, 'dout', {
     description: 'Drive Output Power',
     unitSymbol: '%',
     showGraph: true,

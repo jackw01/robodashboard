@@ -43,6 +43,9 @@ public class TelemetryServer {
       long timestamp = System.currentTimeMillis();
       byte[] keyOrig = dataPoint.key.getBytes();
 
+      // bytes 0-5: timestamp
+      // bytes 6-9: key string
+      // bytes 10+: value
       if (dataPoint.value instanceof String) {
         String value = (String)(Object)dataPoint.value;
         sendBuffer = ByteBuffer.allocate(6 + 4 + value.length() + 1).order(ByteOrder.LITTLE_ENDIAN);

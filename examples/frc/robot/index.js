@@ -22,15 +22,16 @@ class Robot extends EventEmitter {
     // UDP message handler
     this.socket.on('message', (msg) => {
       console.log(msg);
-      console.log(msg.readUIntLE(0, 6));
-      console.log(msg.toString('utf8', 6, 9));
-      /*
-      const obj = JSON.parse(msg.toString());
-      if (obj[0] === 'log') { // If message is a log entry from the roborio, handle it properly
-        logger.robot(obj[1]);
+      const timestamp = msg.readUIntLE(0, 6);
+      const key = msg.toString('utf8', 6, 10).trim();
+      const value = msg.toString('utf8', 10);
+
+      if (key === 'log') { // If message is a log entry from the roborio, handle it properly
+        logger.robot(value);
       } else { // For all other cases, emit the telemetry event and let the dashboard handle it
-        this.emit('telemetry', obj[0], obj[1]);
-      }*/
+        // Key, value, timestamp
+        this.emit('telemetry', key, value, timestamp);
+      }
     });
 
     this.socket.on('error', (err) => {

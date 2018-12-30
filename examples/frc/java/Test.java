@@ -13,7 +13,7 @@ public class Test {
     t.schedule(new TimerTask() {
       @Override
       public void run() {
-        TelemetryDataPoint<String> dp = new TelemetryDataPoint("log", 1);
+        TelemetryDataPoint<String> dp = new TelemetryDataPoint("log ", 1);
         server.send(dp);
       }
     }, 1000, 1000);
