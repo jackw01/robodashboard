@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
 * Handles rx/tx of telemetry data on robot side
@@ -40,16 +41,18 @@ public class TelemetryServer {
 		try {
       ByteBuffer sendBuffer;
       long timestamp = System.currentTimeMillis();
+      byte[] keyOrig = dataPoint.key.getBytes();
+
       if (dataPoint.value instanceof String) {
         String value = (String)(Object)dataPoint.value;
-        sendBuffer = ByteBuffer.allocate(8 + 2 + value.length() + 1);
-        sendBuffer.putLong(timestamp);
+        sendBuffer = ByteBuffer.allocate(6 + 4 + value.length() + 1).order(ByteOrder.LITTLE_ENDIAN);
+        sendBuffer.putLong(timestamp).position(6);
         sendBuffer.put(dataPoint.key.getBytes());
         sendBuffer.put(value.getBytes());
       } else {
         String value = String.valueOf(dataPoint.value);
-        sendBuffer = ByteBuffer.allocate(8 + 2 + 8 + 1);
-        sendBuffer.putLong(timestamp);
+        sendBuffer = ByteBuffer.allocate(6 + 4 + 8 + 1).order(ByteOrder.LITTLE_ENDIAN);
+        sendBuffer.putLong(timestamp).position(6);
         sendBuffer.put(dataPoint.key.getBytes());
         sendBuffer.put(value.getBytes());
       }

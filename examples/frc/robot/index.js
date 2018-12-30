@@ -22,7 +22,8 @@ class Robot extends EventEmitter {
     // UDP message handler
     this.socket.on('message', (msg) => {
       console.log(msg);
-      console.log(msg.readUIntBE(2, 6));
+      console.log(msg.readUIntLE(0, 6));
+      console.log(msg.toString('utf8', 6, 9));
       /*
       const obj = JSON.parse(msg.toString());
       if (obj[0] === 'log') { // If message is a log entry from the roborio, handle it properly
