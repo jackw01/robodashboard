@@ -13,9 +13,4 @@ public class TelemetryDataPoint<T> {
     key = k;
     value = v;
   }
-
-  public byte[] getByteArrayRepresentation() {
-    String stringRep = "[\"" + key + "\",\"" + value + "\"]";
-    return stringRep.getBytes();
-  }
 }

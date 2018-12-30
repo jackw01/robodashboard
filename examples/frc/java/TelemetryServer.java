@@ -8,9 +8,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.nio.ByteBuffer;
 
 /**
 * Handles rx/tx of telemetry data on robot side
@@ -40,8 +38,23 @@ public class TelemetryServer {
 	 */
 	public <T> void send(TelemetryDataPoint<T> dataPoint) {
 		try {
-      byte[] data = dataPoint.getByteArrayRepresentation();
-			DatagramPacket msg = new DatagramPacket(data, data.length, InetAddress.getByName("127.0.0.1"), 5800);
+      ByteBuffer sendBuffer;
+      long timestamp = System.currentTimeMillis();
+      if (dataPoint.value instanceof String) {
+        String value = (String)(Object)dataPoint.value;
+        sendBuffer = ByteBuffer.allocate(8 + 2 + value.length() + 1);
+        sendBuffer.putLong(timestamp);
+        sendBuffer.put(dataPoint.key.getBytes());
+        sendBuffer.put(value.getBytes());
+      } else {
+        String value = String.valueOf(dataPoint.value);
+        sendBuffer = ByteBuffer.allocate(8 + 2 + 8 + 1);
+        sendBuffer.putLong(timestamp);
+        sendBuffer.put(dataPoint.key.getBytes());
+        sendBuffer.put(value.getBytes());
+      }
+
+			DatagramPacket msg = new DatagramPacket(sendBuffer.array(), sendBuffer.position(), InetAddress.getByName("127.0.0.1"), 5800);
 			socket.send(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
