@@ -3,14 +3,14 @@
 // robodashboard FRC interface v0.1.0
 
 /**
-* Storage class for data points
+* Storage class for data strings
 */
-public class TelemetryDataPoint {
+public class TelemetryStringValue<T> {
   public String key;
-  public double[] values;
+  public String value;
 
-  public TelemetryDataPoint(String k, double... v) {
+  public TelemetryStringValue(String k, String v) {
     key = k;
-    values = v;
+    value = v;
   }
 }

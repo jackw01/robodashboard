@@ -5,7 +5,6 @@
 const EventEmitter = require('events');
 const dgram = require('dgram');
 const chalk = require('chalk');
-const prettyMs = require('pretty-ms');
 
 const { logger, LocationValue } = require('../../../server');
 
@@ -26,7 +25,7 @@ class Robot extends EventEmitter {
     this.socket.on('message', (msg) => {
       const timestamp = msg.readUIntLE(0, 6);
       const key = msg.toString('utf8', 6, 10).trim();
-      const value = msg.toString('utf8', 10);
+      const value = msg.readDoubleLE(10);
 
       // Check data latency
       const now = Date.now();
