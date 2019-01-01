@@ -50,5 +50,6 @@
 - [x] java interface for sending data packets
 - [x] send timestamps
 - [x] send logs with correct timestamps
+- [x] send/receive multiple double values in a packet
 - [ ] make data packets small as possible
 - [ ] java local logger for roborio

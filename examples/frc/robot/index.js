@@ -12,6 +12,7 @@ const { logger, LocationValue } = require('../../../server');
 class Robot extends EventEmitter {
   constructor() {
     super();
+    this.dashboardSubKeys = {};
     this.lastLatencyCheck = 0;
 
     this.socket = dgram.createSocket('udp4');
@@ -25,7 +26,6 @@ class Robot extends EventEmitter {
     this.socket.on('message', (msg) => {
       const timestamp = msg.readUIntLE(0, 6);
       const key = msg.toString('utf8', 6, 10).trim();
-      const value = msg.readDoubleLE(10);
 
       // Check data latency
       const now = Date.now();
@@ -34,12 +34,19 @@ class Robot extends EventEmitter {
         this.emit('telemetry', 'latency', now - timestamp);
       }
 
-      if (key === 'log') { // If message is a log entry from the roborio, handle it properly
-        const valueString = `${chalk.cyan('robot')}: ${value}`;
+      if (key === 'log2') { // If message is a log entry from the roborio, handle it properly
+        const valueString = `${chalk.cyan('robot')}: ${msg.toString('utf8', 10)}`;
         this.emit('telemetry', 'log', valueString, timestamp);
         console.log(`${new Date(timestamp).toISOString()} ${valueString}`);
       } else { // For all other cases, emit the telemetry event and let the dashboard handle it
-        this.emit('telemetry', key, value, timestamp);
+        const values = [];
+        for (let i = 10; i < msg.length; i += 8) values.push(msg.readDoubleLE(i));
+        if (values.length === 1) this.emit('telemetry', key, values[0], timestamp);
+        else {
+          const data = {};
+          values.forEach((v, i) => { data[this.dashboardSubKeys[key][i]] = v; });
+          this.emit('telemetry', key, data, timestamp);
+        }
       }
     });
 
@@ -48,6 +55,10 @@ class Robot extends EventEmitter {
     });
 
     this.socket.bind(5800);
+  }
+
+  registerDashboardItems(items) {
+    items.forEach((p) => { this.dashboardSubKeys[p.key] = p.subKeys; });
   }
 }
 

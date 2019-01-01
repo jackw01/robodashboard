@@ -17,7 +17,7 @@ const Robot = require('./robot');
 const dashboard = new Dashboard();
 const robot = new Robot();
 
-dashboard.telemetryServer.registerDashboardItems([
+const dashboardItems = [
   new DashboardItem(DashboardTypes.StaticText, 'staticText', {
     text: 'Interface: FRC Interface ',
   }),
@@ -94,6 +94,9 @@ dashboard.telemetryServer.registerDashboardItems([
     isSampled: true,
     subKeys: ['left', 'right'],
   }),
-]);
+];
+
+dashboard.telemetryServer.registerDashboardItems(dashboardItems);
+robot.registerDashboardItems(dashboardItems);
 
 robot.on('telemetry', dashboard.telemetryServer.setValueForDashboardItem.bind(dashboard.telemetryServer));
