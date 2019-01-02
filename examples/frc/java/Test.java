@@ -13,9 +13,9 @@ public class Test {
     t.schedule(new TimerTask() {
       @Override
       public void run() {
-        TelemetryDataPoint dp1 = new TelemetryDataPoint("log ", 1286.4833);
+        TelemetryStringValue dp1 = new TelemetryStringValue("log ", "1286.4833");
         TelemetryDataPoint dp2 = new TelemetryDataPoint("dout", 10, 20);
-        server.sendData(dp1);
+        server.sendString(dp1);
         server.sendData(dp2);
       }
     }, 1000, 1000);

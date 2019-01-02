@@ -34,7 +34,7 @@ class Robot extends EventEmitter {
         this.emit('telemetry', 'latency', now - timestamp);
       }
 
-      if (key === 'log2') { // If message is a log entry from the roborio, handle it properly
+      if (key === 'log') { // If message is a log entry from the roborio, handle it properly
         const valueString = `${chalk.cyan('robot')}: ${msg.toString('utf8', 10)}`;
         this.emit('telemetry', 'log', valueString, timestamp);
         console.log(`${new Date(timestamp).toISOString()} ${valueString}`);
