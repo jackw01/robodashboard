@@ -13,7 +13,7 @@ public class Test {
     t.schedule(new TimerTask() {
       @Override
       public void run() {
-        TelemetryStringValue dp1 = new TelemetryStringValue("log ", "1286.4833");
+        TelemetryLogEntry dp1 = new TelemetryLogEntry("log ", "1286.4833");
         TelemetryDataPoint dp2 = new TelemetryDataPoint("dout", 10, 20);
         server.sendString(dp1);
         server.sendData(dp2);

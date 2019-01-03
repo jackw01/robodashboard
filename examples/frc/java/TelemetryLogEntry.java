@@ -5,11 +5,11 @@
 /**
 * Storage class for data strings
 */
-public class TelemetryStringValue<T> {
+public class TelemetryLogEntry<T> {
   public String key;
   public String value;
 
-  public TelemetryStringValue(String k, String v) {
+  public TelemetryLogEntry(String k, String v) {
     key = k;
     value = v;
   }

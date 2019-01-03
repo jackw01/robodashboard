@@ -34,6 +34,15 @@ public class TelemetryServer {
 
   /**
 	 *
+	 * @param message
+	 *            Message to log and send to dashboard
+	 */
+	public void sendString(String message) {
+    sendString(new TelemetryLogEntry("log ", message));
+  }
+
+  /**
+	 *
 	 * @param dataPoint
 	 *            Data point to send
 	 */
@@ -54,7 +63,7 @@ public class TelemetryServer {
 	 * @param stringValue
 	 *            String to send
 	 */
-	public void sendString(TelemetryStringValue stringValue) {
+	public void sendString(TelemetryLogEntry stringValue) {
     ByteBuffer sendBuffer;
     long timestamp = System.currentTimeMillis();
     sendBuffer = ByteBuffer.allocate(6 + 4 + stringValue.value.length() + 1).order(ByteOrder.LITTLE_ENDIAN);
