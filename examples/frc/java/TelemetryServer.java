@@ -18,12 +18,12 @@ public class TelemetryServer {
 
   private static final TelemetryServer instance = new TelemetryServer(5801);
 
-	public static TelemetryServer getInstance() {
-		return instance;
-	}
+  public static TelemetryServer getInstance() {
+    return instance;
+  }
 
   private DatagramSocket socket;
-
+  
   private TelemetryServer(int port) {
     try {
       socket = new DatagramSocket(port);
@@ -33,21 +33,21 @@ public class TelemetryServer {
   }
 
   /**
-	 *
-	 * @param message
-	 *            Message to log and send to dashboard
-	 */
-	public void sendString(String message) {
+  *
+  * @param message
+  *            Message to log and send to dashboard
+  */
+  public void sendString(String message) {
     sendString(new TelemetryLogEntry("log ", message));
   }
 
   /**
-	 *
-	 * @param dataPoint
-	 *            Data point to send
-	 */
-	public void sendData(TelemetryDataPoint dataPoint) {
-		ByteBuffer sendBuffer;
+  *
+  * @param dataPoint
+  *            Data point to send
+  */
+  public void sendData(TelemetryDataPoint dataPoint) {
+    ByteBuffer sendBuffer;
     long timestamp = System.currentTimeMillis();
     sendBuffer = ByteBuffer.allocate(6 + 4 + 8 * dataPoint.values.length).order(ByteOrder.LITTLE_ENDIAN);
     sendBuffer.putLong(timestamp).position(6);
@@ -55,38 +55,39 @@ public class TelemetryServer {
     for (double value : dataPoint.values) {
       sendBuffer.putDouble(value);
     }
-		sendRawData(sendBuffer);
+    sendRawData(sendBuffer);
   }
 
   /**
-	 *
-	 * @param stringValue
-	 *            String to send
-	 */
-	public void sendString(TelemetryLogEntry stringValue) {
+  *
+  * @param stringValue
+  *            String to send
+  */
+  public void sendString(TelemetryLogEntry stringValue) {
     ByteBuffer sendBuffer;
     long timestamp = System.currentTimeMillis();
     sendBuffer = ByteBuffer.allocate(6 + 4 + stringValue.value.length() + 1).order(ByteOrder.LITTLE_ENDIAN);
     sendBuffer.putLong(timestamp).position(6);
     sendBuffer.put(stringValue.key.getBytes());
     sendBuffer.put(stringValue.value.getBytes());
-		sendRawData(sendBuffer);
+    sendRawData(sendBuffer);
   }
 
   /**
-	 *
-	 * @param sendBuffer
-	 *            Buffer to send
-	 */
+  *
+  * @param sendBuffer
+  *            Buffer to send
+  */
   private void sendRawData(ByteBuffer sendBuffer) {
     // bytes 0-5: timestamp
     // bytes 6-9: key string
     // bytes 10+: value
     try {
-      DatagramPacket msg = new DatagramPacket(sendBuffer.array(), sendBuffer.position(), InetAddress.getByName("127.0.0.1"), 5800);
-			socket.send(msg);
-		} catch (IOException e) {
-			e.printStackTrace();
+      DatagramPacket msg = new DatagramPacket(sendBuffer.array(), sendBuffer.position(),
+      InetAddress.getByName("127.0.0.1"), 5800);
+      socket.send(msg);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 }
