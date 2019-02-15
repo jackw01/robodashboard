@@ -35,6 +35,7 @@
 - [x] multi value controls
 - [ ] joystick with hide show control
 - [ ] hud on camera stream?
+- [ ] better cursors
 
 ### robot-bridge Interface
 - [x] serial communication
