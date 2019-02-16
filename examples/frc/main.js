@@ -116,6 +116,7 @@ const dashboardItems = [
   new DashboardItem(DashboardTypes.State, 'sArm', {
     description: 'Arm',
     defaultState: 'retract',
+    isSecondaryState: true,
     states: {
       retract: new DashboardItemState('Retracted', 'secondary'),
       extend: new DashboardItemState('Extended', 'primary'),
@@ -124,6 +125,7 @@ const dashboardItems = [
   new DashboardItem(DashboardTypes.State, 'sIB1', {
     description: 'Ball Intake',
     defaultState: 'stow',
+    isSecondaryState: true,
     states: {
       stow: new DashboardItemState('Stowed', 'secondary'),
       deploy: new DashboardItemState('Deployed', 'primary'),
@@ -132,6 +134,7 @@ const dashboardItems = [
   new DashboardItem(DashboardTypes.State, 'sIB2', {
     description: 'Ball Intake',
     defaultState: 'off',
+    isSecondaryState: true,
     states: {
       off: new DashboardItemState('Off', 'secondary'),
       intake: new DashboardItemState('Intaking', 'primary'),
@@ -141,6 +144,7 @@ const dashboardItems = [
   new DashboardItem(DashboardTypes.State, 'sIH1', {
     description: 'Hatch Intake',
     defaultState: 'stow',
+    isSecondaryState: true,
     states: {
       stow: new DashboardItemState('Stowed', 'secondary'),
       handoff: new DashboardItemState('Handoff', 'warning'),
@@ -150,6 +154,7 @@ const dashboardItems = [
   new DashboardItem(DashboardTypes.State, 'sIH2', {
     description: 'Hatch Intake',
     defaultState: 'off',
+    isSecondaryState: true,
     states: {
       off: new DashboardItemState('Off', 'secondary'),
       intake: new DashboardItemState('Intaking', 'primary'),
@@ -157,16 +162,18 @@ const dashboardItems = [
     },
   }),
   new DashboardItem(DashboardTypes.State, 'sMnM', {
-    description: 'Manipulator Gripper',
+    description: 'Gripper',
     defaultState: 'hatch',
+    isSecondaryState: true,
     states: {
       hatch: new DashboardItemState('Hatch', 'primary'),
       ball: new DashboardItemState('Ball', 'primary'),
     },
   }),
   new DashboardItem(DashboardTypes.State, 'sMnI', {
-    description: 'Manipulator Wheels',
+    description: 'Gripper Wheels',
     defaultState: 'off',
+    isSecondaryState: true,
     states: {
       off: new DashboardItemState('Off', 'secondary'),
       intake: new DashboardItemState('Intaking', 'primary'),

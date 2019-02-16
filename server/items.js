@@ -64,6 +64,7 @@ class DashboardItem {
       // Type: State
       states: {}, // Object containing DashboardItemStates for each key
       defaultState: true, // Default state key
+      isSecondaryState: false, // Primary or secondary?
 
       // Type: ButtonGroup, InputGroup
       controls: {}, // Object containing DashboardItemControls/Inputs for each key

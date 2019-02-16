@@ -13,8 +13,8 @@ public class Test {
     t.schedule(new TimerTask() {
       @Override
       public void run() {
-        server.sendString("log ", "1286.4833");
-        server.sendData("dout", 10, 20);
+        server.log("1286.4833");
+        server.sendData("drvP", 0.5, 0.5);
       }
     }, 1000, 1000);
   }

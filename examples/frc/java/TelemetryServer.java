@@ -2,8 +2,6 @@
 // Copyright 2019 jackw01. Released under the MIT License (see LICENSE for details).
 // robodashboard FRC interface v0.1.0
 
-package frc.utility.telemetry;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -12,8 +10,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
-import frc.robot.Constants;
 
 /**
  * Handles rx/tx of telemetry data on robot side
@@ -41,7 +37,7 @@ public class TelemetryServer {
 	 * @param message
 	 * 		Message to log and send to dashboard
 	 */
-	public void sendString(String message) {
+	public void log(String message) {
 		sendString("log ", message);
 	}
 

@@ -9,7 +9,8 @@ import LogDataView from './LogDataView';
 import InfoModal from './InfoModal';
 import OptionsModal from './OptionsModal';
 import ControlsView from './ControlsView';
-import StatusIndicatorView from './StatusIndicatorView';
+import StatusView from './StatusView';
+import SecondaryStatusView from './SecondaryStatusView';
 
 class App extends Component {
   render() {
@@ -17,13 +18,20 @@ class App extends Component {
       <div className='main h-100'>
         <Container className='app h-100 d-flex flex-column' fluid>
           <Row className='h-100'>
-            <Col xs='5' className='h-100'>
+            <Col xs='4' className='h-100'>
               <TelemetryDataView/>
             </Col>
-            <Col xs='7' className='h-100'>
-              <LocationDataView/>
-              <LogDataView/>
+            <Col xs='8' className='h-100'>
 
+              <Row>
+                <Col xs='9' className='h-100'>
+                  <LocationDataView/>
+                </Col>
+                <Col xs='3' className='h-100'>
+                  <SecondaryStatusView/>
+                </Col>
+              </Row>
+              <LogDataView/>
             </Col>
           </Row>
         </Container>
@@ -31,7 +39,7 @@ class App extends Component {
           <InfoModal/>
           <OptionsModal/>
           <ControlsView/>
-          <StatusIndicatorView/>
+          <StatusView/>
         </div>
       </div>
     );

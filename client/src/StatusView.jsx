@@ -6,7 +6,7 @@ import MultiBadge from './MultiBadge';
 
 import telemetryClient from './model/telemetryclient';
 
-class StatusIndicatorView extends Component {
+class StatusView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +33,8 @@ class StatusIndicatorView extends Component {
     telemetryClient.on('ready', () => {
       const keyStates = {};
       Object.keys(telemetryClient.dashboardItems).filter((k) => {
-        return telemetryClient.dashboardItems[k].type === 'state';
+        return telemetryClient.dashboardItems[k].type === 'state'
+               && !telemetryClient.dashboardItems[k].isSecondaryState;
       }).forEach((k) => {
         telemetryClient.on(`data-${k}`, this.eventHandler);
         keyStates[k] = telemetryClient.dashboardItems[k].defaultState;
@@ -68,4 +69,4 @@ class StatusIndicatorView extends Component {
   }
 }
 
-export default StatusIndicatorView;
+export default StatusView;
