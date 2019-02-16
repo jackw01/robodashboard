@@ -84,7 +84,7 @@ class TelemetryContainer extends Component {
                 ))}
               </span>
             }
-            <TelemetryGraph height={100} width={300} dataKey={this.props.dataKey}
+            <TelemetryGraph height={100} width={350} dataKey={this.props.dataKey}
               historyLength={this.state.historyLength * this.props.historyLengthMultiplier}
               range={this.props.range}/>
           </div>
@@ -99,7 +99,7 @@ class TelemetryContainer extends Component {
                 ))}
               </span>
             }
-            <TelemetryGraph height={100} width={300} dataKey={this.props.dataKey} historyLength={2}
+            <TelemetryGraph height={100} width={350} dataKey={this.props.dataKey} historyLength={2}
               range={this.props.range} unitSymbol={this.props.unitSymbol} valueOnly/>
           </div>
         }

@@ -17,12 +17,11 @@ class App extends Component {
     return (
       <div className='main h-100'>
         <Container className='app h-100 d-flex flex-column' fluid>
-          <Row className='h-100'>
+          <Row className='outer h-100'>
             <Col xs='4' className='h-100'>
               <TelemetryDataView/>
             </Col>
             <Col xs='8' className='h-100'>
-
               <Row>
                 <Col xs='9' className='h-100'>
                   <LocationDataView/>

@@ -92,16 +92,32 @@ code {
   margin: 0;
 }
 
-.row>div {
+.row.outer>div {
   padding: 0 0.5rem;
 }
 
-.row>div:first-child {
+.row:not(.outer)>div {
+  padding: 0 0.5rem;
+}
+
+.row.outer>div:first-child {
   margin-bottom: 0.5rem;
 }
 
-.row>div:not(:first-child) {
+.row:not(.outer)>div:first-child {
+  margin-bottom: 0.5rem;
+}
+
+.row.outer>div:not(:first-child) {
   padding-left: 0;
+}
+
+.row:not(.outer)>div {
+  padding-left: 0;
+}
+
+.row:not(.outer)>div:last-child {
+  padding-right: 0;
 }
 
 .card {
@@ -213,12 +229,16 @@ code {
   border-right: 1px solid $gray-800;
 }
 
+.data-view .card-title .btn:first-child {
+  margin-left: 0;
+}
+
 .status-indicator-view {
   float: right;
   margin-top: 0.15rem;
 }
 
-.status-indicator-view .multi-badge .badge {
+.multi-badge .badge {
   font-size: 0.875rem;
   line-height: 1.0rem;
   padding-top: 0.2rem;
@@ -280,4 +300,12 @@ code {
 
 .is-invalid {
   border: 1px solid $color-danger;
+}
+
+.secondary-status-view {
+  line-height: 1.7rem;
+}
+
+.secondary-status-view>div {
+  height: calc(3rem + 400px + 2.1rem);
 }
