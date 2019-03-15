@@ -13,6 +13,7 @@ class Robot extends EventEmitter {
   constructor() {
     super();
     this.dashboardSubKeys = {};
+    this.dashboardStates = {};
     this.lastLatencyCheck = 0;
 
     this.socket = dgram.createSocket('udp4');
@@ -38,6 +39,9 @@ class Robot extends EventEmitter {
         const valueString = `${chalk.cyan('robot')}: ${msg.toString('utf8', 10)}`;
         this.emit('telemetry', 'log', valueString, timestamp);
         console.log(`${new Date(timestamp).toISOString()} ${valueString}`);
+      } else if (Object.keys(this.dashboardStates[key]).length > 0) { // Handle strings/states
+        const data = msg.toString('utf8', 10);
+        this.emit('telemetry', key, data, timestamp);
       } else { // For all other cases, emit the telemetry event and let the dashboard handle it
         const values = [];
         for (let i = 10; i < msg.length; i += 8) values.push(msg.readDoubleLE(i));
@@ -54,11 +58,14 @@ class Robot extends EventEmitter {
       logger.info(`Dashboard UDP socket error:\n${err.stack}`);
     });
 
-    this.socket.bind(5800);
+    this.socket.bind(5801);
   }
 
   registerDashboardItems(items) {
-    items.forEach((p) => { this.dashboardSubKeys[p.key] = p.subKeys; });
+    items.forEach((p) => {
+      this.dashboardSubKeys[p.key] = p.subKeys;
+      this.dashboardStates[p.key] = p.states;
+    });
   }
 }
 
