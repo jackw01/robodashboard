@@ -34,7 +34,7 @@
 - [x] controls popout
 - [x] multi value controls
 - [ ] joystick with hide show control
-- [ ] hud on camera stream?
+- [ ] link to camera livestream
 - [ ] better cursors
 
 ### robot-bridge Interface
@@ -46,11 +46,3 @@
 - [x] log robot connection events
 - [x] LED controls
 - [ ] drive with joystick
-
-### FRC Interface
-- [x] java interface for sending data packets
-- [x] send timestamps
-- [x] send logs with correct timestamps
-- [x] send/receive multiple double values in a packet
-- [x] make data packets small as possible (?)
-- [ ] java local logger for roborio
