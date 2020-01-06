@@ -28,9 +28,10 @@ class RateLimiter {
     if (Math.abs(dInput) >= area || Math.sign(dInput) !== Math.sign(this.currentAccel)) this.currentAccel += dAccel;
     else this.currentAccel -= dAccel;
 
-    this.currentAccel = util.clamp(this.currentAccel, -this.accelLimit, this.accelLimit); // Limit acceleration
+    // Limit acceleration
+    this.currentAccel = util.clamp(this.currentAccel, -this.accelLimit, this.accelLimit);
     this.lastInput += this.currentAccel * dT; // Integrate acceleration into velocity
-    if (Math.sign(input - this.lastInput) !== Math.sign(dInput)) { // Cap velocity at the target value
+    if (Math.sign(input - this.lastInput) !== Math.sign(dInput)) { // Cap velocity at the target
       this.lastInput = input;
       this.currentAccel = 0;
     }

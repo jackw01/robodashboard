@@ -23,17 +23,26 @@ class PathSegment {
 
   getClosestPoint(point) {
     const u = this.getPercentageOnSegment(point);
-    return new transform.Translation2D(this.start.x + this.delta.x * u, this.start.y + this.delta.y * u);
+    return new transform.Translation2D(
+      this.start.x + this.delta.x * u,
+      this.start.y + this.delta.y * u
+    );
   }
 
   getPointByDistance(distance) {
     const u = distance / this.deltaDistance;
-    return new transform.Translation2D(this.start.x + this.delta.x * u, this.start.y + this.delta.y * u);
+    return new transform.Translation2D(
+      this.start.x + this.delta.x * u,
+      this.start.y + this.delta.y * u
+    );
   }
 
   getPointByDistanceFromEnd(distance) {
     const u = distance / this.deltaDistance;
-    return new transform.Translation2D(this.end.x - this.delta.x * u, this.end.y - this.delta.y * u);
+    return new transform.Translation2D(
+      this.end.x - this.delta.x * u,
+      this.end.y - this.delta.y * u
+    );
   }
 }
 
