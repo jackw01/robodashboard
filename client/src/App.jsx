@@ -24,7 +24,7 @@ class App extends Component {
             <Col xs='8' className='h-100'>
               <Row>
                 <Col xs='9' className='h-100'>
-                  <LocationDataView/>
+
                 </Col>
                 <Col xs='3' className='h-100'>
                   <SecondaryStatusView/>
