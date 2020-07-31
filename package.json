@@ -11,10 +11,7 @@
   "scripts": {
     "client": "cd client && react-scripts start",
     "client-build": "cd client && react-scripts build",
-    "dev-rb": "concurrently --kill-others-on-fail \"npm run server-robot-bridge\" \"npm run client\"",
-    "dev-frc": "concurrently --kill-others-on-fail \"npm run server-frc\" \"npm run client\"",
-    "dev-frc-server": "cd examples/frc/java/ && javac Test.java && java Test && cd ../../.. ",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev": "concurrently --kill-others-on-fail \"npm run server-robot-bridge\" \"npm run client\"",
     "server-robot-bridge": "node examples/robot-bridge/main.js",
     "server-frc": "node examples/frc/main.js",
     "test": "ava -v"

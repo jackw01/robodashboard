@@ -15,30 +15,30 @@ import SecondaryStatusView from './SecondaryStatusView';
 class App extends Component {
   render() {
     return (
-      <div className='main h-100'>
-        <Container className='app h-100 d-flex flex-column' fluid>
-          <Row className='outer h-100'>
-            <Col xs='4' className='h-100'>
-              <TelemetryDataView/>
+      <div className="main h-100">
+        <Container className="app h-100 d-flex flex-column" fluid>
+          <Row className="outer h-100">
+            <Col xs="4" className="h-100">
+              <TelemetryDataView />
             </Col>
-            <Col xs='8' className='h-100'>
+            <Col xs="8" className="h-100">
               <Row>
-                <Col xs='9' className='h-100'>
-
+                <Col xs="9" className="h-100">
+                  mjpeg here
                 </Col>
-                <Col xs='3' className='h-100'>
-                  <SecondaryStatusView/>
+                <Col xs="3" className="h-100">
+                  <SecondaryStatusView />
                 </Col>
               </Row>
-              <LogDataView/>
+              <LogDataView />
             </Col>
           </Row>
         </Container>
-        <div className='status-container'>
-          <InfoModal/>
-          <OptionsModal/>
-          <ControlsView/>
-          <StatusView/>
+        <div className="status-container">
+          <InfoModal />
+          <OptionsModal />
+          <ControlsView />
+          <StatusView />
         </div>
       </div>
     );
