@@ -10,10 +10,7 @@
   },
   "scripts": {
     "client": "cd client && react-scripts start",
-    "client-build": "cd client && react-scripts build",
-    "dev": "concurrently --kill-others-on-fail \"npm run server-robot-bridge\" \"npm run client\"",
-    "server-robot-bridge": "node examples/robot-bridge/main.js",
-    "server-frc": "node examples/frc/main.js"
+    "client-build": "cd client && react-scripts build"
   },
   "engines": {
     "node": ">=12.0.0"
