@@ -9,8 +9,8 @@
     "robodashboard": "src/main.js"
   },
   "scripts": {
-    "client": "cd client && react-scripts start",
-    "client-build": "cd client && react-scripts build"
+    "client": "react-scripts start",
+    "client-build": "react-scripts build"
   },
   "engines": {
     "node": ">=12.0.0"
@@ -57,5 +57,17 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "react-scripts": "^3.4.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
