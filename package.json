@@ -1,19 +1,12 @@
 {
   "name": "robodashboard",
   "version": "1.0.0",
-  "date": "2018-12-21",
   "description": "Web dashboard for displaying data from and controlling teleoperated robots",
-  "main": "src/main.js",
-  "preferGlobal": true,
-  "bin": {
-    "robodashboard": "src/main.js"
-  },
   "scripts": {
-    "client": "react-scripts start",
-    "client-build": "react-scripts build"
-  },
-  "engines": {
-    "node": ">=12.0.0"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -27,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/jackw01/robodashboard/issues"
   },
-  "homepage": "https://github.com/jackw01/robodashboard#readme",
+  "homepage": "https://github.com/jackw01/robodashboard",
   "dependencies": {
     "anser": "^1.4.9",
     "bootstrap": "^4.5.0",
@@ -42,7 +35,7 @@
     "react-resize-aware": "^3.0.1",
     "react-sortable-hoc": "^1.11.0",
     "react-vis": "^1.11.7",
-    "reactstrap": "^8.5.1"
+    "reactstrap": "^8.6.0"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
