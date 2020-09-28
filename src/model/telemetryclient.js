@@ -49,6 +49,7 @@ class TelemetryClient extends EventEmitter {
       });
       console.table(this.dashboardItems);
       this.dashboardItemsInitialized = true;
+      this.ws.send('ready');
       this.emit('ready');
     }
   }

@@ -3,12 +3,14 @@
 
 import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Button, ButtonGroup } from 'reactstrap';
-import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+//import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+import { List, arrayMove } from "react-movable";
 import TelemetryContainer from './TelemetryContainer';
 
 import telemetryClient from './model/telemetryclient';
 import storage from './model/storage';
 
+/*
 const SortableTelemetryItem = SortableElement(TelemetryContainer);
 
 const SortableList = SortableContainer(({ items, dashboardItems, mode, onVisibilityChange }) => {
@@ -35,6 +37,7 @@ const SortableList = SortableContainer(({ items, dashboardItems, mode, onVisibil
     </div>
   );
 });
+*/
 
 class TelemetryDataView extends Component {
   constructor(props) {
@@ -68,6 +71,7 @@ class TelemetryDataView extends Component {
         state.toggle === TelemetryContainer.ModeGraph ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeGraph;
       const newMode = state.mode;
       Object.keys(newMode).forEach((k) => { newMode[k] = newToggleState; });
+      console.log(newMode);
       storage.write('telemetryDataListToggle', newToggleState);
       storage.write('telemetryDataListVisibility', newMode);
       return { mode: newMode, toggle: newToggleState };
@@ -103,20 +107,50 @@ class TelemetryDataView extends Component {
 
   render() {
     return (
-      <Card className='data-view telemetry-data-view'>
+      <Card className="data-view telemetry-data-view">
         <CardBody>
           <CardTitle>
             <ButtonGroup>
-              <Button color='secondary' onClick={this.toggleGraphVisible.bind(this)}
-                active={this.state.toggle === TelemetryContainer.ModeGraph}>Toggle All Graphs</Button>
-              <Button color='secondary' onClick={this.toggleValueVisible.bind(this)}
-                active={this.state.toggle === TelemetryContainer.ModeValue}>Toggle All Values</Button>
+              <Button
+                color="secondary"
+                onClick={this.toggleGraphVisible.bind(this)}
+                active={this.state.toggle === TelemetryContainer.ModeGraph}
+              >
+                Toggle All Graphs
+              </Button>
+              <Button
+                color="secondary"
+                onClick={this.toggleValueVisible.bind(this)}
+                active={this.state.toggle === TelemetryContainer.ModeValue}
+              >
+                Toggle All Values
+              </Button>
             </ButtonGroup>
           </CardTitle>
-          <SortableList items={this.state.items} dashboardItems={this.state.dashboardItems}
-            mode={this.state.mode} onVisibilityChange={this.onVisibilityChange.bind(this)}
-            key={this.state.toggle} onSortEnd={this.onSortEnd}
-            pressDelay={200} lockToContainerEdges={true} lockAxis='y'/>
+          <List
+            values={this.state.items}
+            onChange={this.onSortEnd}
+            renderList={({ children, props }) => <div {...props}>{children}</div>}
+            renderItem={({ value, props }) => {
+              const dp = this.state.dashboardItems[value];
+              return (
+                <div {...props}>
+                  <TelemetryContainer
+                    key={value}
+                    dataKey={value}
+                    description={dp.description}
+                    unitSymbol={dp.unitSymbol}
+                    valueRange={dp.valueRange}
+                    historyLength={dp.historyLengthS}
+                    historyLengthMultiplier={1 / dp.sampleIntervalS}
+                    valueNames={dp.valueNames}
+                    mode={this.state.mode[value]}
+                    onVisibilityChange={this.onVisibilityChange.bind(this)}
+                  />
+                </div>
+              );
+            }}
+          />
         </CardBody>
       </Card>
     );
@@ -124,3 +158,22 @@ class TelemetryDataView extends Component {
 }
 
 export default TelemetryDataView;
+
+/*
+<SortableList
+items={this.state.items}
+dashboardItems={this.state.dashboardItems}
+mode={this.state.mode}
+
+
+key={this.state.toggle}
+
+
+
+onVisibilityChange={this.onVisibilityChange.bind(this)}
+onSortEnd={this.onSortEnd}
+
+pressDelay={200}
+lockToContainerEdges={true}
+lockAxis='y'/>
+*/
