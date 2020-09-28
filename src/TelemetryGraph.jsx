@@ -16,21 +16,29 @@ class TelemetryGraph extends Component {
     unitSymbol: PropTypes.string,
     height: PropTypes.number,
     width: PropTypes.number,
-    range: PropTypes.array,
+    valueRange: PropTypes.array,
     historyLength: PropTypes.number.isRequired,
     valueOnly: PropTypes.bool,
-  }
+  };
 
   constructor(props) {
     super(props);
     const data = {};
-    this.state = { data: data, timestamps: {}, ready: {}, lastHistoryLength: 0 };
+    this.state = {
+      data: data,
+      timestamps: {},
+      ready: {},
+      lastHistoryLength: 0,
+    };
     this.eventHandler = this.handleIncomingData.bind(this);
     telemetryClient.on(`data-${this.props.dataKey}`, this.eventHandler);
   }
 
   componentWillUnmount() {
-    telemetryClient.removeListener(`data-${this.props.dataKey}`, this.eventHandler);
+    telemetryClient.removeListener(
+      `data-${this.props.dataKey}`,
+      this.eventHandler
+    );
   }
 
   handleIncomingData(key, value, timestamp) {
@@ -39,12 +47,13 @@ class TelemetryGraph extends Component {
       if (state.lastHistoryLength !== this.props.historyLength) ready = {};
       let data = state.data;
       let timestamps = state.timestamps;
-      if (typeof value === 'object' && value) {
+      if (typeof value === "object" && value) {
         Object.entries(value).forEach(([k, v]) => {
           if (!ready[k]) {
             timestamps[k] = timestamp;
             data[k] = [];
-            for (let x = -this.props.historyLength; x < 0; x++) data[k].push([x, 0]);
+            for (let x = -this.props.historyLength; x < 0; x++)
+              data[k].push([x, 0]);
             ready[k] = true;
           }
           data[k].shift();
@@ -54,13 +63,22 @@ class TelemetryGraph extends Component {
         if (!ready[this.props.dataKey]) {
           timestamps[this.props.dataKey] = timestamp;
           data[this.props.dataKey] = [];
-          for (let x = -this.props.historyLength; x < 0; x++) data[this.props.dataKey].push([x, 0]);
+          for (let x = -this.props.historyLength; x < 0; x++)
+            data[this.props.dataKey].push([x, 0]);
           ready[this.props.dataKey] = true;
         }
         data[this.props.dataKey].shift();
-        data[this.props.dataKey].push([timestamp - timestamps[this.props.dataKey], value]);
+        data[this.props.dataKey].push([
+          timestamp - timestamps[this.props.dataKey],
+          value,
+        ]);
       }
-      return { data: data, timestamps: timestamps, ready: ready, lastHistoryLength: this.props.historyLength };
+      return {
+        data: data,
+        timestamps: timestamps,
+        ready: ready,
+        lastHistoryLength: this.props.historyLength,
+      };
     });
   }
 
@@ -68,40 +86,85 @@ class TelemetryGraph extends Component {
     const graphType = Object.keys(this.state.data).length === 1;
     return (
       <div>
-        {!this.props.valueOnly && <XYPlot height={this.props.height} width={this.props.width} animation={false} yDomain={this.props.range}
-          getX={(d) => d[0]} getY={(d) => d[1]}>
-          <GradientDefs>
-            <linearGradient id='colorGradient1' x1='0' x2='0' y1='0' y2='1'>
-              <stop offset='0%' stopColor={colors.primary} stopOpacity={0.75}/>
-              <stop offset='100%' stopColor='black' stopOpacity={0} />
-            </linearGradient>
-          </GradientDefs>
-          <HorizontalGridLines style={styles.gridLines}/>
-          {Object.keys(this.state.data).map((k, i) => {
-            if (graphType) return (<AreaSeries key={k} data={this.state.data[k]} color={colors.array[i]}
-              fill={(Object.keys(this.state.data).length === 1) ? 'url(#colorGradient1)' : ''}/>);
-            else return (<LineSeries key={k} data={this.state.data[k]} color={colors.array[i]}/>);
-          })}
-          <XAxis style={styles.axes} position='start' tickFormat={prettyMs}
-            title={Object.keys(this.state.data).map((k, i) => {
+        {!this.props.valueOnly && (
+          <XYPlot
+            height={this.props.height}
+            width={this.props.width}
+            animation={false}
+            yDomain={this.props.valueRange}
+            getX={(d) => d[0]}
+            getY={(d) => d[1]}
+          >
+            <GradientDefs>
+              <linearGradient id="colorGradient1" x1="0" x2="0" y1="0" y2="1">
+                <stop
+                  offset="0%"
+                  stopColor={colors.primary}
+                  stopOpacity={0.75}
+                />
+                <stop offset="100%" stopColor="black" stopOpacity={0} />
+              </linearGradient>
+            </GradientDefs>
+            <HorizontalGridLines style={styles.gridLines} />
+            {Object.keys(this.state.data).map((k, i) => {
+              if (graphType)
+                return (
+                  <AreaSeries
+                    key={k}
+                    data={this.state.data[k]}
+                    color={colors.array[i]}
+                    fill={
+                      Object.keys(this.state.data).length === 1
+                        ? "url(#colorGradient1)"
+                        : ""
+                    }
+                  />
+                );
+              else
+                return (
+                  <LineSeries
+                    key={k}
+                    data={this.state.data[k]}
+                    color={colors.array[i]}
+                  />
+                );
+            })}
+            <XAxis
+              style={styles.axes}
+              position="start"
+              tickFormat={prettyMs}
+              title={Object.keys(this.state.data)
+                .map((k, i) => {
+                  if (this.state.data[k].length > 0) {
+                    return this.state.data[k][
+                      this.state.data[k].length - 1
+                    ][1].toFixed(2);
+                  } else return "";
+                })
+                .join(", ")}
+            />
+            <YAxis style={styles.axes} />
+          </XYPlot>
+        )}
+        {this.props.valueOnly && (
+          <div className="telemetry-value-text">
+            {Object.keys(this.state.data).map((k, i) => {
               if (this.state.data[k].length > 0) {
-                return this.state.data[k][this.state.data[k].length - 1][1].toFixed(2);
-              } else return '';
-            }).join(', ')}/>
-          <YAxis style={styles.axes}/>
-        </XYPlot>}
-        {this.props.valueOnly && <div className='telemetry-value-text'>
-          {Object.keys(this.state.data).map((k, i) => {
-            if (this.state.data[k].length > 0) {
-              return (<span>
-                <span style={{ color: colors.array[i] }}>
-                  {this.state.data[k][this.state.data[k].length - 1][1].toFixed(2)}{this.props.unitSymbol}
-                </span>
-                {i < Object.keys(this.state.data).length - 1 ? ' ' : ''}
-              </span>);
-            } else return '';
-          })}
-        </div>}
+                return (
+                  <span>
+                    <span style={{ color: colors.array[i] }}>
+                      {this.state.data[k][
+                        this.state.data[k].length - 1
+                      ][1].toFixed(2)}
+                      {this.props.unitSymbol}
+                    </span>
+                    {i < Object.keys(this.state.data).length - 1 ? " " : ""}
+                  </span>
+                );
+              } else return "";
+            })}
+          </div>
+        )}
       </div>
     );
   }

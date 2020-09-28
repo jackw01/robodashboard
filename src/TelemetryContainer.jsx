@@ -19,25 +19,30 @@ class TelemetryContainer extends Component {
     dataKey: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     unitSymbol: PropTypes.string,
-    range: PropTypes.array,
+    valueRange: PropTypes.array,
     historyLength: PropTypes.number.isRequired,
     historyLengthMultiplier: PropTypes.number.isRequired,
-    subKeys: PropTypes.array,
+    valueNames: PropTypes.array,
     mode: PropTypes.number,
     onVisibilityChange: PropTypes.func,
-  }
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       mode: this.props.mode,
-      historyLength: storage.read(`telemetryDataHistoryLength_${this.props.dataKey}`, this.props.historyLength),
+      historyLength: storage.read(
+        `telemetryDataHistoryLength_${this.props.dataKey}`,
+        this.props.historyLength
+      ),
     };
   }
 
   toggleGraphVisible() {
     const newMode =
-      this.state.mode === TelemetryContainer.ModeGraph ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeGraph;
+      this.state.mode === TelemetryContainer.ModeGraph
+        ? TelemetryContainer.ModeHidden
+        : TelemetryContainer.ModeGraph;
     this.setState({ mode: newMode }, () => {
       this.props.onVisibilityChange(this.props.dataKey, this.state.mode);
     });
@@ -45,64 +50,108 @@ class TelemetryContainer extends Component {
 
   toggleValueVisible() {
     const newMode =
-      this.state.mode === TelemetryContainer.ModeValue ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeValue;
+      this.state.mode === TelemetryContainer.ModeValue
+        ? TelemetryContainer.ModeHidden
+        : TelemetryContainer.ModeValue;
     this.setState({ mode: newMode }, () => {
       this.props.onVisibilityChange(this.props.dataKey, this.state.mode);
     });
   }
 
   setHistoryLength(event) {
-    storage.write(`telemetryDataHistoryLength_${this.props.dataKey}`, parseInt(event.target.value, 10));
+    storage.write(
+      `telemetryDataHistoryLength_${this.props.dataKey}`,
+      parseInt(event.target.value, 10)
+    );
     this.setState({ historyLength: event.target.value });
   }
 
   render() {
     return (
-      <div className='telemetry-container'>
-        <span className='telemetry-container-description'>{this.props.description} ({this.props.unitSymbol})</span>
+      <div className="telemetry-container">
+        <span className="telemetry-container-description">
+          {this.props.description} ({this.props.unitSymbol})
+        </span>
         &nbsp;
         <ButtonGroup>
-          <Button color='secondary' onClick={this.toggleGraphVisible.bind(this)}
-            active={this.state.mode === TelemetryContainer.ModeGraph}>Graph</Button>
-          <Button color='secondary' onClick={this.toggleValueVisible.bind(this)}
-            active={this.state.mode === TelemetryContainer.ModeValue}>Value</Button>
+          <Button
+            color="secondary"
+            onClick={this.toggleGraphVisible.bind(this)}
+            active={this.state.mode === TelemetryContainer.ModeGraph}
+          >
+            Graph
+          </Button>
+          <Button
+            color="secondary"
+            onClick={this.toggleValueVisible.bind(this)}
+            active={this.state.mode === TelemetryContainer.ModeValue}
+          >
+            Value
+          </Button>
         </ButtonGroup>
-        <br/>
-        {this.state.mode === TelemetryContainer.ModeGraph &&
+        <br />
+        {this.state.mode === TelemetryContainer.ModeGraph && (
           <div>
-            <span className='telemetry-container-body'>
+            <span className="telemetry-container-body">
               Duration:&nbsp;
-              <Input className='telemetry-container-input' type='number' step='1'
-                placeholder='Duration' defaultValue={this.state.historyLength}
-                onChange={this.setHistoryLength.bind(this)}/>s
+              <Input
+                className="telemetry-container-input"
+                type="number"
+                step="1"
+                placeholder="Duration"
+                defaultValue={this.state.historyLength}
+                onChange={this.setHistoryLength.bind(this)}
+              />
+              s
             </span>
-            {this.props.subKeys.length > 0 &&
-              <span className='telemetry-container-legend'>
+            {this.props.valueNames.length > 0 && (
+              <span className="telemetry-container-legend">
                 &nbsp;
-                {this.props.subKeys.map((subKey, i) => (
-                  <LegendItem key={subKey} color={colors.array[i]} title={subKey}/>
+                {this.props.valueNames.map((subKey, i) => (
+                  <LegendItem
+                    key={subKey}
+                    color={colors.array[i]}
+                    title={subKey}
+                  />
                 ))}
               </span>
-            }
-            <TelemetryGraph height={100} width={350} dataKey={this.props.dataKey}
-              historyLength={this.state.historyLength * this.props.historyLengthMultiplier}
-              range={this.props.range}/>
+            )}
+            <TelemetryGraph
+              height={100}
+              width={350}
+              dataKey={this.props.dataKey}
+              historyLength={
+                this.state.historyLength * this.props.historyLengthMultiplier
+              }
+              valueRange={this.props.valueRange}
+            />
           </div>
-        }
-        {this.state.mode === TelemetryContainer.ModeValue &&
+        )}
+        {this.state.mode === TelemetryContainer.ModeValue && (
           <div>
-            {this.props.subKeys.length > 0 &&
-              <span className='telemetry-container-legend'>
+            {this.props.valueNames.length > 0 && (
+              <span className="telemetry-container-legend">
                 &nbsp;
-                {this.props.subKeys.map((subKey, i) => (
-                  <LegendItem key={subKey} color={colors.array[i]} title={subKey}/>
+                {this.props.valueNames.map((subKey, i) => (
+                  <LegendItem
+                    key={subKey}
+                    color={colors.array[i]}
+                    title={subKey}
+                  />
                 ))}
               </span>
-            }
-            <TelemetryGraph height={100} width={350} dataKey={this.props.dataKey} historyLength={2}
-              range={this.props.range} unitSymbol={this.props.unitSymbol} valueOnly/>
+            )}
+            <TelemetryGraph
+              height={100}
+              width={350}
+              dataKey={this.props.dataKey}
+              historyLength={2}
+              valueRange={this.props.valueRange}
+              unitSymbol={this.props.unitSymbol}
+              valueOnly
+            />
           </div>
-        }
+        )}
       </div>
     );
   }

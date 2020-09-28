@@ -6,10 +6,12 @@ import EventEmitter from 'events';
 class TelemetryClient extends EventEmitter {
   constructor() {
     super();
+    this.setMaxListeners(100);
     this.dashboardItems = {};
     this.dashboardItemsInitialized = false;
 
-    const host = window.document.location.host.replace(/:.*/, '');
+    //const host = window.document.location.host.replace(/:.*/, '');
+    const host = '192.168.0.38';
     this.ws = new WebSocket(`ws://${host}:8080`);
 
     this.ws.addEventListener('open', (e) => {
@@ -38,7 +40,7 @@ class TelemetryClient extends EventEmitter {
     if (this.dashboardItemsInitialized) { // Recieving a data packet
       // data contains properties value and timestamp
       Object.entries(obj).forEach(([key, data]) => {
-        this.emit(`data-${key}`, key, data.value, data.timestamp);
+        this.emit(`data-${key}`, key, data.value, data.t);
       });
     } else { // Receiving first packet with metadata on data points
       // value is a DashboardItem

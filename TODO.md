@@ -8,7 +8,7 @@
 - [x] show graph legends
 - [x] adjust graph timescale
 - [x] css styles for stuff
-- [x] location graph
+- [x] location view
 - [x] display arbitrary state information
 - [x] states with multiple sub-states
 - [x] show controls for changing states
@@ -36,13 +36,5 @@
 - [ ] joystick with hide show control
 - [ ] link to camera livestream
 - [ ] better cursors
+- [ ] dont show interface until connected
 
-### robot-bridge Interface
-- [x] serial communication
-- [x] odometry
-- [x] path following
-- [x] drivebase controls
-- [x] reporting all data from robot
-- [x] log robot connection events
-- [x] LED controls
-- [ ] drive with joystick
