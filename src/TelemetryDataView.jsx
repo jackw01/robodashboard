@@ -16,20 +16,24 @@ class TelemetryDataView extends Component {
       items: [],
       toggle: storage.read('telemetryDataListToggle', TelemetryContainer.ModeHidden),
     };
+  }
 
-    telemetryClient.on('ready', () => {
+  componentDidMount() {
+    telemetryClient.on("ready", () => {
       const mode = {};
-      Object.keys(telemetryClient.dashboardItems).forEach((k) => { mode[k] = TelemetryContainer.ModeHidden; });
+      Object.keys(telemetryClient.dashboardItems).forEach((k) => {
+        mode[k] = TelemetryContainer.ModeHidden;
+      });
       const keys = Object.keys(telemetryClient.dashboardItems).filter((k) => {
         return telemetryClient.dashboardItems[k].showGraph;
       });
       // Invalidate stuff in storage if keys have changed
-      if (storage.read('telemetryDataListOrder', []).length !== keys.length) {
-        storage.write('telemetryDataListOrder', keys);
+      if (storage.read("telemetryDataListOrder", []).length !== keys.length) {
+        storage.write("telemetryDataListOrder", keys);
       }
       this.setState({
-        items: storage.read('telemetryDataListOrder', keys),
-        mode: storage.read('telemetryDataListVisibility', mode),
+        items: storage.read("telemetryDataListOrder", keys),
+        mode: storage.read("telemetryDataListVisibility", mode),
         dashboardItems: telemetryClient.dashboardItems,
       });
     });

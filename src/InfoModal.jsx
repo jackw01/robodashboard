@@ -15,14 +15,18 @@ class InfoModal extends Component {
       content: [],
       inputGroups: [],
     };
+  }
 
-    telemetryClient.on('ready', () => {
+  componentDidMount() {
+    telemetryClient.on("ready", () => {
       const content = [];
-      Object.keys(telemetryClient.dashboardItems).filter((k) => {
-        return telemetryClient.dashboardItems[k].type === 'staticText';
-      }).forEach((k) => {
-        content.push(telemetryClient.dashboardItems[k].text);
-      });
+      Object.keys(telemetryClient.dashboardItems)
+        .filter((k) => {
+          return telemetryClient.dashboardItems[k].type === "staticText";
+        })
+        .forEach((k) => {
+          content.push(telemetryClient.dashboardItems[k].text);
+        });
       this.setState({ content });
     });
   }

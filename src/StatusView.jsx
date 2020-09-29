@@ -18,28 +18,40 @@ class StatusView extends Component {
     }
 
     this.eventHandler = this.handleIncomingData.bind(this);
+  }
 
-    telemetryClient.on('connect', () => {
-      this.setState({ status: 'Connected', statusColor: 'success' });
+  componentDidMount() {
+    telemetryClient.on("connect", () => {
+      this.setState({ status: "Connected", statusColor: "success" });
     });
 
-    telemetryClient.on('disconnect', () => {
+    telemetryClient.on("disconnect", () => {
       this.setState({
-        status: 'Disconnected', statusColor: 'danger',
-        readyStatus: 'Not Ready', readyStatusColor: 'danger'
+        status: "Disconnected",
+        statusColor: "danger",
+        readyStatus: "Not Ready",
+        readyStatusColor: "danger",
       });
     });
 
-    telemetryClient.on('ready', () => {
+    telemetryClient.on("ready", () => {
       const keyStates = {};
-      Object.keys(telemetryClient.dashboardItems).filter((k) => {
-        return telemetryClient.dashboardItems[k].type === 'state'
-               && !telemetryClient.dashboardItems[k].isSecondaryState;
-      }).forEach((k) => {
-        telemetryClient.on(`data-${k}`, this.eventHandler);
-        keyStates[k] = telemetryClient.dashboardItems[k].defaultState;
+      Object.keys(telemetryClient.dashboardItems)
+        .filter((k) => {
+          return (
+            telemetryClient.dashboardItems[k].type === "state" &&
+            !telemetryClient.dashboardItems[k].isSecondaryState
+          );
+        })
+        .forEach((k) => {
+          telemetryClient.on(`data-${k}`, this.eventHandler);
+          keyStates[k] = telemetryClient.dashboardItems[k].defaultState;
+        });
+      this.setState({
+        readyStatus: "Ready",
+        readyStatusColor: "success",
+        keyStates: keyStates,
       });
-      this.setState({ readyStatus: 'Ready', readyStatusColor: 'success', keyStates: keyStates });
     });
   }
 

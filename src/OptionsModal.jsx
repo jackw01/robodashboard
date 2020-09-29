@@ -19,11 +19,15 @@ class OptionsModal extends Component {
       inputGroups: [],
       invalid: {},
     };
+  }
 
-    telemetryClient.on('ready', () => {
-      const inputGroups = Object.keys(telemetryClient.dashboardItems).filter((k) => {
-        return telemetryClient.dashboardItems[k].type === 'inputGroup';
-      }).map((k) => telemetryClient.dashboardItems[k]);
+  componentDidMount() {
+    telemetryClient.on("ready", () => {
+      const inputGroups = Object.keys(telemetryClient.dashboardItems)
+        .filter((k) => {
+          return telemetryClient.dashboardItems[k].type === "inputGroup";
+        })
+        .map((k) => telemetryClient.dashboardItems[k]);
       this.setState({ inputGroups });
       console.log(this.state.inputGroups);
     });

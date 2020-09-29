@@ -15,15 +15,22 @@ class ControlsView extends Component {
     this.state = {
       controls: {},
     };
+  }
 
-    telemetryClient.on('ready', () => {
+  componentDidMount() {
+    telemetryClient.on("ready", () => {
       const controls = {};
-      Object.keys(telemetryClient.dashboardItems).filter((k) => {
-        return telemetryClient.dashboardItems[k].type === 'buttonGroup'
-          || (telemetryClient.dashboardItems[k].type === 'state' && telemetryClient.dashboardItems[k].createControl);
-      }).forEach((k) => {
-        controls[k] = telemetryClient.dashboardItems[k];
-      });
+      Object.keys(telemetryClient.dashboardItems)
+        .filter((k) => {
+          return (
+            telemetryClient.dashboardItems[k].type === "buttonGroup" ||
+            (telemetryClient.dashboardItems[k].type === "state" &&
+              telemetryClient.dashboardItems[k].createControl)
+          );
+        })
+        .forEach((k) => {
+          controls[k] = telemetryClient.dashboardItems[k];
+        });
       this.setState({ controls: controls });
     });
   }
