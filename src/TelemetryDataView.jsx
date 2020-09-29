@@ -1,43 +1,13 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
-// Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
+// Copyright 2020 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, Button, ButtonGroup } from 'reactstrap';
-//import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import { List, arrayMove } from "react-movable";
 import TelemetryContainer from './TelemetryContainer';
 
 import telemetryClient from './model/telemetryclient';
 import storage from './model/storage';
-
-/*
-const SortableTelemetryItem = SortableElement(TelemetryContainer);
-
-const SortableList = SortableContainer(({ items, dashboardItems, mode, onVisibilityChange }) => {
-  return (
-    <div>
-      {items.map((k, i) => {
-        const dp = dashboardItems[k];
-        return (
-          <SortableTelemetryItem
-            key={k}
-            index={i}
-            dataKey={k}
-            description={dp.description}
-            unitSymbol={dp.unitSymbol}
-            valueRange={dp.valueRange}
-            historyLength={dp.historyLengthS}
-            historyLengthMultiplier={1 / dp.sampleIntervalS}
-            valueNames={dp.valueNames}
-            mode={mode[k]}
-            onVisibilityChange={onVisibilityChange}
-          />
-        );
-      })}
-    </div>
-  );
-});
-*/
 
 class TelemetryDataView extends Component {
   constructor(props) {
@@ -71,7 +41,6 @@ class TelemetryDataView extends Component {
         state.toggle === TelemetryContainer.ModeGraph ? TelemetryContainer.ModeHidden : TelemetryContainer.ModeGraph;
       const newMode = state.mode;
       Object.keys(newMode).forEach((k) => { newMode[k] = newToggleState; });
-      console.log(newMode);
       storage.write('telemetryDataListToggle', newToggleState);
       storage.write('telemetryDataListVisibility', newMode);
       return { mode: newMode, toggle: newToggleState };
@@ -128,9 +97,12 @@ class TelemetryDataView extends Component {
             </ButtonGroup>
           </CardTitle>
           <List
+            key={this.state.toggle}
             values={this.state.items}
             onChange={this.onSortEnd}
-            renderList={({ children, props }) => <div {...props}>{children}</div>}
+            renderList={({ children, props }) => (
+              <div {...props}>{children}</div>
+            )}
             renderItem={({ value, props }) => {
               const dp = this.state.dashboardItems[value];
               return (
@@ -158,22 +130,3 @@ class TelemetryDataView extends Component {
 }
 
 export default TelemetryDataView;
-
-/*
-<SortableList
-items={this.state.items}
-dashboardItems={this.state.dashboardItems}
-mode={this.state.mode}
-
-
-key={this.state.toggle}
-
-
-
-onVisibilityChange={this.onVisibilityChange.bind(this)}
-onSortEnd={this.onSortEnd}
-
-pressDelay={200}
-lockToContainerEdges={true}
-lockAxis='y'/>
-*/
