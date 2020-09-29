@@ -25,16 +25,22 @@
 - [x] base graph x axis on timestamps
 - [x] location view zooming
 - [x] location view mouse pan and rotate
-- [ ] location view path display
-- [ ] location view arbitrary point display
-- [ ] location view path editing
-- [ ] better ui look
 - [x] window title
 - [x] arbitrary text view for links and stuff
 - [x] controls popout
 - [x] multi value controls
-- [ ] joystick with hide show control
-- [ ] link to camera livestream
+
+
+- [ ] location view path display
+- [ ] location view path editing
+- [ ] joystick with hide/show control
+
+
+- [ ] camera livestream
+- [ ] better ui look
 - [ ] better cursors
 - [ ] dont show interface until connected
-
+- [ ] scrollbar style from summernight
+- [ ] rework options menu (?)
+- [ ] rework info menu (?)
+- [ ] deal with react-viz

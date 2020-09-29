@@ -31,6 +31,9 @@ class TelemetryGraph extends Component {
       lastHistoryLength: 0,
     };
     this.eventHandler = this.handleIncomingData.bind(this);
+  }
+
+  componentDidMount() {
     telemetryClient.on(`data-${this.props.dataKey}`, this.eventHandler);
   }
 
@@ -151,7 +154,7 @@ class TelemetryGraph extends Component {
             {Object.keys(this.state.data).map((k, i) => {
               if (this.state.data[k].length > 0) {
                 return (
-                  <span>
+                  <span key={k}>
                     <span style={{ color: colors.array[i] }}>
                       {this.state.data[k][
                         this.state.data[k].length - 1
