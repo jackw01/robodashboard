@@ -21,25 +21,28 @@ class StatusView extends Component {
   }
 
   componentDidMount() {
-    telemetryClient.on("connect", () => {
-      this.setState({ status: "Connected", statusColor: "success" });
-    });
-
-    telemetryClient.on("disconnect", () => {
+    telemetryClient.on('connect', () => {
       this.setState({
-        status: "Disconnected",
-        statusColor: "danger",
-        readyStatus: "Not Ready",
-        readyStatusColor: "danger",
+        status: 'Connected',
+        statusColor: 'success',
       });
     });
 
-    telemetryClient.on("ready", () => {
+    telemetryClient.on('disconnect', () => {
+      this.setState({
+        status: 'Disconnected',
+        statusColor: 'danger',
+        readyStatus: 'Not Ready',
+        readyStatusColor: 'danger',
+      });
+    });
+
+    telemetryClient.on('ready', () => {
       const keyStates = {};
       Object.keys(telemetryClient.dashboardItems)
         .filter((k) => {
           return (
-            telemetryClient.dashboardItems[k].type === "state" &&
+            telemetryClient.dashboardItems[k].type === 'state' &&
             !telemetryClient.dashboardItems[k].isSecondaryState
           );
         })
@@ -48,8 +51,8 @@ class StatusView extends Component {
           keyStates[k] = telemetryClient.dashboardItems[k].defaultState;
         });
       this.setState({
-        readyStatus: "Ready",
-        readyStatusColor: "success",
+        readyStatus: 'Ready',
+        readyStatusColor: 'success',
         keyStates: keyStates,
       });
     });
@@ -72,9 +75,14 @@ class StatusView extends Component {
           ]}/>
         {Object.entries(this.state.keyStates).map(([k, v]) => {
           const dashboardItem = telemetryClient.dashboardItems[k];
-          return (<MultiBadge label={dashboardItem.description} segments={[
-              { color: dashboardItem.states[v].controlColor, contents: dashboardItem.states[v].label },
-            ]} key={k}/>);
+          return (
+            <MultiBadge
+              label={dashboardItem.description}
+              segments={[
+                { color: dashboardItem.states[v].controlColor, contents: dashboardItem.states[v].label },
+              ]}
+              key={k} />
+          );
         })}
       </span>
     );

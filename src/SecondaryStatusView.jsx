@@ -49,9 +49,17 @@ class SecondaryStatusView extends Component {
         <CardBody>
           {Object.entries(this.state.keyStates).map(([k, v]) => {
             const dashboardItem = telemetryClient.dashboardItems[k];
-            return (<div><MultiBadge label={dashboardItem.description} segments={[
-                { color: dashboardItem.states[v].controlColor, contents: dashboardItem.states[v].label },
-              ]} key={k}/><br/></div>);
+            return (
+              <div>
+                <MultiBadge
+                  label={dashboardItem.description}
+                  segments={[
+                    { color: dashboardItem.states[v].controlColor, contents: dashboardItem.states[v].label },
+                  ]}
+                  key={k} />
+                <br/>
+              </div>
+            );
           })}
         </CardBody>
       </Card>

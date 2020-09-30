@@ -36,6 +36,7 @@
 - [ ] joystick with hide/show control
 
 
+- [x] fix all setstate uses
 - [ ] camera livestream
 - [ ] better ui look
 - [ ] better cursors

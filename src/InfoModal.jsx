@@ -32,9 +32,7 @@ class InfoModal extends Component {
   }
 
   toggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
+    this.setState({ modal: !this.state.modal });
   }
 
   render() {

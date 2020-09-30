@@ -33,9 +33,7 @@ class OptionsModal extends Component {
   }
 
   toggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
+    this.setState({ modal: !this.state.modal });
   }
 
   onValueChange(key, control, event) {
