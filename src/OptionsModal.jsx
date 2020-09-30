@@ -29,7 +29,6 @@ class OptionsModal extends Component {
         })
         .map((k) => telemetryClient.dashboardItems[k]);
       this.setState({ inputGroups });
-      console.log(this.state.inputGroups);
     });
   }
 

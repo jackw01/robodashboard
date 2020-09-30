@@ -1,5 +1,5 @@
 // robodashboard - Node.js web dashboard for displaying data from and controlling teleoperated robots
-// Copyright 2018 jackw01. Released under the MIT License (see LICENSE for details).
+// Copyright 2020 jackw01. Released under the MIT License (see LICENSE for details).
 
 import React, { Component } from 'react';
 import dateFormat from 'dateformat';
@@ -17,21 +17,23 @@ class LogDataView extends Component {
     };
 
     this.eventHandler = this.handleIncomingData.bind(this);
+  }
 
+  componentDidMount() {
     telemetryClient.on('ready', () => {
-      Object.keys(telemetryClient.dashboardItems).filter((k) => {
+      Object.keys(telemetryClient.dashboardItems)
+      .filter((k) => {
         return telemetryClient.dashboardItems[k].type === 'log';
-      }).forEach((k) => {
+      })
+      .forEach((k) => {
         telemetryClient.on(`data-${k}`, this.eventHandler);
       });
     });
   }
 
   handleIncomingData(key, value, timestamp) {
-    this.setState((state) => {
-      let newMessages = state.messages;
-      newMessages.push({ timestamp: new Date(timestamp), value });
-      return { messages: newMessages };
+    this.setState({
+      messages: [...this.state.messages, { timestamp: new Date(timestamp), value }],
     });
   }
 
@@ -40,7 +42,14 @@ class LogDataView extends Component {
       <Card className='data-view log-data-view'>
         <CardBody>
           {this.state.messages.map((m) => {
-            return <div><Ansi>{`${dateFormat(m.timestamp, 'UTC:"T"HH:MM:ss.l"Z"')} ${m.value}`}</Ansi><br/></div>
+            return (
+              <div key={m.timestamp}>
+                <Ansi>
+                  {`${dateFormat(m.timestamp, 'UTC:"T"HH:MM:ss.l"Z"')} ${m.value}`}
+                </Ansi>
+                <br/>
+              </div>
+            );
           })}
         </CardBody>
       </Card>

@@ -16,8 +16,7 @@ class TelemetryClient extends EventEmitter {
 
     this.ws.addEventListener('open', (e) => {
       this.emit('connect');
-      console.log(`Telemetry server socket opened:`);
-      console.table(e);
+      console.log(`Telemetry server socket opened`);
     });
 
     this.ws.addEventListener('message', this.handleIncomingData.bind(this));
@@ -30,8 +29,7 @@ class TelemetryClient extends EventEmitter {
       this.dashboardItems = {};
       this.dashboardItemsInitialized = false;
       this.emit('disconnect');
-      console.log(`Telemetry server socket closed:`);
-      console.table(e);
+      console.log(`Telemetry server socket closed`);
     });
   }
 
