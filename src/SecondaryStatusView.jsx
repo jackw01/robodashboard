@@ -54,9 +54,13 @@ class SecondaryStatusView extends Component {
                 <MultiBadge
                   label={dashboardItem.description}
                   segments={[
-                    { color: dashboardItem.states[v].controlColor, contents: dashboardItem.states[v].label },
+                    {
+                      color: dashboardItem.states[v].controlColor,
+                      contents: dashboardItem.states[v].label
+                    },
                   ]}
-                  key={k} />
+                  key={k}
+                />
                 <br/>
               </div>
             );

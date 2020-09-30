@@ -47,7 +47,13 @@ class ControlsView extends Component {
             return (
               <ButtonGroup key={k}>
                 {Object.entries(v.states).map(([k, v]) => {
-                  return (<Button color={v.controlColor} size='sm' onClick={this.onClick.bind(this, k)} key={k}>
+                  return (
+                    <Button
+                      color={v.controlColor}
+                      size='sm'
+                      onClick={this.onClick.bind(this, k)}
+                      key={k}
+                    >
                     {v.controlLabel}
                   </Button>);
                 })}
@@ -57,7 +63,13 @@ class ControlsView extends Component {
             return (
               <ButtonGroup key={k}>
                 {Object.entries(v.controls).map(([k, v]) => {
-                  return (<Button color={v.color} size='sm' onClick={this.onClick.bind(this, k)} key={k}>
+                  return (
+                  <Button
+                    color={v.color}
+                    size='sm'
+                    onClick={this.onClick.bind(this, k)}
+                    key={k}
+                  >
                     {v.label}
                   </Button>);
                 })}

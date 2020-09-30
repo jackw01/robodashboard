@@ -38,10 +38,19 @@ class InfoModal extends Component {
   render() {
     return (
       <span className='info-modal-button'>
-        <Button className='icon-button' color="secondary" size='sm'onClick={this.toggle.bind(this)}>
+        <Button
+          className='icon-button'
+          color="secondary"
+          size='sm'
+          nClick={this.toggle.bind(this)}
+        >
           <MdInfoOutline/>
         </Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className={this.props.className}>
+        <Modal
+          isOpen={this.state.modal}
+          toggle={this.toggle.bind(this)}
+          className={this.props.className}
+        >
           <ModalHeader toggle={this.toggle.bind(this)}>RoboDashboard</ModalHeader>
           <ModalBody>
             {this.state.content.map((string) => <div>{string}</div>)}

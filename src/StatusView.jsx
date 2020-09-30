@@ -69,19 +69,26 @@ class StatusView extends Component {
   render() {
     return (
       <span className='status-indicator-view'>
-        <MultiBadge label='Status' segments={[
+        <MultiBadge
+          label='Status'
+          segments={[
             { color: this.state.statusColor, contents: this.state.status },
             { color: this.state.readyStatusColor, contents: this.state.readyStatus },
-          ]}/>
+          ]}
+        />
         {Object.entries(this.state.keyStates).map(([k, v]) => {
           const dashboardItem = telemetryClient.dashboardItems[k];
           return (
             <MultiBadge
               label={dashboardItem.description}
               segments={[
-                { color: dashboardItem.states[v].controlColor, contents: dashboardItem.states[v].label },
+                {
+                  color: dashboardItem.states[v].controlColor,
+                  contents: dashboardItem.states[v].label
+                },
               ]}
-              key={k} />
+              key={k}
+            />
           );
         })}
       </span>

@@ -51,10 +51,19 @@ class OptionsModal extends Component {
   render() {
     return (
       <span className='info-modal-button'>
-        <Button className='icon-button' color="secondary" size='sm' onClick={this.toggle.bind(this)}>
+        <Button
+          className='icon-button'
+          color="secondary"
+          size='sm'
+          onClick={this.toggle.bind(this)}
+        >
           <MdSettings/>
         </Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className={this.props.className}>
+        <Modal
+          isOpen={this.state.modal}
+          toggle={this.toggle.bind(this)}
+          className={this.props.className}
+        >
           <ModalHeader toggle={this.toggle.bind(this)}>Quick Settings</ModalHeader>
           <ModalBody>
             <div>
@@ -65,9 +74,16 @@ class OptionsModal extends Component {
                     {Object.keys(group.controls).map((k) => (
                       <tr>
                         <td>{group.controls[k].label}:&nbsp;</td>
-                        <td><Input className='value-input' type='number' step={group.controls[k].step}
-                        defaultValue={group.controls[k].default} invalid={this.state.invalid[k]}
-                        onChange={this.onValueChange.bind(this, k, group.controls[k])} key={k}/></td>
+                        <td>
+                          <Input
+                            className='value-input'
+                            type='number'
+                            step={group.controls[k].step}
+                            defaultValue={group.controls[k].default}
+                            invalid={this.state.invalid[k]}
+                            onChange={this.onValueChange.bind(this, k, group.controls[k])} key={k}
+                          />
+                        </td>
                       </tr>
                     ))}
                   </table>

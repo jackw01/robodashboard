@@ -24,7 +24,8 @@ class HeadingIndicator extends Component {
         <circle cx={cx} cy={cy} r={this.props.radius} stroke={colors.gray400} fill='none'/>
           <path
             d={`M ${cx}, ${cy} L ${x}, ${y}`}
-            style={{ stroke:colors.primary, strokeWidth: 2 }}/>
+            style={{ stroke:colors.primary, strokeWidth: 2 }}
+          />
       </svg>
     );
   }
