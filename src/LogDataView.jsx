@@ -16,6 +16,7 @@ class LogDataView extends Component {
       messages: [],
     };
 
+    this.endRef = React.createRef();
     this.eventHandler = this.handleIncomingData.bind(this);
   }
 
@@ -34,6 +35,9 @@ class LogDataView extends Component {
   handleIncomingData(key, value, timestamp) {
     this.setState({
       messages: [...this.state.messages, { timestamp: new Date(timestamp), value }],
+    },
+    () => {
+        this.endRef.current.scrollIntoView({ behavior: 'smooth' })
     });
   }
 
@@ -51,6 +55,7 @@ class LogDataView extends Component {
               </div>
             );
           })}
+          <div ref={this.endRef} />
         </CardBody>
       </Card>
     );

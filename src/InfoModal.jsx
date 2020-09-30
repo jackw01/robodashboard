@@ -42,7 +42,7 @@ class InfoModal extends Component {
           className='icon-button'
           color="secondary"
           size='sm'
-          nClick={this.toggle.bind(this)}
+          onClick={this.toggle.bind(this)}
         >
           <MdInfoOutline/>
         </Button>
