@@ -53,11 +53,11 @@ class TelemetryClient extends EventEmitter {
   }
 
   handleControlClick(key) {
-    this.ws.send(JSON.stringify({ type: 'controlClick', key: key }));
+    this.ws.send(JSON.stringify({ type: 'controlEvent', key: key, value: 0 }));
   }
 
   handleInputChange(key, value) {
-    this.ws.send(JSON.stringify({ type: 'inputChange', key: key, value: value }));
+    this.ws.send(JSON.stringify({ type: 'valueChange', key: key, value: value }));
   }
 }
 

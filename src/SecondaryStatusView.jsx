@@ -18,12 +18,12 @@ class SecondaryStatusView extends Component {
   }
 
   componentDidMount() {
-    telemetryClient.on("ready", () => {
+    telemetryClient.on('ready', () => {
       const keyStates = {};
       Object.keys(telemetryClient.dashboardItems)
         .filter((k) => {
           return (
-            telemetryClient.dashboardItems[k].type === "state" &&
+            telemetryClient.dashboardItems[k].type === 'state' &&
             telemetryClient.dashboardItems[k].isSecondaryState
           );
         })
@@ -55,7 +55,7 @@ class SecondaryStatusView extends Component {
                   label={dashboardItem.description}
                   segments={[
                     {
-                      color: dashboardItem.states[v].controlColor,
+                      color: dashboardItem.states[v].color,
                       contents: dashboardItem.states[v].label
                     },
                   ]}

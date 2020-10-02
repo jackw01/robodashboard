@@ -83,7 +83,7 @@ class StatusView extends Component {
               label={dashboardItem.description}
               segments={[
                 {
-                  color: dashboardItem.states[v].controlColor,
+                  color: dashboardItem.states[v].color,
                   contents: dashboardItem.states[v].label
                 },
               ]}

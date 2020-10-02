@@ -18,14 +18,12 @@ class ControlsView extends Component {
   }
 
   componentDidMount() {
-    telemetryClient.on("ready", () => {
+    telemetryClient.on('ready', () => {
       const controls = {};
       Object.keys(telemetryClient.dashboardItems)
         .filter((k) => {
           return (
-            telemetryClient.dashboardItems[k].type === "buttonGroup" ||
-            (telemetryClient.dashboardItems[k].type === "state" &&
-              telemetryClient.dashboardItems[k].createControl)
+            telemetryClient.dashboardItems[k].type === 'buttonControl'
           );
         })
         .forEach((k) => {
@@ -43,27 +41,10 @@ class ControlsView extends Component {
     return (
       <span className='controls-view'>
         {Object.entries(this.state.controls).map(([k, v]) => {
-          if (v.type === 'state') {
-            return (
-              <ButtonGroup key={k}>
-                {Object.entries(v.states).map(([k, v]) => {
-                  return (
-                    <Button
-                      color={v.controlColor}
-                      size='sm'
-                      onClick={this.onClick.bind(this, k)}
-                      key={k}
-                    >
-                    {v.controlLabel}
-                  </Button>);
-                })}
-              </ButtonGroup>
-            );
-          } else if (v.type === 'buttonGroup') {
-            return (
-              <ButtonGroup key={k}>
-                {Object.entries(v.controls).map(([k, v]) => {
-                  return (
+          return (
+            <ButtonGroup key={k}>
+              {Object.entries(v.controls).map(([k, v]) => {
+                return (
                   <Button
                     color={v.color}
                     size='sm'
@@ -71,12 +52,11 @@ class ControlsView extends Component {
                     key={k}
                   >
                     {v.label}
-                  </Button>);
-                })}
-              </ButtonGroup>
-            );
-          }
-          return '';
+                  </Button>
+                );
+              })}
+            </ButtonGroup>
+          );
         })}
       </span>
     );
