@@ -41,7 +41,7 @@
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^5.0.1"
   },
   "browserslist": {
     "production": [
